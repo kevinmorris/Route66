@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{A46ADFB6-78B6-4737-9C2B-4CF07FD8392F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{A46ADFB6-78B6-4737-9C2B-4CF07FD8392F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Route66", "Route66\Route66.csproj", "{77092672-DEC3-4E3E-82C7-5211A3F72397}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A46ADFB6-78B6-4737-9C2B-4CF07FD8392F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A46ADFB6-78B6-4737-9C2B-4CF07FD8392F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A46ADFB6-78B6-4737-9C2B-4CF07FD8392F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77092672-DEC3-4E3E-82C7-5211A3F72397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77092672-DEC3-4E3E-82C7-5211A3F72397}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77092672-DEC3-4E3E-82C7-5211A3F72397}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77092672-DEC3-4E3E-82C7-5211A3F72397}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

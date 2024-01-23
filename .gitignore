@@ -1,3 +1,7 @@
 ﻿.vs/*
 Services/obj/*
 Services/bin/*
+Route66/appsettings.json
+Route66/appsettings.Development.json
+Route66/bin/*
+Route66/obj/*
