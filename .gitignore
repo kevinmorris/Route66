@@ -5,3 +5,5 @@ Route66/appsettings.json
 Route66/appsettings.Development.json
 Route66/bin/*
 Route66/obj/*
+Tests/obj/*
+Tests/bin/*
