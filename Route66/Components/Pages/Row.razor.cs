@@ -9,7 +9,7 @@ namespace Route66.Components.Pages
         [Inject]
         protected ILogger<Row> Logger { get; set; }
         
-        internal RowTranslator Translator { get; set; } = default;
+        internal RowUpdateHandler<XElement> UpdateHandler { get; set; } = default;
 
         private string _content;
 
@@ -19,7 +19,7 @@ namespace Route66.Components.Pages
 
             if (firstRender)
             {
-                Translator.RowUpdated += OnRowUpdated;
+                UpdateHandler.RowUpdated += OnRowUpdated;
             }
         }
 

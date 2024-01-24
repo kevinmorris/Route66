@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using Route66.Components;
 using Services;
 
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddSingleton(new NetworkService());
+builder.Services.AddSingleton(new TelnetService<XElement>(new Xml3270Translator()));
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Xml.Linq;
+using Microsoft.AspNetCore.Components;
 using Services;
 
 namespace Route66.Components.Pages
@@ -6,7 +7,7 @@ namespace Route66.Components.Pages
     public partial class TerminalDisplay
     {
         [Inject]
-        protected NetworkService NetworkService { get; private set; }
+        protected NetworkService<XElement> NetworkService { get; private set; }
 
         private readonly Row[] _rows = new Row[24];
 
@@ -20,7 +21,7 @@ namespace Route66.Components.Pages
                 {
                     if (_rows[i] != null)
                     {
-                        _rows[i].Translator = NetworkService.RowTranslators[i];
+                        _rows[i].UpdateHandler = NetworkService.Handlers[i];
                     }
                 }
             }

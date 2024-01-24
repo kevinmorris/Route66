@@ -7,3 +7,5 @@ Route66/bin/*
 Route66/obj/*
 Tests/obj/*
 Tests/bin/*
+Util/bin/*
+Util/obj/*
