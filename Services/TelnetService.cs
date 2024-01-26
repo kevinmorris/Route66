@@ -5,50 +5,46 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Util;
+
 // ReSharper disable InconsistentNaming
 
 namespace Services
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="translator"></param>
+    /// <see cref="https://datatracker.ietf.org/doc/html/rfc1576"/>
     public class TelnetService<T>(I3270Translator<T> translator)
         : NetworkService<T>([
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator),
-            new RowUpdateHandler<T>(translator)
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator),
+            new RowHandler<T>(translator)
         ])
     {
-        private const byte IAC = 0xff;
-        private const byte TN3270 = 0xf5;
-
-        private const byte WILL = 0xfb;
-        private const byte WONT = 0xfc;
-        private const byte DO = 0xfd;
-        private const byte DONT = 0xfe;
-
-        private const byte BINARY_TRANSMISSION = 0x00;
-        private const byte TERMINAL_TYPE = 0x18;
-        private const byte END_OF_RECORD = 0x19;
-
         protected TcpClient Tcp;
 
         public Task Connect(string address, int port)
@@ -57,14 +53,14 @@ namespace Services
             return ProcessStream(Tcp.GetStream());
         }
 
-        public override void ProcessRead(StreamWriter writer, byte[] buffer)
+        public override void ProcessOutbound(StreamWriter writer, byte[] buffer)
         {
             switch (buffer[0])
             {
-                case IAC: writer.Write(ProcessIAC(buffer));
+                case Telnet.IAC: writer.Write(ProcessIAC(buffer));
                     break;
-                case TN3270: writer.Write(ProcessTN3270(buffer));
-                    break;
+                //case Telnet.TN3270: writer.Write(ProcessTN3270(buffer));
+                //    break;
             }
         }
 
@@ -74,35 +70,47 @@ namespace Services
 
             switch (buffer[2])
             {
-                case BINARY_TRANSMISSION:
-                case END_OF_RECORD:
+                case Telnet.BINARY_TRANSMISSION:
+                case Telnet.END_OF_RECORD:
                     responseVerb = buffer[1] switch
                     {
-                        WILL => DO,
-                        WONT => DONT,
-                        DO => WILL,
-                        DONT => WONT,
+                        Telnet.WILL => Telnet.DO,
+                        Telnet.WONT => Telnet.DONT,
+                        Telnet.DO => Telnet.WILL,
+                        Telnet.DONT => Telnet.WONT,
                         _ => (byte)0
                     };
                     break;
-                case TERMINAL_TYPE:
+                case Telnet.TERMINAL_TYPE:
                     responseVerb = buffer[1] switch
                     {
-                        WILL => DONT,
-                        WONT => DONT,
-                        DO => WONT,
-                        DONT => WONT,
+                        Telnet.WILL => Telnet.DONT,
+                        Telnet.WONT => Telnet.DONT,
+                        Telnet.DO => Telnet.WONT,
+                        Telnet.DONT => Telnet.WONT,
                         _ => (byte)0
                     };
                     break;
             }
 
-            return [IAC, responseVerb, buffer[2]];
+            return [Telnet.IAC, responseVerb, buffer[2]];
         }
 
-        private static byte[] ProcessTN3270(byte[] buffer)
+        private static void ProcessTN3270(byte[] buffer)
         {
-            return [];
+            var i = 0;
+        }
+
+        public int OrderSetBufferAddress(Span<byte> buffer, int i)
+        {
+            i += 1;
+
+            var (row, col) = BinaryUtil.BufferAddressYX(buffer.Slice(i, 2));
+            var rowHandler = Handlers[row];
+
+            i += 2;
+
+            return i;
         }
     }
 }

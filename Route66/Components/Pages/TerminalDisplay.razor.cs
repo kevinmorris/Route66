@@ -21,7 +21,7 @@ namespace Route66.Components.Pages
                 {
                     if (_rows[i] != null)
                     {
-                        _rows[i].UpdateHandler = NetworkService.Handlers[i];
+                        _rows[i].Handler = NetworkService.Handlers[i];
                     }
                 }
             }

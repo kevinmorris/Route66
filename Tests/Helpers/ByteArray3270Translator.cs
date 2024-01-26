@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Services;
 
-namespace Tests
+namespace Tests.Helpers
 {
     public class ByteArray3270Translator : I3270Translator<byte[]>
     {

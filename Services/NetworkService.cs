@@ -6,20 +6,24 @@ namespace Services
 {
     public abstract class NetworkService<T>()
     {
-        public RowUpdateHandler<T>[]? Handlers { get; init; }
+        public RowHandler<T>[] Handlers { get; init; } = [];
 
-        protected NetworkService(RowUpdateHandler<T>[] handlers) : this()
+        protected NetworkService(RowHandler<T>[] handlers) : this()
         {
             Handlers = handlers;
         }
 
-        public virtual void ProcessRead(StreamWriter writer, byte[] buffer)
+        public virtual void ProcessOutbound(StreamWriter writer, byte[] buffer)
         {
         }
 
-        protected Task ProcessStream(Stream stream)
+        protected async Task ProcessStream(Stream stream)
         {
-            return Task.Run(() => Run(stream));
+            await Task.Run(() => Run(stream));
+            foreach (var rowHandler in Handlers)
+            {
+                rowHandler.Update();
+            }
         }
 
         private void Run(Stream stream)
@@ -29,7 +33,7 @@ namespace Services
             {
                 var buffer = new byte[4 * 1024];
                 _ = stream.Read(buffer, 0, buffer.Length);
-                ProcessRead(writer, buffer);
+                ProcessOutbound(writer, buffer);
             }
 
             stream.Close();
