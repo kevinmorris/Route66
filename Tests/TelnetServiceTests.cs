@@ -25,10 +25,10 @@ namespace Tests
         [Test]
         public void Handshake()
         {
-            var mockWriter = new Mock<StreamWriter>([new MemoryStream()]);
-
+            var willTerminalType = new byte[] { 0xff, 0xfb, 0x18 };
             var doTerminalType = new byte[] { 0xff, 0xfd, 0x18 };
-            var wontTerminalType = new byte[] { 0xff, 0xfc, 0x18 };
+            var sendTerminalType = new byte[] { 0xff, 0xfa, 0x18, 0x01, 0xff, 0xf0 };
+            var heresTerminalType = new byte[] { 0xff, 0xfa, 0x18, 0x00, 0x49, 0x42, 0x4d, 0x2d, 0x33, 0x32, 0x37, 0x39, 0x2d, 0x32, 0x2d, 0x45, 0xff, 0xf0 };
             var willBinaryTransmission = new byte[] { 0xff, 0xfb, 0x00 };
             var doBinaryTransmission = new byte[] { 0xff, 0xfd, 0x00 };
             var willEndOfRecord = new byte[] { 0xff, 0xfb, 0x19 };
@@ -36,17 +36,12 @@ namespace Tests
 
             using (Sequence.Create())
             {
-                mockWriter.Setup(w => w.Write(wontTerminalType)).InSequence(Times.Exactly(1));
-                mockWriter.Setup(w => w.Write(doBinaryTransmission)).InSequence(Times.Exactly(1));
-                mockWriter.Setup(w => w.Write(willBinaryTransmission)).InSequence(Times.Exactly(1));
-                mockWriter.Setup(w => w.Write(doEndOfRecord)).InSequence(Times.Exactly(1));
-                mockWriter.Setup(w => w.Write(willEndOfRecord)).InSequence(Times.Exactly(1));
-
-                _service.ProcessOutbound(mockWriter.Object, doTerminalType);
-                _service.ProcessOutbound(mockWriter.Object, willBinaryTransmission);
-                _service.ProcessOutbound(mockWriter.Object, doBinaryTransmission);
-                _service.ProcessOutbound(mockWriter.Object, willEndOfRecord);
-                _service.ProcessOutbound(mockWriter.Object, doEndOfRecord);
+                Assert.AreEqual(willTerminalType, _service.ProcessOutbound(doTerminalType));
+                Assert.AreEqual(heresTerminalType, _service.ProcessOutbound(sendTerminalType));
+                Assert.AreEqual(doBinaryTransmission, _service.ProcessOutbound(willBinaryTransmission));
+                Assert.AreEqual(willBinaryTransmission, _service.ProcessOutbound(doBinaryTransmission));
+                Assert.AreEqual(doEndOfRecord, _service.ProcessOutbound(willEndOfRecord));
+                Assert.AreEqual(willEndOfRecord, _service.ProcessOutbound(doEndOfRecord));
             }
         }
 

@@ -3,5 +3,8 @@
   &lt;Or&gt;&#xD;
     &lt;ProjectFile&gt;CF32F8C4-D963-41B5-B737-A676A6C74145/f:TelnetServiceTests.cs&lt;/ProjectFile&gt;&#xD;
     &lt;ProjectFile&gt;CF32F8C4-D963-41B5-B737-A676A6C74145/f:BinaryUtilTests.cs&lt;/ProjectFile&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::CF32F8C4-D963-41B5-B737-A676A6C74145::net8.0::Tests.IntegrationTests.TestConnection&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

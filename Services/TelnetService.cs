@@ -45,7 +45,7 @@ namespace Services
             new RowHandler<T>(translator)
         ])
     {
-        protected TcpClient Tcp;
+        protected TcpClient? Tcp;
 
         public Task Connect(string address, int port)
         {
@@ -53,47 +53,57 @@ namespace Services
             return ProcessStream(Tcp.GetStream());
         }
 
-        public override void ProcessOutbound(StreamWriter writer, byte[] buffer)
+        public override byte[] ProcessOutbound(byte[] buffer)
         {
-            switch (buffer[0])
+            return buffer[0] switch
             {
-                case Telnet.IAC: writer.Write(ProcessIAC(buffer));
-                    break;
-                //case Telnet.TN3270: writer.Write(ProcessTN3270(buffer));
-                //    break;
-            }
+                Telnet.IAC => ProcessIAC(buffer),
+                _ => []
+            };
         }
 
         private static byte[] ProcessIAC(byte[] buffer)
         {
-            byte responseVerb = 0;
+            var agreeVerb = buffer[1] switch
+            {
+                Telnet.WILL => Telnet.DO,
+                Telnet.WONT => Telnet.DONT,
+                Telnet.DO => Telnet.WILL,
+                Telnet.DONT => Telnet.WONT,
+                _ => (byte)0
+            };
+
+            var refuseVerb = buffer[1] switch
+            {
+                Telnet.WILL => Telnet.DONT,
+                Telnet.WONT => Telnet.DONT,
+                Telnet.DO => Telnet.WONT,
+                Telnet.DONT => Telnet.WONT,
+                _ => (byte)0
+            };
 
             switch (buffer[2])
             {
                 case Telnet.BINARY_TRANSMISSION:
                 case Telnet.END_OF_RECORD:
-                    responseVerb = buffer[1] switch
-                    {
-                        Telnet.WILL => Telnet.DO,
-                        Telnet.WONT => Telnet.DONT,
-                        Telnet.DO => Telnet.WILL,
-                        Telnet.DONT => Telnet.WONT,
-                        _ => (byte)0
-                    };
-                    break;
+                    return [Telnet.IAC, agreeVerb, buffer[2]];
                 case Telnet.TERMINAL_TYPE:
-                    responseVerb = buffer[1] switch
+                    if (Telnet.SUB_OPTION == buffer[1])
                     {
-                        Telnet.WILL => Telnet.DONT,
-                        Telnet.WONT => Telnet.DONT,
-                        Telnet.DO => Telnet.WONT,
-                        Telnet.DONT => Telnet.WONT,
-                        _ => (byte)0
-                    };
-                    break;
+                        return //We are going to act like an IBM-3279-2-E 
+                        [
+                            Telnet.IAC, Telnet.SUB_OPTION, Telnet.TERMINAL_TYPE,
+                            0x00, 0x49, 0x42, 0x4d, 0x2d, 0x33, 0x32, 0x37, 0x39, 0x2d, 0x32, 0x2d, 0x45,
+                            Telnet.IAC, 0xf0
+                        ];
+                    }
+                    else
+                    {
+                        return [Telnet.IAC, agreeVerb, buffer[2]];
+                    }
+                default:
+                    return [Telnet.IAC, refuseVerb, buffer[2]];
             }
-
-            return [Telnet.IAC, responseVerb, buffer[2]];
         }
 
         private static void ProcessTN3270(byte[] buffer)
@@ -111,6 +121,16 @@ namespace Services
             i += 2;
 
             return i;
+        }
+
+        public override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing)
+            {
+                Tcp?.Close();
+                Tcp?.Dispose();
+            }
         }
     }
 }

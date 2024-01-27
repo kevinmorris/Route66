@@ -14,7 +14,7 @@ namespace Services
         public bool Dirty { get; private set; } = false;
         public event EventHandler<RowUpdateEventArgs<T>>? RowUpdated;
 
-        internal void SetBuffer(byte[] bytes, int offset)
+        internal void SetCharacters(byte[] bytes, int offset)
         {
             Dirty = true;
             Array.Copy(bytes, 0, Buffer, offset, bytes.Length);

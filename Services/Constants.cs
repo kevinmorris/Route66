@@ -9,6 +9,7 @@ namespace Services
         public const byte TERMINAL_TYPE = 0x18;
         public const byte END_OF_RECORD = 0x19;
 
+        public const byte SUB_OPTION = 0xfa;
         public const byte WILL = 0xfb;
         public const byte WONT = 0xfc;
         public const byte DO = 0xfd;
