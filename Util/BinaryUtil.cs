@@ -33,8 +33,8 @@ namespace Util
         /// second byte are set to 100000.
         /// </summary>
         /// <param name="bytes">the 2 address bytes</param>
-        /// <returns>an xy coordinate of the start of the field on screen</returns>
-        public static (int, int) BufferAddressYX(Span<byte> bytes)
+        /// <returns>the single dimensional address</returns>
+        public static int BufferAddress(Span<byte> bytes)
         {
             var address = (bytes[0] << 8) + bytes[1];
             var twelveBitMode = ((address >> 14) & 1) > 0;
@@ -48,6 +48,11 @@ namespace Util
                 address &= 0b00111111_11111111;
             }
 
+            return address;
+        }
+
+        public static (int, int) AddressCoordinates(int address)
+        {
             var y = address / Constants.SCREEN_WIDTH;
             var x = address % Constants.SCREEN_WIDTH;
 

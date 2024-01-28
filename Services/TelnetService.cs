@@ -55,16 +55,23 @@ namespace Services
 
         public override byte[] ProcessOutbound(byte[] buffer)
         {
-            return buffer[0] switch
+            if (buffer[0] == Telnet.IAC)
             {
-                Telnet.IAC => ProcessIAC(buffer),
-                _ => []
-            };
+                return ProcessIAC(buffer);
+            }
+            else if (Commands.ALL.Contains(buffer[0]))
+            {
+                return ProcessTN3270(buffer);
+            }
+            else
+            {
+                return [];
+            }
         }
 
-        private static byte[] ProcessIAC(byte[] buffer)
+        private static byte[] ProcessIAC(byte[] data)
         {
-            var agreeVerb = buffer[1] switch
+            var agreeVerb = data[1] switch
             {
                 Telnet.WILL => Telnet.DO,
                 Telnet.WONT => Telnet.DONT,
@@ -73,7 +80,7 @@ namespace Services
                 _ => (byte)0
             };
 
-            var refuseVerb = buffer[1] switch
+            var refuseVerb = data[1] switch
             {
                 Telnet.WILL => Telnet.DONT,
                 Telnet.WONT => Telnet.DONT,
@@ -82,13 +89,13 @@ namespace Services
                 _ => (byte)0
             };
 
-            switch (buffer[2])
+            switch (data[2])
             {
                 case Telnet.BINARY_TRANSMISSION:
                 case Telnet.END_OF_RECORD:
-                    return [Telnet.IAC, agreeVerb, buffer[2]];
+                    return [Telnet.IAC, agreeVerb, data[2]];
                 case Telnet.TERMINAL_TYPE:
-                    if (Telnet.SUB_OPTION == buffer[1])
+                    if (Telnet.SUB_OPTION == data[1])
                     {
                         return //We are going to act like an IBM-3279-2-E 
                         [
@@ -99,28 +106,59 @@ namespace Services
                     }
                     else
                     {
-                        return [Telnet.IAC, agreeVerb, buffer[2]];
+                        return [Telnet.IAC, agreeVerb, data[2]];
                     }
                 default:
-                    return [Telnet.IAC, refuseVerb, buffer[2]];
+                    return [Telnet.IAC, refuseVerb, data[2]];
             }
         }
 
-        private static void ProcessTN3270(byte[] buffer)
+        private static byte[] ProcessTN3270(byte[] data)
         {
             var i = 0;
+            var a = 0;
+
+            return [];
         }
 
-        public int OrderSetBufferAddress(Span<byte> buffer, int i)
+        public (int, int) OrderStartField(Span<byte> data, int i, int a)
         {
+            var (row, col) = BinaryUtil.AddressCoordinates(a);
+            var handler = Handlers[row];
             i += 1;
 
-            var (row, col) = BinaryUtil.BufferAddressYX(buffer.Slice(i, 2));
-            var rowHandler = Handlers[row];
+            var fieldAttr = data[i];
+            i += 1;
 
+            while (Orders.SET_ATTRIBUTE == data[i])
+            {
+                i += 1;
+                handler.SetExtendedAttribute(col, data[i], data[i + 1]);
+                i += 2;
+            }
+
+            var text = new List<byte> { fieldAttr };
+            a += 1;
+
+            while (!Orders.ALL.Contains(data[i]))
+            {
+                text.Add(data[i]);
+                i += 1;
+                a += 1;
+            }
+
+            handler.SetCharacters([.. text], col);
+
+            return (i, a);
+        }
+
+        public (int, int) OrderSetBufferAddress(Span<byte> data, int i)
+        {
+            i += 1;
+            var a = BinaryUtil.BufferAddress(data.Slice(i, 2));
             i += 2;
 
-            return i;
+            return (i, a);
         }
 
         public override void Dispose(bool disposing)

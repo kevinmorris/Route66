@@ -9,7 +9,7 @@ namespace Services
 {
     public class Xml3270Translator : I3270Translator<XElement>
     {
-        public XElement Translate(byte[] buffer)
+        public XElement Translate(byte[] buffer, IDictionary<int, IDictionary<byte, byte>> attributes)
         {
             throw new NotImplementedException();
         }

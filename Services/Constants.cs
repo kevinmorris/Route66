@@ -25,6 +25,17 @@ namespace Services
         public const byte READ_MODIFIED_ALL = 0x6e;
         public const byte ERASE_ALL_UNPROTECTED = 0x6f;
         public const byte WRITE_STRUCTURED_FIELD = 0xf3;
+
+        public static IEnumerable<byte> ALL =
+        [
+            WRITE,
+            ERASE_WRITE,
+            READ_BUFFER,
+            READ_MODIFIED,
+            READ_MODIFIED_ALL,
+            ERASE_ALL_UNPROTECTED,
+            WRITE_STRUCTURED_FIELD
+        ];
     }
 
     public static class WCC
@@ -46,6 +57,20 @@ namespace Services
         public const byte REPEAT_TO_ADDRESS = 0x3c;
         public const byte ERASE_UNPROTECTED_TO_ADDRESS = 0x12;
         public const byte GRAPHIC_ESCAPE = 0x08;
+
+        public static IEnumerable<byte> ALL =
+        [
+            START_FIELD,
+            START_FIELD_EXTENDED,
+            SET_BUFFER_ADDRESS,
+            SET_ATTRIBUTE,
+            MODIFY_FIELD,
+            INSERT_CURSOR,
+            PROGRAM_TAB,
+            REPEAT_TO_ADDRESS,
+            ERASE_UNPROTECTED_TO_ADDRESS,
+            GRAPHIC_ESCAPE
+        ];
     }
 
     public static class AID
