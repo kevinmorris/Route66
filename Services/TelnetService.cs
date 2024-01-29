@@ -56,6 +56,11 @@ namespace Services
         public override byte[] ProcessOutbound(byte[] buffer)
         {;
             var inbound = new List<byte>();
+            if (buffer.Length == 0)
+            {
+                return [.. inbound];
+            }
+
             if (buffer[0] == Telnet.IAC)
             {
                 inbound.AddRange(ProcessIAC(buffer));
@@ -146,6 +151,7 @@ namespace Services
             }
 
             var text = new List<byte> { fieldAttr };
+            handler.SetExtendedAttribute(col, Attributes.FIELD, fieldAttr);
             a += 1;
 
             while (!Orders.ALL.Contains(data[i]))
@@ -180,10 +186,8 @@ namespace Services
                 {
                     handler.SetCharacters([value], col);
                 }
-                else
-                {
-                    handler.SetExtendedAttribute(col, key, value);
-                }
+
+                handler.SetExtendedAttribute(col, key, value);
             }
 
             a += 1;

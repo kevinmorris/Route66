@@ -214,7 +214,8 @@ namespace Tests
                 [68] = new Dictionary<byte, byte>()
                 {
                     [Attributes.FOREGROUND_COLOR] = Colors.BLUE,
-                    [Attributes.OUTLINE] = 0b00000100
+                    [Attributes.OUTLINE] = 0b00000100,
+                    [Attributes.FIELD] = 0b01000100
                 }
             };
 

@@ -37,6 +37,13 @@ namespace Services
             attrs[attrKey] = attrValue;
         }
 
+        public void Reset()
+        {
+            Dirty = true;
+            Array.Fill<byte>(Buffer, 0b0);
+            _extendedFieldAttr.Clear();
+        }
+
         public void Update()
         {
             if (Dirty)
