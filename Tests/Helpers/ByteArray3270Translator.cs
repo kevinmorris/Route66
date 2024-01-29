@@ -7,11 +7,11 @@ using Services;
 
 namespace Tests.Helpers
 {
-    public class ByteArray3270Translator : I3270Translator<byte[]>
+    public class ByteArray3270Translator : I3270Translator<(byte[], IDictionary<int, IDictionary<byte, byte>>)>
     {
-        public byte[] Translate(byte[] buffer, IDictionary<int, IDictionary<byte, byte>> attributes)
+        public (byte[], IDictionary<int, IDictionary<byte, byte>>) Translate(byte[] buffer, IDictionary<int, IDictionary<byte, byte>> attributes)
         {
-            return buffer;
+            return (buffer, attributes);
         }
     }
 }

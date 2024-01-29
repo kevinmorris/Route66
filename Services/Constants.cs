@@ -73,6 +73,64 @@ namespace Services
         ];
     }
 
+    public static class Attributes
+    {
+        public const byte ALL = 0x00;
+        public const byte FIELD = 0xc0;
+        public const byte VALIDATION = 0xc1;
+        public const byte OUTLINE = 0xc2;
+        public const byte HIGHLIGHT = 0x41;
+        public const byte FOREGROUND_COLOR = 0x42;
+        public const byte CHARACTER_SET = 0x43;
+        public const byte BACKGROUND_COLOR = 0x45;
+        public const byte TRANSPARENCY = 0x46;
+    }
+
+    public static class Colors
+    {
+        public const byte NEUTRAL_BLACK = 0x00;
+        public const byte BLUE = 0x01;
+        public const byte RED = 0x02;
+        public const byte PINK = 0x03;
+        public const byte GREEN = 0x04;
+        public const byte TURQUOISE = 0x05;
+        public const byte YELLOW = 0x06;
+        public const byte NEUTRAL_WHITE = 0x07;
+        public const byte BLACK = 0x08;
+        public const byte DEEP_BLUE = 0x09;
+        public const byte ORANGE = 0x0a;
+        public const byte PURPLE = 0x0b;
+        public const byte PALE_GREEN = 0x0c;
+        public const byte PALE_TURQUOISE = 0x0d;
+        public const byte GRAY = 0x0e;
+        public const byte WHITE = 0x0f;
+
+        public static IDictionary<byte, string> ColorClasses { get; }
+
+        static Colors()
+        {
+            ColorClasses = new Dictionary<byte, string>()
+            {
+                [NEUTRAL_BLACK] = "neutral_black",
+                [BLUE] = "blue",
+                [RED] = "red",
+                [PINK] = "pink",
+                [GREEN] = "green",
+                [TURQUOISE] = "turquoise",
+                [YELLOW] = "yellow",
+                [NEUTRAL_WHITE] = "neutral_white",
+                [BLACK] = "black",
+                [DEEP_BLUE] = "deep_blue",
+                [ORANGE] = "orange",
+                [PURPLE] = "purple",
+                [PALE_GREEN] = "pale_green",
+                [PALE_TURQUOISE] = "pale_turquoise",
+                [GRAY] = "gray",
+                [WHITE] = "white"
+            };
+        }
+    }
+
     public static class AID
     {
     }

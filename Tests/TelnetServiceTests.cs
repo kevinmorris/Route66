@@ -13,7 +13,7 @@ namespace Tests
 {
     public class TelnetServiceTests
     {
-        private TelnetService<byte[]> _service;
+        private TelnetService<(byte[], IDictionary<int, IDictionary<byte, byte>>)> _service;
         private readonly byte[] _data = new byte[]
         {
             0x11, 0xc3, 0xe4, 0x1d, 0xf0, 0x28, 0x42, 0xf5, 0x7a, 0x40, 0xc8, 0xc5, 0xd9, 0xc3,
@@ -134,7 +134,7 @@ namespace Tests
         [SetUp]
         public void SetUp()
         {
-            _service = new TelnetService<byte[]>(new ByteArray3270Translator());
+            _service = new TelnetService<(byte[], IDictionary<int, IDictionary<byte, byte>>)>(new ByteArray3270Translator());
         }
 
         [Test]
@@ -191,6 +191,52 @@ namespace Tests
             Assert.AreEqual(
                 expected,
                 handler.Buffer);
+        }
+
+        [Test]
+        public void ModifyField()
+        {
+            var data = new byte[]
+            {
+                Orders.MODIFY_FIELD, 0xf3,
+                Attributes.FOREGROUND_COLOR, Colors.BLUE,
+                Attributes.FIELD, 0b01000100,
+                Attributes.OUTLINE, 0b00000100
+            };
+
+            RowUpdateEventArgs<(byte[], IDictionary<int, IDictionary<byte, byte>>)> eventArgs = null;
+
+            var expectedBuffer = new byte[80];
+            expectedBuffer[68] = 0b01000100;
+
+            var expectedAttr = new Dictionary<int, IDictionary<byte, byte>>()
+            {
+                [68] = new Dictionary<byte, byte>()
+                {
+                    [Attributes.FOREGROUND_COLOR] = Colors.BLUE,
+                    [Attributes.OUTLINE] = 0b00000100
+                }
+            };
+
+            var handler = _service.Handlers[2];
+            var eventInvoked = false;
+            handler.RowUpdated += (sender, args) =>
+            {
+                eventInvoked = true;
+                eventArgs = args;
+            };
+
+            Assert.AreEqual((8, 229), _service.OrderModifyField(data, 0, 228));
+            handler.Update();
+
+            Assert.True(eventInvoked);
+            Assert.AreEqual(
+                expectedBuffer,
+                eventArgs.Data.Item1);
+
+            Assert.AreEqual(
+                expectedAttr,
+                eventArgs.Data.Item2);
         }
 
         [Test]

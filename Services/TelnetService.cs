@@ -152,6 +152,36 @@ namespace Services
             return (i, a);
         }
 
+        public (int, int) OrderModifyField(Span<byte> data, int i, int a)
+        {
+            var (row, col) = BinaryUtil.AddressCoordinates(a);
+            var handler = Handlers[row];
+
+            i += 1;
+            var attrKeyValuePairCount = (data[i] & 0b00001111);
+            i += 1;
+
+            for (var j = 0; j < attrKeyValuePairCount; j++)
+            {
+                var key = data[i];
+                i += 1;
+                var value = data[i];
+                i += 1;
+
+                if (Attributes.FIELD == key)
+                {
+                    handler.SetCharacters([value], col);
+                }
+                else
+                {
+                    handler.SetExtendedAttribute(col, key, value);
+                }
+            }
+
+            a += 1;
+            return (i, a);
+        }
+
         public (int, int) OrderSetBufferAddress(Span<byte> data, int i)
         {
             i += 1;
