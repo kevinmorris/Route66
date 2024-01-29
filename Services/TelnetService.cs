@@ -54,23 +54,23 @@ namespace Services
         }
 
         public override byte[] ProcessOutbound(byte[] buffer)
-        {
+        {;
+            var inbound = new List<byte>();
             if (buffer[0] == Telnet.IAC)
             {
-                return ProcessIAC(buffer);
+                inbound.AddRange(ProcessIAC(buffer));
             }
             else if (Commands.ALL.Contains(buffer[0]))
             {
-                return ProcessTN3270(buffer);
+                inbound.AddRange(ProcessTN3270(buffer));
             }
-            else
-            {
-                return [];
-            }
+
+            return [.. inbound];
         }
 
-        private static byte[] ProcessIAC(byte[] data)
+        private byte[] ProcessIAC(byte[] data)
         {
+            var inbound = new List<byte>();
             var agreeVerb = data[1] switch
             {
                 Telnet.WILL => Telnet.DO,
@@ -93,27 +93,35 @@ namespace Services
             {
                 case Telnet.BINARY_TRANSMISSION:
                 case Telnet.END_OF_RECORD:
-                    return [Telnet.IAC, agreeVerb, data[2]];
+                    inbound.AddRange([Telnet.IAC, agreeVerb, data[2]]);
+                    break;
                 case Telnet.TERMINAL_TYPE:
                     if (Telnet.SUB_OPTION == data[1])
                     {
-                        return //We are going to act like an IBM-3279-2-E 
+                        inbound.AddRange( //We are going to act like an IBM-3279-2-E 
                         [
                             Telnet.IAC, Telnet.SUB_OPTION, Telnet.TERMINAL_TYPE,
                             0x00, 0x49, 0x42, 0x4d, 0x2d, 0x33, 0x32, 0x37, 0x39, 0x2d, 0x32, 0x2d, 0x45,
                             Telnet.IAC, 0xf0
-                        ];
+                        ]);
                     }
                     else
                     {
-                        return [Telnet.IAC, agreeVerb, data[2]];
+                        inbound.AddRange([Telnet.IAC, agreeVerb, data[2]]);
                     }
+
+                    break;
                 default:
-                    return [Telnet.IAC, refuseVerb, data[2]];
+                    inbound.AddRange([Telnet.IAC, refuseVerb, data[2]]);
+                    break;
             }
+
+            inbound.AddRange(ProcessOutbound(data[3..]));
+
+            return [.. inbound];
         }
 
-        private static byte[] ProcessTN3270(byte[] data)
+        private byte[] ProcessTN3270(byte[] data)
         {
             var i = 0;
             var a = 0;
