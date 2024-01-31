@@ -8,6 +8,6 @@ namespace Services
 {
     public interface I3270Translator<out T>
     {
-        public T Translate(byte[] buffer, IDictionary<int, IDictionary<byte, byte>> attributes);
+        public T Translate(byte[] buffer, IDictionary<int, IDictionary<byte, byte>> attributeSet);
     }
 }

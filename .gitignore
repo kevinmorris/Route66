@@ -9,3 +9,4 @@ Tests/obj/*
 Tests/bin/*
 Util/bin/*
 Util/obj/*
+Data/*

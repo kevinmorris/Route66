@@ -9,38 +9,47 @@ namespace Services
 {
     public class Xml3270Translator : I3270Translator<XElement>
     {
-        public XElement Translate(byte[] buffer, IDictionary<int, IDictionary<byte, byte>> attributes)
+        public XElement Translate(byte[] buffer, IDictionary<int, IDictionary<byte, byte>> attributeSet)
         {
             var rowRoot = new XElement("row");
             XElement? current = null;
-            StringBuilder? str = null;
+            var str = new StringBuilder();
 
             for (var i = 0; i < buffer.Length; i++)
             {
                 if (buffer[i] == 0)
                 {
-                    if (current != null && str != null)
+                    if (current != null)
                     {
-                        current.SetValue(str.ToString());
+                        current.SetValue(str.ToString().Trim());
                         rowRoot.Add(current);
                         str.Clear();
                         current = null;
                     }
                 }
-                else if (attributes.Keys.Contains(i) && attributes[i].ContainsKey(Attributes.FIELD))
-                { //This is the start of a field
-                    if (current != null && str != null)
-                    {
-                        current.SetValue(str.ToString());
-                        rowRoot.Add(current);
-                        str.Clear();
+                else if (attributeSet.TryGetValue(i, out var attributes))
+                {
+                    if (attributes.ContainsKey(Attributes.FIELD))
+                    { //This is the start of a field
+
+                        if (current != null)
+                        {
+                            current.SetValue(str.ToString().Trim());
+                            rowRoot.Add(current);
+                            str.Clear();
+                        }
+
+                        current = new XElement("label", new XAttribute("col", i + 1));
                     }
 
-                    current = new XElement("label", new XAttribute("col", i + 1));
+                    foreach (var key in attributes.Keys.Except([Attributes.FIELD]))
+                    {
+                        current?.Add(new XAttribute(Attributes.ExtendedNames[key], Attributes.ExtendedValues[key][attributes[key]]));
+                    }
                 }
-                else if (EBCDIC.Chars.Keys.Contains(buffer[i]))
+                else if (EBCDIC.Chars.ContainsKey(buffer[i]))
                 {
-                    str?.Append(EBCDIC.Chars[buffer[i]]);
+                    str.Append(EBCDIC.Chars[buffer[i]]);
                 }
             }
 

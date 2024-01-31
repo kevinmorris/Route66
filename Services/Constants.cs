@@ -79,11 +79,26 @@ namespace Services
         public const byte FIELD = 0xc0;
         public const byte VALIDATION = 0xc1;
         public const byte OUTLINE = 0xc2;
-        public const byte HIGHLIGHT = 0x41;
+        public const byte HIGHLIGHTING = 0x41;
         public const byte FOREGROUND_COLOR = 0x42;
         public const byte CHARACTER_SET = 0x43;
         public const byte BACKGROUND_COLOR = 0x45;
         public const byte TRANSPARENCY = 0x46;
+
+        public static IDictionary<byte, string> ExtendedNames = new Dictionary<byte, string>()
+        {
+            [HIGHLIGHTING] = "highlighting",
+            [FOREGROUND_COLOR] = "foreground-color",
+            [BACKGROUND_COLOR] = "background-color",
+        };
+
+        public static IDictionary<byte, IDictionary<byte, string>> ExtendedValues =
+            new Dictionary<byte, IDictionary<byte, string>>()
+            {
+                [HIGHLIGHTING] = Highlighting.Classes,
+                [FOREGROUND_COLOR] = Colors.Classes,
+                [BACKGROUND_COLOR] = Colors.Classes,
+            };
     }
 
     public static class EBCDIC
@@ -207,11 +222,11 @@ namespace Services
         public const byte GRAY = 0x0e;
         public const byte WHITE = 0x0f;
 
-        public static IDictionary<byte, string> ColorClasses { get; }
+        public static IDictionary<byte, string> Classes { get; }
 
         static Colors()
         {
-            ColorClasses = new Dictionary<byte, string>()
+            Classes = new Dictionary<byte, string>()
             {
                 [NEUTRAL_BLACK] = "neutral_black",
                 [BLUE] = "blue",
@@ -231,6 +246,24 @@ namespace Services
                 [WHITE] = "white"
             };
         }
+    }
+
+    public static class Highlighting
+    {
+        public const byte DEFAULT = 0x00;
+        public const byte NORMAL = 0xf0;
+        public const byte BLINK = 0xf1;
+        public const byte REVERSE_VIDEO = 0xf2;
+        public const byte UNDERSCORE = 0xf4;
+
+        public static IDictionary<byte, string> Classes = new Dictionary<byte, string>()
+        {
+            [0x00] = "default",
+            [0xf0] = "normal",
+            [0xf1] = "blink",
+            [0xf2] = "reverse-video",
+            [0xf4] = "underscore"
+        };
     }
 
     public static class AID
