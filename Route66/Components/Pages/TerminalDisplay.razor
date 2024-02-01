@@ -2,4 +2,8 @@
 
 <h3>TerminalDisplay</h3>
 
-<Row @ref="_rows[0]" />
+@for (int i = 0; i < 24; i++)
+{
+    var index = i;
+    <Row @ref="_rows[index]"></Row><br/>
+}

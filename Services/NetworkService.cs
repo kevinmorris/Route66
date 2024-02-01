@@ -13,7 +13,9 @@ namespace Services
             Handlers = handlers;
         }
 
-        public virtual byte[] ProcessOutbound(byte[] buffer)
+        public abstract Task Connect(string address, int port);
+
+        public virtual byte[] ProcessOutbound(Span<byte> buffer)
         {
             return [];
         }
@@ -21,10 +23,6 @@ namespace Services
         protected async Task ProcessStream(Stream stream)
         {
             await Task.Run(() => Run(stream));
-            foreach (var rowHandler in Handlers)
-            {
-                rowHandler.Update();
-            }
         }
 
         private void Run(Stream stream)
@@ -39,6 +37,11 @@ namespace Services
                 var outbound = new byte[4 * 1024];
                 _ = stream.Read(outbound, 0, outbound.Length);
                 var inbound = ProcessOutbound(outbound);
+                foreach (var rowHandler in Handlers)
+                {
+                    rowHandler.Update();
+                }
+
                 if (inbound.Length > 0)
                 {
                     stream.Write(inbound, 0, inbound.Length);

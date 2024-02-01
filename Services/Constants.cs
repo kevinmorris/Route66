@@ -5,9 +5,10 @@ namespace Services
     public static class Telnet
     {
         public const byte IAC = 0xff;
-        public const byte BINARY_TRANSMISSION = 0x00;
-        public const byte TERMINAL_TYPE = 0x18;
-        public const byte END_OF_RECORD = 0x19;
+        public const byte BINARY_TRANSMISSION_ABILITY = 0x00;
+        public const byte TERMINAL_TYPE_ABILITY = 0x18;
+        public const byte END_OF_RECORD_ABILITY = 0x19;
+        public const byte END_OF_RECORD = 0xef;
 
         public const byte SUB_OPTION = 0xfa;
         public const byte WILL = 0xfb;

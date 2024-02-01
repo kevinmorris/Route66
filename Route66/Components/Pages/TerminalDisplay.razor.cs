@@ -11,9 +11,9 @@ namespace Route66.Components.Pages
 
         private readonly Row[] _rows = new Row[24];
 
-        protected override void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            base.OnAfterRender(firstRender);
+            await base.OnAfterRenderAsync(firstRender);
 
             if (firstRender)
             {
@@ -24,6 +24,8 @@ namespace Route66.Components.Pages
                         _rows[i].Handler = NetworkService.Handlers[i];
                     }
                 }
+
+                await NetworkService.Connect("127.0.0.1", 3270);
             }
         }
     }
