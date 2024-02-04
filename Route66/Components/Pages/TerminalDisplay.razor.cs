@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Services;
 
-namespace Route66.Components.Pages
+namespace Route66Blazor.Components.Pages
 {
     public partial class TerminalDisplay
     {
