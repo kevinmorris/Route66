@@ -21,7 +21,7 @@ namespace Services
                 {
                     if (current != null)
                     {
-                        current.SetValue(str.ToString().Trim());
+                        current.Value = str.ToString();
                         rowRoot.Add(current);
                         str.Clear();
                         current = null;
@@ -34,7 +34,7 @@ namespace Services
 
                         if (current != null)
                         {
-                            current.SetValue(str.ToString().Trim());
+                            current.Value = str.ToString();
                             rowRoot.Add(current);
                             str.Clear();
                         }
@@ -49,7 +49,8 @@ namespace Services
                 }
                 else if (EBCDIC.Chars.ContainsKey(buffer[i]))
                 {
-                    str.Append(EBCDIC.Chars[buffer[i]]);
+                    var c = EBCDIC.Chars[buffer[i]];
+                    str.Append(c);
                 }
             }
 

@@ -41,8 +41,8 @@ namespace Tests
             var expectedStr =
                 """
                 <row>
-                    <label col="7">BROWSE</label>
-                    <label col="20">Display source data using Review</label>
+                    <label col="7">BROWSE      </label>
+                    <label col="20"> Display source data using Review      </label>
                     <label col="60">TERMINAL</label>
                 </row>
                 """;
@@ -78,8 +78,8 @@ namespace Tests
             var expectedStr =
                 """
                 <row>
-                    <label col="7" foreground-color="turquoise">BROWSE</label>
-                    <label col="20" highlighting="blink">Display source data using Review</label>
+                    <label col="7" foreground-color="turquoise">BROWSE      </label>
+                    <label col="20" highlighting="blink"> Display source data using Review      </label>
                     <label col="60" foreground-color="green" highlighting="underscore">TERMINAL</label>
                 </row>
                 """;

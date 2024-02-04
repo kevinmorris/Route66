@@ -1,4 +1,7 @@
-﻿using System.Xml.Linq;
+﻿using System.Text;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Xsl;
 using Microsoft.AspNetCore.Components;
 using Services;
 
@@ -11,7 +14,14 @@ namespace Route66.Components.Pages
         
         internal RowHandler<XElement> Handler { get; set; } = default;
 
-        private string _content;
+        private MarkupString _content;
+        private XslCompiledTransform _xslt = new XslCompiledTransform(true);
+
+        public Row()
+        {
+            _xslt.Load("xml-tools/html-transform.xsl");
+        }
+
 
         protected override void OnAfterRender(bool firstRender)
         {
@@ -25,9 +35,15 @@ namespace Route66.Components.Pages
 
         private void OnRowUpdated(object sender, RowUpdateEventArgs<XElement> e)
         {
+            var xmlReader = new XmlTextReader(new StringReader(e.Data.ToString()));
+
+            var htmlSb = new StringBuilder();
+            _xslt.Transform(xmlReader, XmlWriter.Create(new StringWriter(htmlSb)));
+            var html = htmlSb.ToString();
+
             InvokeAsync(() =>
             {
-                _content = e.Data.ToString();
+                _content = new MarkupString(html);
                 StateHasChanged();
             });
         }
