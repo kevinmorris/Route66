@@ -1,5 +1,6 @@
 ﻿using System.Xml.Linq;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Services;
 
 namespace Route66Blazor.Components.Pages
@@ -10,6 +11,11 @@ namespace Route66Blazor.Components.Pages
         protected NetworkService<XElement> NetworkService { get; private set; }
 
         private readonly Row[] _rows = new Row[24];
+
+        private void Reset(MouseEventArgs args)
+        {
+
+        }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
