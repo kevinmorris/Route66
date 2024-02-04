@@ -7,7 +7,7 @@
     <div class="row" style="position: static; height: 1.1em; white-space: pre; font-family: Consolas, monospace;">
       <xsl:for-each select="row/label">
         <span class="label" style="position: absolute; left: {@col}ch;">
-          <xsl:value-of select="." disable-output-escaping="yes"/>
+          <xsl:value-of select="." disable-output-escaping="no"/>
         </span>
       </xsl:for-each>
     </div>
