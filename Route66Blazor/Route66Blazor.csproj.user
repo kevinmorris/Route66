@@ -3,9 +3,4 @@
   <PropertyGroup>
     <ActiveDebugProfile>https</ActiveDebugProfile>
   </PropertyGroup>
-  <ItemGroup>
-    <None Update="xml-tools\html-transform.xsl">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
 </Project>

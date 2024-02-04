@@ -11,3 +11,5 @@ Util/bin/*
 Util/obj/*
 Data/*
 .idea/*
+Route66Blazor/obj/*
+Route66Blazor/bin/*
