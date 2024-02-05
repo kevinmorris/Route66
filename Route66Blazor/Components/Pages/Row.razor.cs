@@ -11,22 +11,20 @@ namespace Route66Blazor.Components.Pages
     {
         [Inject]
         protected ILogger<Row> Logger { get; set; }
-        
+
+        internal int Index { get; set; }
         internal RowHandler<XElement> Handler { get; set; } = default;
 
         private MarkupString _content;
-        private XslCompiledTransform _xslt = new XslCompiledTransform(true);
+        private XslCompiledTransform _xslt = new(true);
 
         public Row()
         {
             _xslt.Load("xml-tools/html-transform.xsl");
         }
 
-
-        protected override void OnAfterRender(bool firstRender)
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            base.OnAfterRender(firstRender);
-
             if (firstRender)
             {
                 Handler.RowUpdated += OnRowUpdated;
