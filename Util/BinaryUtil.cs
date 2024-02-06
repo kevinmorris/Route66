@@ -58,5 +58,18 @@ namespace Util
 
             return (y, x);
         }
+
+        public static byte[] AddressBuffer12Bit(int address)
+        {
+            var b1 = (byte)(address & 0b00111111);
+            var b0 = (byte)((address - b1) >> 6);
+
+            return [(byte)(0b11000000 + b0), (byte)(0b11000000 + b1)];
+        }
+
+        public static int CoordinateAddress((int, int) coords)
+        {
+            return coords.Item1 * Constants.SCREEN_WIDTH + coords.Item2;
+        }
     }
 }
