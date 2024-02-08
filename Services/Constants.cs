@@ -269,5 +269,39 @@ namespace Services
 
     public static class AID
     {
+        public const byte NO_AID = 0x60;
+        public const byte STRUCTURED_FIELD = 0x88;
+        public const byte TRIGGER_ACTION = 0x7f;
+        public const byte SYSREQ = 0xf0;
+        public const byte PF1 = 0xf1;
+        public const byte PF2 = 0xf2;
+        public const byte PF3 = 0xf3;
+        public const byte PF4 = 0xf4;
+        public const byte PF5 = 0xf5;
+        public const byte PF6 = 0xf6;
+        public const byte PF7 = 0xf7;
+        public const byte PF8 = 0xf8;
+        public const byte PF9 = 0xf9;
+        public const byte PF10 = 0x7a;
+        public const byte PF11 = 0x7b;
+        public const byte PF12 = 0x7c;
+        public const byte PF13 = 0xc1;
+        public const byte PF14 = 0xc2;
+        public const byte PF15 = 0xc3;
+        public const byte PF16 = 0xc4;
+        public const byte PF17 = 0xc5;
+        public const byte PF18 = 0xc6;
+        public const byte PF19 = 0xc7;
+        public const byte PF20 = 0xc8;
+        public const byte PF21 = 0xc9;
+        public const byte PF22 = 0x4a;
+        public const byte PF23 = 0x4b;
+        public const byte PF24 = 0x4c;
+        public const byte PA1 = 0x6c;
+        public const byte PA2 = 0x6e;
+        public const byte PA3 = 0x6b;
+        public const byte CLEAR = 0x6d;
+        public const byte CLEAR_PARTITION = 0x6a;
+        public const byte ENTER = 0x7d;
     }
 }

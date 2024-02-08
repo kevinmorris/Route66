@@ -39,12 +39,15 @@ namespace Services
                             str.Clear();
                         }
 
-                        current = new XElement("label", new XAttribute("col", i + 1));
+                        current = new XElement("label", new XAttribute("col", i));
+                        var c = EBCDIC.Chars[buffer[i]];
+                        str.Append(c);
                     }
 
                     foreach (var key in attributes.Keys.Except([Attributes.FIELD]))
                     {
-                        current?.Add(new XAttribute(Attributes.ExtendedNames[key], Attributes.ExtendedValues[key][attributes[key]]));
+                        //TODO: Need to figure out color constants
+                        //current?.Add(new XAttribute(Attributes.ExtendedNames[key], Attributes.ExtendedValues[key][attributes[key]]));
                     }
                 }
                 else if (EBCDIC.Chars.ContainsKey(buffer[i]))

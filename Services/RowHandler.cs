@@ -12,6 +12,8 @@ namespace Services
     {
         public byte[] Buffer { get; } = new byte[Constants.SCREEN_WIDTH];
         public bool Dirty { get; private set; } = false;
+        public int CurrentCol { get; set; } = 0;
+        private readonly List<byte> _currentField = [];
 
         private readonly IDictionary<int, IDictionary<byte, byte>> _extendedFieldAttr = 
             new Dictionary<int, IDictionary<byte, byte>>();
@@ -22,6 +24,21 @@ namespace Services
         {
             Dirty = true;
             Array.Copy(bytes, 0, Buffer, offset, bytes.Length);
+        }
+
+        public void AddCharacter(byte d)
+        {
+            _currentField.Add(d);
+        }
+
+        public void FinalizeField()
+        {
+            if (_currentField.Count > 0)
+            {
+                SetCharacters([.. _currentField], CurrentCol);
+                CurrentCol = 0;
+                _currentField.Clear();
+            }
         }
 
         internal void SetExtendedAttribute(int index, byte attrKey, byte attrValue)
