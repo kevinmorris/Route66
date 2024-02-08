@@ -101,9 +101,9 @@ namespace Services
 
         private (int, int) ProcessIAC(Span<byte> data, int i, int a)
         {
-            if (data.Length < 2 || data[1] == Telnet.END_OF_RECORD)
+            if (i >= data.Length - 1 || data[i + 1] == Telnet.END_OF_RECORD)
             {
-                return (i, a);
+                return (i+2, a);
             }
 
             var agreeVerb = data[i + 1] switch
