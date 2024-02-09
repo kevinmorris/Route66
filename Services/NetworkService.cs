@@ -13,9 +13,9 @@ namespace Services
         protected TcpClient? Tcp;
         protected List<byte> Inbound = [];
 
-        protected RowHandler<T>? CurrentRow;
+        public RowHandler<T>? CurrentRow { get; private set; }
 
-        private bool _commandReady = false;
+        public bool CommandReady { get; set; }= false;
 
         public RowHandler<T>[] Handlers { get; init; } =
         [
@@ -63,11 +63,11 @@ namespace Services
                 if (d == Telnet.IAC)
                 {
                     (i, a) = ProcessIAC(data, i, a);
-                    _commandReady = true;
+                    CommandReady = true;
                 }
-                else if (_commandReady && Commands.ALL.Contains(d))
+                else if (CommandReady && Commands.ALL.Contains(d))
                 {
-                    _commandReady = false;
+                    CommandReady = false;
                     (i, a) = ProcessCommand(data, i, a);
                 }
                 // ReSharper disable once ConvertIfStatementToSwitchStatement
