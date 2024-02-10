@@ -82,6 +82,10 @@ namespace Services
                 else if (d == Orders.MODIFY_FIELD)
                 {
                 }
+                else if (d == Orders.INSERT_CURSOR)
+                {
+                    (i, a) = OrderInsertCursor(data, i, a);
+                }
                 else if (d == Orders.SET_ATTRIBUTE)
                 {
                     (i, a) = OrderSetAttribute(data, i, a);
@@ -269,6 +273,11 @@ namespace Services
             var (row, col) = BinaryUtil.AddressCoordinates(a + 1);
 
             CurrentRow?.FinalizeField();
+            if (row >= Handlers.Length)
+            {
+                return (i + 2, a + 1);
+            }
+
             CurrentRow = Handlers[row];
             CurrentRow.CurrentCol = col;
 
@@ -312,6 +321,16 @@ namespace Services
             return (i, a);
         }
 
+        public (int, int) OrderInsertCursor(Span<byte> _, int i, int a)
+        {
+            if (CurrentRow != null)
+            {
+                CurrentRow.Cursor = true;
+            }
+
+            return (i + 1, a);
+        }
+        
         public (int, int) OrderSetBufferAddress(Span<byte> data, int i)
         {
             i += 1;

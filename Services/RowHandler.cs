@@ -13,6 +13,7 @@ namespace Services
         public byte[] Buffer { get; } = new byte[Constants.SCREEN_WIDTH];
         public bool Dirty { get; private set; } = false;
         public int CurrentCol { get; set; } = 0;
+        public bool Cursor { get; set; } = false;
         private readonly List<byte> _currentField = [];
 
         private readonly IDictionary<int, IDictionary<byte, byte>> _extendedFieldAttr = 
@@ -23,7 +24,12 @@ namespace Services
         internal void SetCharacters(byte[] bytes, int offset)
         {
             Dirty = true;
-            Array.Copy(bytes, 0, Buffer, offset, bytes.Length);
+            Array.Copy(
+                bytes, 
+                0, 
+                Buffer, 
+                offset,
+                Math.Min(bytes.Length, Buffer.Length - offset));
         }
 
         public void AddCharacter(byte d)
@@ -35,8 +41,13 @@ namespace Services
         {
             if (_currentField.Count > 0)
             {
+                if (Cursor)
+                {
+                    SetExtendedAttribute(CurrentCol, Orders.INSERT_CURSOR, 1);
+                }
                 SetCharacters([.. _currentField], CurrentCol);
                 CurrentCol = 0;
+                Cursor = false;
                 _currentField.Clear();
             }
         }

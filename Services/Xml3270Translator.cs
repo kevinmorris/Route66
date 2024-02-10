@@ -22,6 +22,7 @@ namespace Services
                     if (current != null)
                     {
                         current.Value = str.ToString();
+                        current.Add(new XAttribute("length", str.Length));
                         rowRoot.Add(current);
                         str.Clear();
                         current = null;
@@ -35,6 +36,7 @@ namespace Services
                         if (current != null)
                         {
                             current.Value = str.ToString();
+                            current.Add(new XAttribute("length", str.Length));
                             rowRoot.Add(current);
                             str.Clear();
                         }
@@ -55,6 +57,12 @@ namespace Services
                     var c = EBCDIC.Chars[buffer[i]];
                     str.Append(c);
                 }
+            }
+
+            if (current != null)
+            {
+                rowRoot.Add(current);
+                current.Add(new XAttribute("length", str.Length));
             }
 
             return rowRoot;
