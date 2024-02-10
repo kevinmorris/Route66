@@ -399,7 +399,7 @@ namespace Tests
             Assert.AreEqual("<row>\r\n  <label col=\"24\" length=\"19\">MVS 3.8j Level 8505</label>\r\n</row>", rowXml[20]);
             Assert.AreEqual("<row />", rowXml[21]);
             Assert.AreEqual("<row>\r\n  <label col=\"0\" length=\"10\">Logon ===&gt;</label>\r\n  <label col=\"11\" length=\"69\" />\r\n</row>", rowXml[22]);
-            Assert.AreEqual("<row>\r\n  <label col=\"60\" length=\"66\">         see SYS2.JCLLIB(CREDITS) for complete creditsRUNNING  TK5</label>\r\n</row>", rowXml[23]);
+            Assert.AreEqual("<row>\r\n  <label col=\"60\" length=\"12\">RUNNING  TK5</label>\r\n</row>", rowXml[23]);
         }
 
         [Test]

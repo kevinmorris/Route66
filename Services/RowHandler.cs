@@ -69,6 +69,8 @@ namespace Services
         {
             Dirty = true;
             Array.Fill<byte>(Buffer, 0b0);
+            CurrentCol = 0;
+            _currentField.Clear();
             _extendedFieldAttr.Clear();
         }
 
