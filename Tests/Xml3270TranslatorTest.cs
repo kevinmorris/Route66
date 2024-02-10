@@ -26,15 +26,15 @@ namespace Tests
             {
                 [7] = new Dictionary<byte, byte>()
                 {
-                    [Attributes.FIELD] = 0b00000000
+                    [Attributes.FIELD] = 0b11111000
                 },
                 [20] = new Dictionary<byte, byte>()
                 {
-                    [Attributes.FIELD] = 0b00000000
+                    [Attributes.FIELD] = 0b11111000
                 },
                 [60] = new Dictionary<byte, byte>()
                 {
-                    [Attributes.FIELD] = 0b00000000
+                    [Attributes.FIELD] = 0b11111000
                 }
             };
 
@@ -69,17 +69,17 @@ namespace Tests
             {
                 [6] = new Dictionary<byte, byte>()
                 {
-                    [Attributes.FIELD] = 0b00000000,
+                    [Attributes.FIELD] = 0b11111000,
                     [Attributes.FOREGROUND_COLOR] = Colors.TURQUOISE
                 },
                 [19] = new Dictionary<byte, byte>()
                 {
-                    [Attributes.FIELD] = 0b00000000,
+                    [Attributes.FIELD] = 0b11111000,
                     [Attributes.HIGHLIGHTING] = Highlighting.BLINK
                 },
                 [59] = new Dictionary<byte, byte>()
                 {
-                    [Attributes.FIELD] = 0b00000000,
+                    [Attributes.FIELD] = 0b11111000,
                     [Attributes.FOREGROUND_COLOR] = Colors.GREEN,
                     [Attributes.HIGHLIGHTING] = Highlighting.UNDERSCORE
                 }
@@ -118,11 +118,11 @@ namespace Tests
             {
                 [0] = new Dictionary<byte, byte>()
                 {
-                    [Attributes.FIELD] = 0b00000000,
+                    [Attributes.FIELD] = 0b11111000,
                 },
                 [12] = new Dictionary<byte, byte>()
                 {
-                    [Attributes.FIELD] = 0b00000000,
+                    [Attributes.FIELD] = 0b11001000,
                 }
             };
 
@@ -130,7 +130,7 @@ namespace Tests
                 """
                 <row>
                   <label col="0" length="10">Logon ===&gt;</label>
-                  <label col="12" length="68" />
+                  <input col="12" length="68" />
                 </row>
                 """;
 

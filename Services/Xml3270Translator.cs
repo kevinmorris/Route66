@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Util;
 
 namespace Services
 {
@@ -30,9 +31,8 @@ namespace Services
                 }
                 else if (attributeSet.TryGetValue(i, out var attributes))
                 {
-                    if (attributes.ContainsKey(Attributes.FIELD))
+                    if (attributes.TryGetValue(Attributes.FIELD, out var fieldAttribute))
                     { //This is the start of a field
-
                         if (current != null)
                         {
                             current.Value = str.ToString();
@@ -41,12 +41,21 @@ namespace Services
                             str.Clear();
                         }
 
-                        current = new XElement("label", new XAttribute("col", i));
+                        current = new XElement(
+                            BinaryUtil.isProtected(fieldAttribute) ? "label" : "input",
+                            new XAttribute("col", i));
+
+                        if (attributes.TryGetValue(Orders.INSERT_CURSOR, out var cursor) &&
+                            cursor == 1)
+                        {
+                            current.Add(new XAttribute("cursor", true));
+                        }
+
                         var c = EBCDIC.Chars[buffer[i]];
                         str.Append(c);
                     }
 
-                    foreach (var key in attributes.Keys.Except([Attributes.FIELD]))
+                    foreach (var key in attributes.Keys.Except([Attributes.FIELD, Orders.INSERT_CURSOR]))
                     {
                         //TODO: Need to figure out color constants
                         //current?.Add(new XAttribute(Attributes.ExtendedNames[key], Attributes.ExtendedValues[key][attributes[key]]));
