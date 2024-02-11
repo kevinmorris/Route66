@@ -3,21 +3,22 @@
 @page "/"
 
 <h3>TerminalDisplay</h3>
+<div id="container" class="border-zero" tabindex="0" @ref="_container" @onkeydown="@KeyDown">
+    <div>
+        <button class="keypad-button" @onclick="Reset">Reset</button>
+        <button class="keypad-button">Erase EOF</button>
+        <button class="keypad-button">Erase Input</button>
+        <button class="keypad-button">PA1</button>
+        <button class="keypad-button">PA2</button>
+        <button class="keypad-button">PA3</button>
+        <button class="keypad-button">Attn</button>
+        <button class="keypad-button">Sys Req</button>
+        <button class="keypad-button" @onclick="Clear">Clear</button>
+    </div>
 
-<div>
-    <button class="keypad-button" onclick="Reset">Reset</button>
-    <button class="keypad-button">Erase EOF</button>
-    <button class="keypad-button">Erase Input</button>
-    <button class="keypad-button">PA1</button>
-    <button class="keypad-button">PA2</button>
-    <button class="keypad-button">PA3</button>
-    <button class="keypad-button">Attn</button>
-    <button class="keypad-button">Sys Req</button>
-    <button class="keypad-button">Clear</button>
+    @for (int i = 0; i < _rows.Length; i++)
+    {
+        var index = i;
+        <Row @ref="_rows[index]"></Row>
+    }
 </div>
-
-@for (int i = 0; i < _rows.Length; i++)
-{
-    var index = i;
-    <Row @ref="_rows[index]"></Row>
-}

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using Services;
+using Util;
 
 namespace Route66Blazor.Components.Pages
 {
@@ -11,7 +12,8 @@ namespace Route66Blazor.Components.Pages
         [Inject]
         protected NetworkService<XElement> NetworkService { get; private set; }
 
-        private readonly Row[] _rows = new Row[24];
+        private ElementReference _container;
+        private readonly Row[] _rows = new Row[Constants.SCREEN_HEIGHT];
         private DotNetObjectReference<TerminalDisplay>? _tdObjRef;
 
         private IJSObjectReference? _module;
@@ -27,9 +29,19 @@ namespace Route66Blazor.Components.Pages
             return await Task.FromResult(e.ToString());
         }
 
+        private void KeyDown(KeyboardEventArgs args)
+        {
+
+        }
+
         private void Reset(MouseEventArgs args)
         {
 
+        }
+
+        private async void Clear(MouseEventArgs args)
+        {
+            await NetworkService.SendKeyAsync(AID.CLEAR);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -44,8 +56,9 @@ namespace Route66Blazor.Components.Pages
                     _rows[i].Index = i;
                 }
 
+                await _container.FocusAsync(true);
                 await JS.InvokeAsync<string>("setDotNetObjRef", _tdObjRef);
-                await NetworkService.Connect("127.0.0.1", 3270);
+                NetworkService.Connect("127.0.0.1", 3270);
             }
         }
 
