@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <row>
-  <label col="0" length="5">Logon</label>
-  <label col="5" length="5">===&gt;</label>
-  <input col="11" cursor="true" length="69" />
+  <label row="1" col="0" length="5">Logon</label>
+  <label row="2" col="5" length="5">===&gt;</label>
+  <input row="3" col="11" cursor="true" length="69" />
 </row>

@@ -10,10 +10,13 @@
   </xsl:template>
 
   <xsl:template match="input">
-    <input type="text" style="position: absolute; left: {@col}ch; font-family: Consolas, monospace; font-size: 16px" />
+    <input type="text" data-row="{@row}" data-col="{@col}"
+           onfocus="onFocusChanged(this)"
+           style="position: absolute; left: {@col}ch; font-family: Consolas, monospace; font-size: 16px" />
   </xsl:template>
   <xsl:template match="label">
-    <span class="label" style="position: absolute; left: {@col}ch;">
+    <span class="label" data-row="{@row}" data-col="{@col}"
+          style="position: absolute; left: {@col}ch;">
       <xsl:value-of select="." disable-output-escaping="no"/>
     </span>
   </xsl:template>

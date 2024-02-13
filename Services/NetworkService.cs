@@ -19,30 +19,30 @@ namespace Services
 
         public RowHandler<T>[] Handlers { get; init; } =
         [
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator),
-            new RowHandler<T>(translator)
+            new RowHandler<T>(0, translator),
+            new RowHandler<T>(1, translator),
+            new RowHandler<T>(2, translator),
+            new RowHandler<T>(3, translator),
+            new RowHandler<T>(4, translator),
+            new RowHandler<T>(5, translator),
+            new RowHandler<T>(6, translator),
+            new RowHandler<T>(7, translator),
+            new RowHandler<T>(8, translator),
+            new RowHandler<T>(9, translator),
+            new RowHandler<T>(10, translator),
+            new RowHandler<T>(11, translator),
+            new RowHandler<T>(12, translator),
+            new RowHandler<T>(13, translator),
+            new RowHandler<T>(14, translator),
+            new RowHandler<T>(15, translator),
+            new RowHandler<T>(16, translator),
+            new RowHandler<T>(17, translator),
+            new RowHandler<T>(18, translator),
+            new RowHandler<T>(19, translator),
+            new RowHandler<T>(20, translator),
+            new RowHandler<T>(21, translator),
+            new RowHandler<T>(22, translator),
+            new RowHandler<T>(23, translator),
         ];
 
         protected Stream? Stream;
@@ -178,6 +178,7 @@ namespace Services
         protected void Run(Stream stream)
         {
             Stream = stream;
+
             while (Stream.CanRead)
             {
                 //The 3270 data stream uses the term "outbound" for data coming

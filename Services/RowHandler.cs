@@ -8,7 +8,7 @@ using Util;
 
 namespace Services
 {
-    public class RowHandler<T>(I3270Translator<T> translator)
+    public class RowHandler<T>(int row, I3270Translator<T> translator)
     {
         public byte[] Buffer { get; } = new byte[Constants.SCREEN_WIDTH];
         public bool Dirty { get; private set; } = false;
@@ -78,6 +78,8 @@ namespace Services
         {
             if (Dirty)
             {
+                translator.Row = row;
+
                 RowUpdated?.Invoke(this, new RowUpdateEventArgs<T>()
                 {
                     Data = translator.Translate(Buffer, _extendedFieldAttr)

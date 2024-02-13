@@ -10,15 +10,17 @@ namespace Services
 {
     public class Xml3270Translator : I3270Translator<XElement>
     {
+        public int Row { get; set; }
+
         public XElement Translate(byte[] buffer, IDictionary<int, IDictionary<byte, byte>> attributeSet)
         {
             var rowRoot = new XElement("row");
             XElement? current = null;
             var str = new StringBuilder();
 
-            for (var i = 0; i < buffer.Length; i++)
+            for (var col = 0; col < buffer.Length; col++)
             {
-                if (buffer[i] == 0)
+                if (buffer[col] == 0)
                 {
                     if (current != null)
                     {
@@ -29,7 +31,7 @@ namespace Services
                         current = null;
                     }
                 }
-                else if (attributeSet.TryGetValue(i, out var attributes))
+                else if (attributeSet.TryGetValue(col, out var attributes))
                 {
                     if (attributes.TryGetValue(Attributes.FIELD, out var fieldAttribute))
                     { //This is the start of a field
@@ -43,7 +45,8 @@ namespace Services
 
                         current = new XElement(
                             BinaryUtil.isProtected(fieldAttribute) ? "label" : "input",
-                            new XAttribute("col", i));
+                            new XAttribute("row", Row),
+                            new XAttribute("col", col));
 
                         if (attributes.TryGetValue(Orders.INSERT_CURSOR, out var cursor) &&
                             cursor == 1)
@@ -51,7 +54,7 @@ namespace Services
                             current.Add(new XAttribute("cursor", true));
                         }
 
-                        var c = EBCDIC.Chars[buffer[i]];
+                        var c = EBCDIC.Chars[buffer[col]];
                         str.Append(c);
                     }
 
@@ -61,9 +64,9 @@ namespace Services
                         //current?.Add(new XAttribute(Attributes.ExtendedNames[key], Attributes.ExtendedValues[key][attributes[key]]));
                     }
                 }
-                else if (EBCDIC.Chars.ContainsKey(buffer[i]))
+                else if (EBCDIC.Chars.ContainsKey(buffer[col]))
                 {
-                    var c = EBCDIC.Chars[buffer[i]];
+                    var c = EBCDIC.Chars[buffer[col]];
                     str.Append(c);
                 }
             }

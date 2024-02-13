@@ -41,14 +41,17 @@ namespace Tests
             var expectedStr =
                 """
                 <row>
-                    <label col="7" length="12">BROWSE      </label>
-                    <label col="20" length="39"> Display source data using Review      </label>
-                    <label col="60" length="8">TERMINAL</label>
+                    <label row="5" col="7" length="12">BROWSE      </label>
+                    <label row="5" col="20" length="39"> Display source data using Review      </label>
+                    <label row="5" col="60" length="8">TERMINAL</label>
                 </row>
                 """;
 
             var expected = XElement.Parse(expectedStr);
-            var actual = new Xml3270Translator().Translate(data, attrs);
+            var actual = new Xml3270Translator()
+            {
+                Row = 5
+            }.Translate(data, attrs);
             Assert.That(actual, Is.EqualTo(expected).Using<XElement>(XNode.DeepEquals));
         }
 
@@ -88,14 +91,17 @@ namespace Tests
             var expectedStr =
                 """
                 <row>
-                    <label col="7" foreground-color="turquoise">BROWSE      </label>
-                    <label col="20" highlighting="blink"> Display source data using Review      </label>
-                    <label col="60" foreground-color="green" highlighting="underscore">TERMINAL</label>
+                    <label row="6" col="7" foreground-color="turquoise">BROWSE      </label>
+                    <label row="6" col="20" highlighting="blink"> Display source data using Review      </label>
+                    <label row="6" col="60" foreground-color="green" highlighting="underscore">TERMINAL</label>
                 </row>
                 """;
 
             var expected = XElement.Parse(expectedStr);
-            var actual = new Xml3270Translator().Translate(data, attrs);
+            var actual = new Xml3270Translator()
+            {
+                Row = 6
+            }.Translate(data, attrs);
             Assert.That(actual, Is.EqualTo(expected).Using<XElement>(XNode.DeepEquals));
         }
 
@@ -129,12 +135,15 @@ namespace Tests
             var expectedStr =
                 """
                 <row>
-                  <label col="0" length="10">Logon ===&gt;</label>
-                  <input col="12" length="68" />
+                  <label row="7" col="0" length="10">Logon ===&gt;</label>
+                  <input row="7" col="12" length="68" />
                 </row>
                 """;
 
-            var actual = new Xml3270Translator().Translate(data, attrs);
+            var actual = new Xml3270Translator()
+            {
+                Row = 7
+            }.Translate(data, attrs);
             Assert.AreEqual(expectedStr, actual.ToString());
         }
     }

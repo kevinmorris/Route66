@@ -138,29 +138,29 @@ namespace Tests
                 rowHandler.Update();
             }
 
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"19\">Hercules Version  :</label>\r\n  <label col=\"21\" length=\"25\">4.6.0.10941-SDL-g65c97fd6</label>\r\n</row>", rowXml[0]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"19\">Host name         :</label>\r\n  <label col=\"21\" length=\"9\">GAUGAMELA</label>\r\n</row>", rowXml[1]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"19\">Host OS           :</label>\r\n  <label col=\"21\" length=\"37\">Windows-6.2.9200  Professional 64-bit</label>\r\n</row>", rowXml[2]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"19\">Host Architecture :</label>\r\n  <label col=\"21\" length=\"12\">Intel(R) x64</label>\r\n</row>", rowXml[3]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"19\">Processors        :</label>\r\n  <label col=\"21\" length=\"22\">LP=12, Cores=6, CPUs=1</label>\r\n</row>", rowXml[4]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"19\">LPAR Name         :</label>\r\n  <label col=\"21\" length=\"8\">HERCULES</label>\r\n</row>", rowXml[5]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"19\">Device number     :</label>\r\n  <label col=\"21\" length=\"6\">0:00C0</label>\r\n</row>", rowXml[6]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"20\">                    </label>\r\n  <label col=\"21\" length=\"50\">       TTTTTTTTTTTT   KKKK  KKKKK     555555555555</label>\r\n</row>", rowXml[7]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"60\">                           TT   TT   TT    KK    KK       55</label>\r\n</row>", rowXml[8]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"60\">                           TT   TT   TT    KK   KK        55</label>\r\n</row>", rowXml[9]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"60\">                                TT         KK  KK         55</label>\r\n</row>", rowXml[10]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"65\">        4l      _,,,---,,_      TT         KK KK          55     </label>\r\n</row>", rowXml[11]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"73\"> ZZZzz /,'.-'`'    -.  ;-;;,    TT         KKKK           55555555555    </label>\r\n</row>", rowXml[12]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"76\">      4,4-  ) )-,_. ,( (  ''-'  TT         KKKKK                    55      </label>\r\n</row>", rowXml[13]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"70\">     '---''(_/--'  `-')_)       TT         KK  KK                   55</label>\r\n</row>", rowXml[14]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"70\">                                TT         KK   KK                  55</label>\r\n</row>", rowXml[15]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"70\">       The MVS 3.8j             TT         KK    KK                 55</label>\r\n</row>", rowXml[16]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"70\">     Tur(n)key System           TT         KK     KK                55</label>\r\n</row>", rowXml[17]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"69\">                              TTTTTT      KKKK     KKK    55555555555</label>\r\n</row>", rowXml[18]);
+            Assert.AreEqual("<row>\r\n  <label row=\"0\" col=\"1\" length=\"19\">Hercules Version  :</label>\r\n  <label row=\"0\" col=\"21\" length=\"25\">4.6.0.10941-SDL-g65c97fd6</label>\r\n</row>", rowXml[0]);
+            Assert.AreEqual("<row>\r\n  <label row=\"1\" col=\"1\" length=\"19\">Host name         :</label>\r\n  <label row=\"1\" col=\"21\" length=\"9\">GAUGAMELA</label>\r\n</row>", rowXml[1]);
+            Assert.AreEqual("<row>\r\n  <label row=\"2\" col=\"1\" length=\"19\">Host OS           :</label>\r\n  <label row=\"2\" col=\"21\" length=\"37\">Windows-6.2.9200  Professional 64-bit</label>\r\n</row>", rowXml[2]);
+            Assert.AreEqual("<row>\r\n  <label row=\"3\" col=\"1\" length=\"19\">Host Architecture :</label>\r\n  <label row=\"3\" col=\"21\" length=\"12\">Intel(R) x64</label>\r\n</row>", rowXml[3]);
+            Assert.AreEqual("<row>\r\n  <label row=\"4\" col=\"1\" length=\"19\">Processors        :</label>\r\n  <label row=\"4\" col=\"21\" length=\"22\">LP=12, Cores=6, CPUs=1</label>\r\n</row>", rowXml[4]);
+            Assert.AreEqual("<row>\r\n  <label row=\"5\" col=\"1\" length=\"19\">LPAR Name         :</label>\r\n  <label row=\"5\" col=\"21\" length=\"8\">HERCULES</label>\r\n</row>", rowXml[5]);
+            Assert.AreEqual("<row>\r\n  <label row=\"6\" col=\"1\" length=\"19\">Device number     :</label>\r\n  <label row=\"6\" col=\"21\" length=\"6\">0:00C0</label>\r\n</row>", rowXml[6]);
+            Assert.AreEqual("<row>\r\n  <label row=\"7\" col=\"1\" length=\"20\">                    </label>\r\n  <label row=\"7\" col=\"21\" length=\"50\">       TTTTTTTTTTTT   KKKK  KKKKK     555555555555</label>\r\n</row>", rowXml[7]);
+            Assert.AreEqual("<row>\r\n  <label row=\"8\" col=\"1\" length=\"60\">                           TT   TT   TT    KK    KK       55</label>\r\n</row>", rowXml[8]);
+            Assert.AreEqual("<row>\r\n  <label row=\"9\" col=\"1\" length=\"60\">                           TT   TT   TT    KK   KK        55</label>\r\n</row>", rowXml[9]);
+            Assert.AreEqual("<row>\r\n  <label row=\"10\" col=\"1\" length=\"60\">                                TT         KK  KK         55</label>\r\n</row>", rowXml[10]);
+            Assert.AreEqual("<row>\r\n  <label row=\"11\" col=\"1\" length=\"65\">        4l      _,,,---,,_      TT         KK KK          55     </label>\r\n</row>", rowXml[11]);
+            Assert.AreEqual("<row>\r\n  <label row=\"12\" col=\"1\" length=\"73\"> ZZZzz /,'.-'`'    -.  ;-;;,    TT         KKKK           55555555555    </label>\r\n</row>", rowXml[12]);
+            Assert.AreEqual("<row>\r\n  <label row=\"13\" col=\"1\" length=\"76\">      4,4-  ) )-,_. ,( (  ''-'  TT         KKKKK                    55      </label>\r\n</row>", rowXml[13]);
+            Assert.AreEqual("<row>\r\n  <label row=\"14\" col=\"1\" length=\"70\">     '---''(_/--'  `-')_)       TT         KK  KK                   55</label>\r\n</row>", rowXml[14]);
+            Assert.AreEqual("<row>\r\n  <label row=\"15\" col=\"1\" length=\"70\">                                TT         KK   KK                  55</label>\r\n</row>", rowXml[15]);
+            Assert.AreEqual("<row>\r\n  <label row=\"16\" col=\"1\" length=\"70\">       The MVS 3.8j             TT         KK    KK                 55</label>\r\n</row>", rowXml[16]);
+            Assert.AreEqual("<row>\r\n  <label row=\"17\" col=\"1\" length=\"70\">     Tur(n)key System           TT         KK     KK                55</label>\r\n</row>", rowXml[17]);
+            Assert.AreEqual("<row>\r\n  <label row=\"18\" col=\"1\" length=\"69\">                              TTTTTT      KKKK     KKK    55555555555</label>\r\n</row>", rowXml[18]);
             Assert.AreEqual("<row />", rowXml[19]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"58\">    TK3 created by   Volker Bandke       volker@bandke.org</label>\r\n</row>", rowXml[20]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"75\">    TK4- update by   Juergen Winkelmann  juergen.winkelmann@pebble-beach.ch</label>\r\n</row>", rowXml[21]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"59\">    TK5  update by   Rob Prins           prin0096@gmail.com</label>\r\n</row>", rowXml[22]);
+            Assert.AreEqual("<row>\r\n  <label row=\"20\" col=\"1\" length=\"58\">    TK3 created by   Volker Bandke       volker@bandke.org</label>\r\n</row>", rowXml[20]);
+            Assert.AreEqual("<row>\r\n  <label row=\"21\" col=\"1\" length=\"75\">    TK4- update by   Juergen Winkelmann  juergen.winkelmann@pebble-beach.ch</label>\r\n</row>", rowXml[21]);
+            Assert.AreEqual("<row>\r\n  <label row=\"22\" col=\"1\" length=\"59\">    TK5  update by   Rob Prins           prin0096@gmail.com</label>\r\n</row>", rowXml[22]);
             Assert.AreEqual("<row />", rowXml[23]);
         }
 
@@ -376,30 +376,30 @@ namespace Tests
                 rowHandler.Update();
             }
 
-            Assert.AreEqual("<row>\r\n  <label col=\"11\" length=\"16\">TerminalCUU0C0  </label>\r\n  <label col=\"66\" length=\"4\">Date</label>\r\n  <label col=\"72\" length=\"8\" />\r\n</row>", rowXml[0]);
-            Assert.AreEqual("<row>\r\n  <label col=\"66\" length=\"4\">Time</label>\r\n  <label col=\"72\" length=\"8\" />\r\n</row>", rowXml[1]);
+            Assert.AreEqual("<row>\r\n  <label row=\"0\" col=\"11\" length=\"16\">TerminalCUU0C0  </label>\r\n  <label row=\"0\" col=\"66\" length=\"4\">Date</label>\r\n  <label row=\"0\" col=\"72\" length=\"8\" />\r\n</row>", rowXml[0]);
+            Assert.AreEqual("<row>\r\n  <label row=\"1\" col=\"66\" length=\"4\">Time</label>\r\n  <label row=\"1\" col=\"72\" length=\"8\" />\r\n</row>", rowXml[1]);
             Assert.AreEqual("<row />", rowXml[2]);
-            Assert.AreEqual("<row>\r\n  <label col=\"27\" length=\"12\">TTTTTTTTTTTT</label>\r\n  <label col=\"42\" length=\"4\">KKKK</label>\r\n  <label col=\"48\" length=\"5\">KKKKK</label>\r\n  <label col=\"57\" length=\"12\">555555555555</label>\r\n</row>", rowXml[3]);
-            Assert.AreEqual("<row>\r\n  <label col=\"27\" length=\"2\">TT</label>\r\n  <label col=\"32\" length=\"2\">TT</label>\r\n  <label col=\"37\" length=\"2\">TT</label>\r\n  <label col=\"43\" length=\"2\">KK</label>\r\n  <label col=\"49\" length=\"2\">KK</label>\r\n  <label col=\"57\" length=\"2\">55</label>\r\n</row>", rowXml[4]);
-            Assert.AreEqual("<row>\r\n  <label col=\"27\" length=\"2\">TT</label>\r\n  <label col=\"32\" length=\"2\">TT</label>\r\n  <label col=\"37\" length=\"2\">TT</label>\r\n  <label col=\"43\" length=\"2\">KK</label>\r\n  <label col=\"48\" length=\"2\">KK</label>\r\n  <label col=\"57\" length=\"2\">55</label>\r\n</row>", rowXml[5]);
-            Assert.AreEqual("<row>\r\n  <label col=\"32\" length=\"2\">TT</label>\r\n  <label col=\"43\" length=\"2\">KK</label>\r\n  <label col=\"47\" length=\"2\">KK</label>\r\n  <label col=\"57\" length=\"2\">55</label>\r\n</row>", rowXml[6]);
-            Assert.AreEqual("<row>\r\n  <label col=\"8\" length=\"2\">!l</label>\r\n  <label col=\"16\" length=\"10\">_,,,---,,_</label>\r\n  <label col=\"32\" length=\"2\">TT</label>\r\n  <label col=\"43\" length=\"5\">KK KK</label>\r\n  <label col=\"57\" length=\"2\">55</label>\r\n</row>", rowXml[7]);
-            Assert.AreEqual("<row>\r\n  <label col=\"1\" length=\"27\">ZZZzz /,'.-'`'    -.  ;-;;,</label>\r\n  <label col=\"32\" length=\"2\">TT</label>\r\n  <label col=\"43\" length=\"4\">KKKK</label>\r\n  <label col=\"57\" length=\"11\">55555555555</label>\r\n</row>", rowXml[8]);
-            Assert.AreEqual("<row>\r\n  <label col=\"6\" length=\"24\">!,4-  ) )-,_. ,( (  ''-'</label>\r\n  <label col=\"32\" length=\"2\">TT</label>\r\n  <label col=\"43\" length=\"5\">KKKKK</label>\r\n  <label col=\"67\" length=\"2\">55</label>\r\n</row>", rowXml[9]);
-            Assert.AreEqual("<row>\r\n  <label col=\"5\" length=\"20\">'---''(_/--'  `-')_)</label>\r\n  <label col=\"32\" length=\"2\">TT</label>\r\n  <label col=\"43\" length=\"2\">KK</label>\r\n  <label col=\"47\" length=\"2\">KK</label>\r\n  <label col=\"67\" length=\"2\">55</label>\r\n</row>", rowXml[10]);
-            Assert.AreEqual("<row>\r\n  <label col=\"32\" length=\"2\">TT</label>\r\n  <label col=\"43\" length=\"2\">KK</label>\r\n  <label col=\"48\" length=\"2\">KK</label>\r\n  <label col=\"67\" length=\"2\">55</label>\r\n</row>", rowXml[11]);
-            Assert.AreEqual("<row>\r\n  <label col=\"7\" length=\"12\">The MVS 3.8j</label>\r\n  <label col=\"32\" length=\"2\">TT</label>\r\n  <label col=\"43\" length=\"2\">KK</label>\r\n  <label col=\"49\" length=\"2\">KK</label>\r\n  <label col=\"67\" length=\"2\">55</label>\r\n</row>", rowXml[12]);
-            Assert.AreEqual("<row>\r\n  <label col=\"5\" length=\"16\">Tur(n)key System</label>\r\n  <label col=\"32\" length=\"2\">TT</label>\r\n  <label col=\"43\" length=\"2\">KK</label>\r\n  <label col=\"50\" length=\"2\">KK</label>\r\n  <label col=\"67\" length=\"2\">55</label>\r\n</row>", rowXml[13]);
-            Assert.AreEqual("<row>\r\n  <label col=\"30\" length=\"6\">TTTTTT</label>\r\n  <label col=\"42\" length=\"4\">KKKK</label>\r\n  <label col=\"51\" length=\"3\">KKK</label>\r\n  <label col=\"57\" length=\"11\">55555555555</label>\r\n</row>", rowXml[14]);
+            Assert.AreEqual("<row>\r\n  <label row=\"3\" col=\"27\" length=\"12\">TTTTTTTTTTTT</label>\r\n  <label row=\"3\" col=\"42\" length=\"4\">KKKK</label>\r\n  <label row=\"3\" col=\"48\" length=\"5\">KKKKK</label>\r\n  <label row=\"3\" col=\"57\" length=\"12\">555555555555</label>\r\n</row>", rowXml[3]);
+            Assert.AreEqual("<row>\r\n  <label row=\"4\" col=\"27\" length=\"2\">TT</label>\r\n  <label row=\"4\" col=\"32\" length=\"2\">TT</label>\r\n  <label row=\"4\" col=\"37\" length=\"2\">TT</label>\r\n  <label row=\"4\" col=\"43\" length=\"2\">KK</label>\r\n  <label row=\"4\" col=\"49\" length=\"2\">KK</label>\r\n  <label row=\"4\" col=\"57\" length=\"2\">55</label>\r\n</row>", rowXml[4]);
+            Assert.AreEqual("<row>\r\n  <label row=\"5\" col=\"27\" length=\"2\">TT</label>\r\n  <label row=\"5\" col=\"32\" length=\"2\">TT</label>\r\n  <label row=\"5\" col=\"37\" length=\"2\">TT</label>\r\n  <label row=\"5\" col=\"43\" length=\"2\">KK</label>\r\n  <label row=\"5\" col=\"48\" length=\"2\">KK</label>\r\n  <label row=\"5\" col=\"57\" length=\"2\">55</label>\r\n</row>", rowXml[5]);
+            Assert.AreEqual("<row>\r\n  <label row=\"6\" col=\"32\" length=\"2\">TT</label>\r\n  <label row=\"6\" col=\"43\" length=\"2\">KK</label>\r\n  <label row=\"6\" col=\"47\" length=\"2\">KK</label>\r\n  <label row=\"6\" col=\"57\" length=\"2\">55</label>\r\n</row>", rowXml[6]);
+            Assert.AreEqual("<row>\r\n  <label row=\"7\" col=\"8\" length=\"2\">!l</label>\r\n  <label row=\"7\" col=\"16\" length=\"10\">_,,,---,,_</label>\r\n  <label row=\"7\" col=\"32\" length=\"2\">TT</label>\r\n  <label row=\"7\" col=\"43\" length=\"5\">KK KK</label>\r\n  <label row=\"7\" col=\"57\" length=\"2\">55</label>\r\n</row>", rowXml[7]);
+            Assert.AreEqual("<row>\r\n  <label row=\"8\" col=\"1\" length=\"27\">ZZZzz /,'.-'`'    -.  ;-;;,</label>\r\n  <label row=\"8\" col=\"32\" length=\"2\">TT</label>\r\n  <label row=\"8\" col=\"43\" length=\"4\">KKKK</label>\r\n  <label row=\"8\" col=\"57\" length=\"11\">55555555555</label>\r\n</row>", rowXml[8]);
+            Assert.AreEqual("<row>\r\n  <label row=\"9\" col=\"6\" length=\"24\">!,4-  ) )-,_. ,( (  ''-'</label>\r\n  <label row=\"9\" col=\"32\" length=\"2\">TT</label>\r\n  <label row=\"9\" col=\"43\" length=\"5\">KKKKK</label>\r\n  <label row=\"9\" col=\"67\" length=\"2\">55</label>\r\n</row>", rowXml[9]);
+            Assert.AreEqual("<row>\r\n  <label row=\"10\" col=\"5\" length=\"20\">'---''(_/--'  `-')_)</label>\r\n  <label row=\"10\" col=\"32\" length=\"2\">TT</label>\r\n  <label row=\"10\" col=\"43\" length=\"2\">KK</label>\r\n  <label row=\"10\" col=\"47\" length=\"2\">KK</label>\r\n  <label row=\"10\" col=\"67\" length=\"2\">55</label>\r\n</row>", rowXml[10]);
+            Assert.AreEqual("<row>\r\n  <label row=\"11\" col=\"32\" length=\"2\">TT</label>\r\n  <label row=\"11\" col=\"43\" length=\"2\">KK</label>\r\n  <label row=\"11\" col=\"48\" length=\"2\">KK</label>\r\n  <label row=\"11\" col=\"67\" length=\"2\">55</label>\r\n</row>", rowXml[11]);
+            Assert.AreEqual("<row>\r\n  <label row=\"12\" col=\"7\" length=\"12\">The MVS 3.8j</label>\r\n  <label row=\"12\" col=\"32\" length=\"2\">TT</label>\r\n  <label row=\"12\" col=\"43\" length=\"2\">KK</label>\r\n  <label row=\"12\" col=\"49\" length=\"2\">KK</label>\r\n  <label row=\"12\" col=\"67\" length=\"2\">55</label>\r\n</row>", rowXml[12]);
+            Assert.AreEqual("<row>\r\n  <label row=\"13\" col=\"5\" length=\"16\">Tur(n)key System</label>\r\n  <label row=\"13\" col=\"32\" length=\"2\">TT</label>\r\n  <label row=\"13\" col=\"43\" length=\"2\">KK</label>\r\n  <label row=\"13\" col=\"50\" length=\"2\">KK</label>\r\n  <label row=\"13\" col=\"67\" length=\"2\">55</label>\r\n</row>", rowXml[13]);
+            Assert.AreEqual("<row>\r\n  <label row=\"14\" col=\"30\" length=\"6\">TTTTTT</label>\r\n  <label row=\"14\" col=\"42\" length=\"4\">KKKK</label>\r\n  <label row=\"14\" col=\"51\" length=\"3\">KKK</label>\r\n  <label row=\"14\" col=\"57\" length=\"11\">55555555555</label>\r\n</row>", rowXml[14]);
             Assert.AreEqual("<row />", rowXml[15]);
-            Assert.AreEqual("<row>\r\n  <label col=\"6\" length=\"52\">TK3  created by Volker Bandke      volker@bandke.org</label>\r\n</row>", rowXml[16]);
-            Assert.AreEqual("<row>\r\n  <label col=\"6\" length=\"69\">TK4- update by Juergen Winkelmann  juergen.winkelmann@pebble-beach.ch</label>\r\n</row>", rowXml[17]);
-            Assert.AreEqual("<row>\r\n  <label col=\"6\" length=\"53\">TK5  update by Rob Prins           prin0096@gmail.com</label>\r\n</row>", rowXml[18]);
-            Assert.AreEqual("<row>\r\n  <label col=\"11\" length=\"45\">see SYS2.JCLLIB(CREDITS) for complete credits</label>\r\n</row>", rowXml[19]);
-            Assert.AreEqual("<row>\r\n  <label col=\"24\" length=\"19\">MVS 3.8j Level 8505</label>\r\n</row>", rowXml[20]);
+            Assert.AreEqual("<row>\r\n  <label row=\"16\" col=\"6\" length=\"52\">TK3  created by Volker Bandke      volker@bandke.org</label>\r\n</row>", rowXml[16]);
+            Assert.AreEqual("<row>\r\n  <label row=\"17\" col=\"6\" length=\"69\">TK4- update by Juergen Winkelmann  juergen.winkelmann@pebble-beach.ch</label>\r\n</row>", rowXml[17]);
+            Assert.AreEqual("<row>\r\n  <label row=\"18\" col=\"6\" length=\"53\">TK5  update by Rob Prins           prin0096@gmail.com</label>\r\n</row>", rowXml[18]);
+            Assert.AreEqual("<row>\r\n  <label row=\"19\" col=\"11\" length=\"45\">see SYS2.JCLLIB(CREDITS) for complete credits</label>\r\n</row>", rowXml[19]);
+            Assert.AreEqual("<row>\r\n  <label row=\"20\" col=\"24\" length=\"19\">MVS 3.8j Level 8505</label>\r\n</row>", rowXml[20]);
             Assert.AreEqual("<row />", rowXml[21]);
-            Assert.AreEqual("<row>\r\n  <label col=\"0\" length=\"10\">Logon ===&gt;</label>\r\n  <input col=\"11\" cursor=\"true\" length=\"69\" />\r\n</row>", rowXml[22]);
-            Assert.AreEqual("<row>\r\n  <label col=\"60\" length=\"12\">RUNNING  TK5</label>\r\n</row>", rowXml[23]);
+            Assert.AreEqual("<row>\r\n  <label row=\"22\" col=\"0\" length=\"10\">Logon ===&gt;</label>\r\n  <input row=\"22\" col=\"11\" cursor=\"true\" length=\"69\" />\r\n</row>", rowXml[22]);
+            Assert.AreEqual("<row>\r\n  <label row=\"23\" col=\"60\" length=\"12\">RUNNING  TK5</label>\r\n</row>", rowXml[23]);
         }
 
         [Test]

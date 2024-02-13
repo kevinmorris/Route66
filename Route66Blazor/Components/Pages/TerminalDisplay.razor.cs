@@ -1,8 +1,12 @@
-﻿using System.Xml.Linq;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Xml.Linq;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using Route66Blazor.Models;
 using Services;
+using Services.Models;
 using Util;
 
 namespace Route66Blazor.Components.Pages
@@ -36,12 +40,17 @@ namespace Route66Blazor.Components.Pages
 
         private void Reset(MouseEventArgs args)
         {
-
+            Task.Run(AssembleInputFields);
         }
 
         private async void Clear(MouseEventArgs args)
         {
             await NetworkService.SendKeyAsync(AID.CLEAR);
+        }
+
+        private async Task AssembleInputFields()
+        {
+            var result = await JS.InvokeAsync<InputData>("assembleInputFields");
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -16,7 +16,7 @@
         <button class="keypad-button" @onclick="Clear">Clear</button>
     </div>
 
-    @for (int i = 0; i < _rows.Length; i++)
+    @for (var i = 0; i < _rows.Length; i++)
     {
         var index = i;
         <Row @ref="_rows[index]"></Row>

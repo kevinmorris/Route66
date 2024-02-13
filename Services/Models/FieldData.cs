@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Services.Models
 {
+    [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
     public record FieldData(int Row, int Col, string Data);
 }
