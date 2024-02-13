@@ -1,0 +1,9 @@
+﻿@using Route66Blazor.Models
+@implements IFieldComponent
+
+<span class="field" style="left: @(FieldData.Col)ch">@FieldData.Value</span>
+
+@code {
+    [Parameter]
+    public FieldData FieldData { get; set; } = new FieldData(0, 0, "", true);
+}

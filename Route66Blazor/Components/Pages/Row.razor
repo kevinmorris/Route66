@@ -1,1 +1,15 @@
-﻿@_content
+﻿@using Route66Blazor.Components.Fields
+
+<div class="row">
+@foreach (var data in _fieldData)
+{
+    if (data.IsProtected)
+    {
+        <LabelField FieldData="data"/> 
+    }
+    else
+    {
+        <InputField FieldData="data" />   
+    }
+}
+</div>

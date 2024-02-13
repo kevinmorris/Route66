@@ -3,6 +3,8 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
 using Microsoft.AspNetCore.Components;
+using Route66Blazor.Components.Fields;
+using Route66Blazor.Models;
 using Services;
 
 namespace Route66Blazor.Components.Pages
@@ -13,9 +15,10 @@ namespace Route66Blazor.Components.Pages
         protected ILogger<Row> Logger { get; set; }
 
         internal int Index { get; set; }
-        internal RowHandler<XElement> Handler { get; set; } = default;
+        internal RowHandler<XElement>? Handler { get; set; } = default;
 
-        private MarkupString _content;
+        private IEnumerable<FieldData> _fieldData = new List<FieldData>();
+
         private XslCompiledTransform _xslt = new(true);
 
         public Row()
@@ -25,7 +28,7 @@ namespace Route66Blazor.Components.Pages
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
+            if (firstRender && Handler != null)
             {
                 Handler.RowUpdated += OnRowUpdated;
             }
@@ -33,17 +36,14 @@ namespace Route66Blazor.Components.Pages
 
         private void OnRowUpdated(object sender, RowUpdateEventArgs<XElement> e)
         {
-            var xmlReader = new XmlTextReader(new StringReader(e.Data.ToString()));
+            _fieldData = from element in e.Data.Elements()
+                select new FieldData(
+                    int.Parse(element.Attribute("row").Value),
+                    int.Parse(element.Attribute("col").Value),
+                    element.Value,
+                    element.Name.ToString() != "input");
 
-            var htmlSb = new StringBuilder();
-            _xslt.Transform(xmlReader, XmlWriter.Create(new StringWriter(htmlSb)));
-            var html = htmlSb.ToString();
-
-            InvokeAsync(() =>
-            {
-                _content = new MarkupString(html);
-                StateHasChanged();
-            });
+            InvokeAsync(StateHasChanged);
         }
     }
 }

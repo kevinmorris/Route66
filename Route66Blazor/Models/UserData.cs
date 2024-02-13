@@ -4,7 +4,7 @@ using Services.Models;
 namespace Route66Blazor.Models
 {
     [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
-    public record InputData(int CursorRow, int CursorCol, IEnumerable<FieldData> Fields)
+    public record UserData(int CursorRow, int CursorCol, IEnumerable<FieldData> Fields)
     {
     }
 }

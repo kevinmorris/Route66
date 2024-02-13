@@ -2,3 +2,18 @@
     outline: none;
     border: none;
 }
+
+::deep .row {
+    height: 1.1em;
+    font-family: Consolas, monospace;
+    font-size: 16px
+}
+
+::deep .field {
+    position: absolute;
+}
+
+::deep input {
+    font-family: Consolas, monospace;
+    font-size: 16px
+}
