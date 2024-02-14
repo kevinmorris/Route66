@@ -202,6 +202,9 @@ namespace Services
             [0xF8] = '8',
             [0xF9] = '9',
         };
+
+        public static IDictionary<char, byte> EBCDICBytes =
+            Chars.ToDictionary(x => x.Value, x => x.Key);
     }
 
     public static class Colors

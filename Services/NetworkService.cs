@@ -228,6 +228,9 @@ namespace Services
                     }
 
                     return (i + 2, a);
+
+                case Commands.WRITE_STRUCTURED_FIELD:
+
                     
                 default: return (i, a);
             }
@@ -249,9 +252,27 @@ namespace Services
             await WriteAndEndRecord([.. aidArray, .. address12Bit]);
         }
 
-        public async Task SendFieldAsync(byte aid, int cursorRow, int cursorCol, IEnumerable<FieldData> fieldData)
+        public async Task SendFieldsAsync(byte aid, int cursorRow, int cursorCol, IEnumerable<FieldData> fieldData)
         {
+            var cursorAddress = BinaryUtil.AddressBuffer12Bit(
+                BinaryUtil.CoordinateAddress((cursorRow, cursorCol)));
 
+            var fieldBytes = fieldData.SelectMany<FieldData, byte>(f =>
+            {
+                var fieldAddress = BinaryUtil.AddressBuffer12Bit(
+                    BinaryUtil.CoordinateAddress((f.Row, f.Col)));
+
+                var fieldTextBytes = f.Value.Select(c => EBCDIC.EBCDICBytes[c]);
+
+                return
+                [
+                    Orders.SET_BUFFER_ADDRESS,
+                    ..fieldAddress,
+                    ..fieldTextBytes
+                ];
+            });
+
+            await WriteAndEndRecord([aid, ..cursorAddress, ..fieldBytes]);
         }
 
         protected async Task Write(byte[] buffer)

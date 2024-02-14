@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components;
 using Route66Blazor.Components.Fields;
 using Route66Blazor.Models;
 using Services;
+using Services.Models;
 
 namespace Route66Blazor.Components.Pages
 {
@@ -17,6 +18,7 @@ namespace Route66Blazor.Components.Pages
         internal int Index { get; set; }
         internal RowHandler<XElement>? Handler { get; set; } = default;
         private FieldData[] _fieldData = [];
+        public IEnumerable<FieldData> FieldData => _fieldData;
 
         protected override void OnAfterRender(bool firstRender)
         {

@@ -57,7 +57,21 @@ namespace Route66Blazor.Components.Pages
 
         private async Task SendUserData(byte aid)
         {
-            var result = await JS.InvokeAsync<UserData>("assembleInputFields");
+            if (NetworkService != null)
+            {
+                var fields = _rows
+                    .SelectMany(row => row.FieldData)
+                    .Where(f => !f.IsProtected);
+
+                var cursorField = fields.First(f => f.Row == _cursor.Item1 && f.Col == _cursor.Item2);
+                _cursor = (_cursor.Item1, _cursor.Item2 + cursorField.Value.Length);
+
+                await NetworkService.SendFieldsAsync(
+                    aid,
+                    _cursor.Item1,
+                    _cursor.Item2,
+                    fields);
+            }
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)

@@ -8,5 +8,11 @@ using System.Threading.Tasks;
 namespace Services.Models
 {
     [JsonNumberHandling(JsonNumberHandling.AllowReadingFromString)]
-    public record FieldData(int Row, int Col, string Data);
+    public record FieldData
+    {
+        public int Row { get; set; }
+        public int Col { get; set; }
+        public string Value { get; set; } = "";
+        public bool IsProtected { get; set; }
+    }
 }
