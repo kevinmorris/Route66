@@ -14,43 +14,50 @@ namespace Route66Blazor.Components.Pages
     public partial class TerminalDisplay : IDisposable
     {
         [Inject]
-        protected NetworkService<XElement> NetworkService { get; private set; }
+        protected NetworkService<XElement>? NetworkService { get; init;  }
 
         private ElementReference _container;
         private readonly Row[] _rows = new Row[Constants.SCREEN_HEIGHT];
+        private (int, int) _cursor = (-1, -1);
         private DotNetObjectReference<TerminalDisplay>? _tdObjRef;
+        private readonly Action<(int, int)> _cursorAction;
 
-        private IJSObjectReference? _module;
+        public TerminalDisplay()
+        {
+            _cursorAction = OnFocusChanged;
+        }
 
         protected override void OnInitialized()
         {
             _tdObjRef = DotNetObjectReference.Create(this);
         }
 
-        [JSInvokable]
-        public async Task<string> InputChangedAsync(object e)
+        private void OnFocusChanged((int, int) coords)
         {
-            return await Task.FromResult(e.ToString());
+            _cursor = coords;
         }
 
-        private void KeyDown(KeyboardEventArgs args)
+        private async Task KeyDown(KeyboardEventArgs args)
         {
-
+            if (args.Code == "Enter")
+            {
+                await SendUserData(AID.ENTER);
+            }
         }
 
-        private void Reset(MouseEventArgs args)
+        private async Task Reset(MouseEventArgs args)
         {
-            Task.Run(AssembleInputFields);
+            await Task.CompletedTask;
         }
 
         private async void Clear(MouseEventArgs args)
         {
-            await NetworkService.SendKeyAsync(AID.CLEAR);
+            //await NetworkService.SendKeyAsync(AID.CLEAR);
         }
 
-        private async Task AssembleInputFields()
+        private async Task SendUserData(byte aid)
         {
-            var result = await JS.InvokeAsync<InputData>("assembleInputFields");
+            var result = await JS.InvokeAsync<UserData>("assembleInputFields");
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -61,13 +68,13 @@ namespace Route66Blazor.Components.Pages
             {
                 for (var i = 0; i < _rows.Length; i++)
                 {
-                    _rows[i].Handler = NetworkService.Handlers[i];
+                    _rows[i].Handler = NetworkService?.Handlers[i];
                     _rows[i].Index = i;
                 }
 
                 await _container.FocusAsync(true);
                 await JS.InvokeAsync<string>("setDotNetObjRef", _tdObjRef);
-                NetworkService.Connect("127.0.0.1", 3270);
+                NetworkService?.Connect("127.0.0.1", 3270);
             }
         }
 

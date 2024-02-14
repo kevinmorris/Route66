@@ -1,10 +1,37 @@
 ﻿@using Route66Blazor.Models
 @implements IFieldComponent
+@inject ILogger<InputField> Logger
 
-<input type="text" class="field" style="left: @(FieldData.Col)ch" value="@FieldData.Value" />
+<input type="text"
+       class="field"
+       style="left: @(FieldData.Col)ch"
+       @bind="@(FieldData.Value)"
+       @bind:after="OnValueChanged"
+       @onfocus="OnFocus"
+       @onblur="OnBlur"/>
 
 @code {
 
-    [Parameter] public FieldData FieldData { get; set; } = new FieldData(0, 0, "", false);
+    [Parameter]
+    public FieldData FieldData { get; set; } = new FieldData { Row = 0, Col = 0, Value = "", IsProtected = false };
 
+    [Parameter]
+    public EventCallback<FieldData> FieldDataChanged { get; set; }
+
+    [CascadingParameter(Name = "CursorAction")]
+    public Action<(int, int)>? CursorAction { get; set; }
+
+    private async Task OnValueChanged()
+    {
+        await FieldDataChanged.InvokeAsync(FieldData);
+    }
+
+    private void OnFocus()
+    {
+        CursorAction?.Invoke((FieldData.Row, FieldData.Col));
+    }
+
+    private void OnBlur()
+    {
+    }
 }

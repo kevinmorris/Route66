@@ -1,15 +1,16 @@
 ﻿@using Route66Blazor.Components.Fields
 
 <div class="row">
-@foreach (var data in _fieldData)
+@for(var i = 0; i<_fieldData.Count(); i++)
 {
+    var data = _fieldData[i];
     if (data.IsProtected)
     {
         <LabelField FieldData="data"/> 
     }
     else
     {
-        <InputField FieldData="data" />   
+        <InputField @bind-FieldData="data" />
     }
 }
 </div>

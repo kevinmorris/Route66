@@ -1,19 +1,41 @@
-﻿<!DOCTYPE html>
+﻿@using System.Reflection
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
-    <link rel="stylesheet" href="app.css?version=0.3" />
-    <link rel="stylesheet" href="Route66Blazor.styles.css?version=0.3" />
+    <link rel="stylesheet" href="app.css?version=@Version" />
+    <link rel="stylesheet" href="Route66Blazor.styles.css?version=@Version" />
     <HeadOutlet @rendermode="InteractiveServer" />
 </head>
 
 <body>
-    <Routes @rendermode="InteractiveServer" />
-    <script src="_framework/blazor.web.js"></script>
-    <script src="Components/Pages/TerminalDisplay.razor.js?version=0.1"></script>
+<Routes @rendermode="InteractiveServer" />
+<script src="_framework/blazor.web.js"></script>
+    <script src="Components/Pages/TerminalDisplay.razor.js?version=@Version"></script>
 </body>
 
 </html>
+
+@code
+{
+    private static long? _version;
+
+    private static long Version
+    {
+        get
+        {
+            _version ??= AssemblyTimestamp();
+            return _version ?? 0;
+        }
+    }
+
+    private static long AssemblyTimestamp()
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        var fileInfo = new FileInfo(assembly.Location);
+        return fileInfo.LastWriteTime.Ticks;
+    }
+}

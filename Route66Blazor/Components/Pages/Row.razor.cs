@@ -16,17 +16,9 @@ namespace Route66Blazor.Components.Pages
 
         internal int Index { get; set; }
         internal RowHandler<XElement>? Handler { get; set; } = default;
+        private FieldData[] _fieldData = [];
 
-        private IEnumerable<FieldData> _fieldData = new List<FieldData>();
-
-        private XslCompiledTransform _xslt = new(true);
-
-        public Row()
-        {
-            _xslt.Load("xml-tools/html-transform.xsl");
-        }
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+        protected override void OnAfterRender(bool firstRender)
         {
             if (firstRender && Handler != null)
             {
@@ -36,12 +28,14 @@ namespace Route66Blazor.Components.Pages
 
         private void OnRowUpdated(object sender, RowUpdateEventArgs<XElement> e)
         {
-            _fieldData = from element in e.Data.Elements()
-                select new FieldData(
-                    int.Parse(element.Attribute("row").Value),
-                    int.Parse(element.Attribute("col").Value),
-                    element.Value,
-                    element.Name.ToString() != "input");
+            _fieldData = (from element in e.Data.Elements()
+                select new FieldData
+                {
+                    Row = int.Parse(element.Attribute("row").Value),
+                    Col = int.Parse(element.Attribute("col").Value),
+                    Value = element.Value,
+                    IsProtected = element.Name.ToString() != "input"
+                }).ToArray();
 
             InvokeAsync(StateHasChanged);
         }

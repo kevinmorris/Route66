@@ -179,33 +179,40 @@ namespace Services
         {
             Stream = stream;
 
-            while (Stream.CanRead)
+            while (Stream?.CanRead ?? false)
             {
-                //The 3270 data stream uses the term "outbound" for data coming
-                //from the server i.e. "outbound from the server".
-                //It uses the term 'inbound' for data leaving the client
-                //i.e. "inbound to the server"
-                var outbound = new byte[4 * 1024];
-
-                Inbound.Clear();
-
-                _ = Stream.Read(outbound, 0, outbound.Length);
-                _ = ProcessOutbound(outbound, 0, 0);
-
-                CurrentRow = null;
-                foreach (var rowHandler in Handlers)
+                try
                 {
-                    rowHandler.Update();
+                    //The 3270 data stream uses the term "outbound" for data coming
+                    //from the server i.e. "outbound from the server".
+                    //It uses the term 'inbound' for data leaving the client
+                    //i.e. "inbound to the server"
+                    var outbound = new byte[4 * 1024];
+
+                    Inbound.Clear();
+
+                    _ = Stream.Read(outbound, 0, outbound.Length);
+                    _ = ProcessOutbound(outbound, 0, 0);
+
+                    CurrentRow = null;
+                    foreach (var rowHandler in Handlers)
+                    {
+                        rowHandler.Update();
+                    }
+
+                    var inbound = Inbound.ToArray();
+                    if (inbound.Length > 0)
+                    {
+                        Stream.Write(inbound, 0, inbound.Length);
+                    }
                 }
-
-                var inbound = Inbound.ToArray();
-                if (inbound.Length > 0)
+                catch (ObjectDisposedException ode)
                 {
-                    Stream.Write(inbound, 0, inbound.Length);
                 }
             }
 
-            Stream.Close();
+            Stream?.Close();
+
             Stream = null;
         }
 
