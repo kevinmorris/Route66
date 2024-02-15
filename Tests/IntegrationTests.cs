@@ -18,6 +18,8 @@ namespace Tests
             _service = new NetworkService<(byte[], IDictionary<int, IDictionary<byte, byte>>)>(new ByteArray3270Translator());
         }
 
+
+
         [TearDown]
         public void TearDown()
         {

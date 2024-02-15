@@ -14,5 +14,6 @@ namespace Services.Models
         public int Col { get; set; }
         public string Value { get; set; } = "";
         public bool IsProtected { get; set; }
+        public int Length { get; set; }
     }
 }

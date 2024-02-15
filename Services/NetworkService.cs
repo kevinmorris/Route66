@@ -11,11 +11,9 @@ namespace Services
     public class NetworkService<T>(I3270Translator<T> translator)
     {
         protected TcpClient? Tcp;
-        protected List<byte> Inbound = [];
+        public byte ActiveCommand { get; set; }= 0x00;
 
         public RowHandler<T>? CurrentRow { get; private set; }
-
-        public bool CommandReady { get; set; }= false;
 
         public RowHandler<T>[] Handlers { get; init; } =
         [
@@ -45,7 +43,7 @@ namespace Services
             new RowHandler<T>(23, translator),
         ];
 
-        protected Stream? Stream;
+        protected NetworkStream? Stream;
         internal byte Aid { get; private set; } = AID.NO_AID;
 
         public void Connect(string address, int port)
@@ -63,36 +61,19 @@ namespace Services
                 if (d == Telnet.IAC)
                 {
                     (i, a) = ProcessIAC(data, i, a);
-                    CommandReady = true;
+                    ActiveCommand = 0x00;
                 }
-                else if (CommandReady && Commands.ALL.Contains(d))
+                else if (ActiveCommand == 0x00 && Commands.ALL.Contains(d))
                 {
-                    CommandReady = false;
                     (i, a) = ProcessCommand(data, i, a);
                 }
-                // ReSharper disable once ConvertIfStatementToSwitchStatement
-                else if (d == Orders.START_FIELD)
+                else if (ActiveCommand == Commands.ERASE_WRITE)
                 {
-                    (i, a) = OrderStartField(data, i, a);
+                    (i, a) = ProcessOrder(data, i, a);
                 }
-                else if (d == Orders.SET_BUFFER_ADDRESS)
+                else if (ActiveCommand == Commands.WRITE_STRUCTURED_FIELD)
                 {
-                    (i, a) = OrderSetBufferAddress(data, i);
-                }
-                else if (d == Orders.MODIFY_FIELD)
-                {
-                }
-                else if (d == Orders.INSERT_CURSOR)
-                {
-                    (i, a) = OrderInsertCursor(data, i, a);
-                }
-                else if (d == Orders.SET_ATTRIBUTE)
-                {
-                    (i, a) = OrderSetAttribute(data, i, a);
-                }
-                else if (EBCDIC.Chars.ContainsKey(d))
-                {
-                    (i, a) = AddCharacter(data, i, a);
+                    i = ProcessWriteStructuredField(data, i);
                 }
                 else
                 {
@@ -132,41 +113,22 @@ namespace Services
             {
                 case Telnet.BINARY_TRANSMISSION_ABILITY:
                 case Telnet.END_OF_RECORD_ABILITY:
-                    Inbound.AddRange([Telnet.IAC, agreeVerb, data[i + 2]]);
+                    Write([Telnet.IAC, agreeVerb, data[i + 2]]).Wait();
                     break;
                 case Telnet.TERMINAL_TYPE_ABILITY:
                     if (Telnet.SUB_OPTION == data[1])
                     {
-                        Inbound.AddRange( //We are going to act like an IBM-3279-2-E 
-                        [
-                            Telnet.IAC,
-                            Telnet.SUB_OPTION,
-                            Telnet.TERMINAL_TYPE_ABILITY,
-                            0x00,
-                            0x49,
-                            0x42,
-                            0x4d,
-                            0x2d,
-                            0x33,
-                            0x32,
-                            0x37,
-                            0x39,
-                            0x2d,
-                            0x32,
-                            0x2d,
-                            0x45,
-                            Telnet.IAC,
-                            0xf0
-                        ]);
+                        //We are going to act like an IBM-3279-2-E 
+                        Write(Telnet.IBM32792E).Wait();
                     }
                     else
                     {
-                        Inbound.AddRange([Telnet.IAC, agreeVerb, data[i + 2]]);
+                        Write([Telnet.IAC, agreeVerb, data[i + 2]]).Wait();
                     }
 
                     break;
                 default:
-                    Inbound.AddRange([Telnet.IAC, refuseVerb, data[i + 2]]);
+                    Write([Telnet.IAC, refuseVerb, data[i + 2]]).Wait();
                     break;
             }
 
@@ -175,43 +137,38 @@ namespace Services
             return (i, a);
         }
 
-        protected void Run(Stream stream)
+        protected void Run(NetworkStream stream)
         {
             Stream = stream;
 
-            while (Stream?.CanRead ?? false)
+            using (var s = Stream)
             {
-                try
+                while (Stream?.CanRead ?? false)
                 {
-                    //The 3270 data stream uses the term "outbound" for data coming
-                    //from the server i.e. "outbound from the server".
-                    //It uses the term 'inbound' for data leaving the client
-                    //i.e. "inbound to the server"
-                    var outbound = new byte[4 * 1024];
-
-                    Inbound.Clear();
-
-                    _ = Stream.Read(outbound, 0, outbound.Length);
-                    _ = ProcessOutbound(outbound, 0, 0);
-
-                    CurrentRow = null;
-                    foreach (var rowHandler in Handlers)
+                    try
                     {
-                        rowHandler.Update();
+                        //The 3270 data stream uses the term "outbound" for data coming
+                        //from the server i.e. "outbound from the server".
+                        //It uses the term 'inbound' for data leaving the client
+                        //i.e. "inbound to the server"
+                        var outbound = new byte[4 * 1024];
+
+                        _ = Stream.Read(outbound, 0, outbound.Length);
+                        _ = ProcessOutbound(outbound, 0, 0);
+
+                        CurrentRow = null;
+                        foreach (var rowHandler in Handlers)
+                        {
+                            rowHandler.Update();
+                        }
                     }
-
-                    var inbound = Inbound.ToArray();
-                    if (inbound.Length > 0)
+                    catch (ObjectDisposedException ode)
                     {
-                        Stream.Write(inbound, 0, inbound.Length);
                     }
                 }
-                catch (ObjectDisposedException ode)
-                {
-                }
+
+                Stream?.Close();
             }
-
-            Stream?.Close();
 
             Stream = null;
         }
@@ -222,6 +179,7 @@ namespace Services
             {
                 case Commands.ERASE_WRITE:
                     Aid = AID.NO_AID;
+                    ActiveCommand = Commands.ERASE_WRITE;
                     foreach (var handler in Handlers)
                     {
                         handler.Reset();
@@ -230,11 +188,15 @@ namespace Services
                     return (i + 2, a);
 
                 case Commands.WRITE_STRUCTURED_FIELD:
+                    ActiveCommand = Commands.WRITE_STRUCTURED_FIELD;
+                    return (i + 1, a);
 
                     
                 default: return (i, a);
             }
         }
+
+        #region Inbound
 
         public async Task SendKeyAsync(byte aid)
         {
@@ -289,7 +251,41 @@ namespace Services
             await Write([.. buffer, .. endOfRecord]);
         }
 
+#endregion
+       
         #region Orders
+
+        public (int, int) ProcessOrder(Span<byte> data, int i, int a)
+        {
+            // ReSharper disable once ConvertIfStatementToSwitchStatement
+            var d = data[i];
+
+            if (d == Orders.START_FIELD)
+            {
+                (i, a) = OrderStartField(data, i, a);
+            }
+            else if (d == Orders.SET_BUFFER_ADDRESS)
+            {
+                (i, a) = OrderSetBufferAddress(data, i);
+            }
+            else if (d == Orders.MODIFY_FIELD)
+            {
+            }
+            else if (d == Orders.INSERT_CURSOR)
+            {
+                (i, a) = OrderInsertCursor(data, i, a);
+            }
+            else if (d == Orders.SET_ATTRIBUTE)
+            {
+                (i, a) = OrderSetAttribute(data, i, a);
+            }
+            else if (EBCDIC.Chars.ContainsKey(d))
+            {
+                (i, a) = AddCharacter(data, i, a);
+            }
+
+            return (i, a);
+        }
 
         public (int, int) AddCharacter(Span<byte> data, int i, int a)
         {
@@ -385,8 +381,27 @@ namespace Services
 
             return (i, a);
         }
-#endregion
+        #endregion
 
+        #region WriteStructuredField
+
+        public int ProcessWriteStructuredField(Span<byte> data, int i)
+        {
+            var length = (data[i] << 8) + data[i + 1];
+
+            if (data[i + 2] == StructuredFields.READ_PARTITION)
+            {
+                if (data[i + 5] == StructuredFields.READ_PARTITION_QUERY)
+                {
+                    WriteAndEndRecord(StructuredFields.READ_PARTITION_REPLY).Wait();
+                }
+            }
+
+            ActiveCommand = 0x00;
+            return i + length + 1;
+        }
+
+        #endregion
         public void Dispose()
         {
             Stream?.Close();
