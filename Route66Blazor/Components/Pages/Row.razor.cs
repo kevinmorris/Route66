@@ -36,7 +36,8 @@ namespace Route66Blazor.Components.Pages
                     Row = int.Parse(element.Attribute("row").Value),
                     Col = int.Parse(element.Attribute("col").Value),
                     Value = element.Value,
-                    IsProtected = element.Name.ToString() != "input"
+                    IsProtected = element.Name.ToString() != "input",
+                    Length = int.Parse(element.Attribute("length").Value)
                 }).ToArray();
 
             InvokeAsync(StateHasChanged);

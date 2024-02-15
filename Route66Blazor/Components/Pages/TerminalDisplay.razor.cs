@@ -52,7 +52,7 @@ namespace Route66Blazor.Components.Pages
 
         private async void Clear(MouseEventArgs args)
         {
-            //await NetworkService.SendKeyAsync(AID.CLEAR);
+            await NetworkService.SendKeyAsync(AID.CLEAR);
         }
 
         private async Task SendUserData(byte aid)

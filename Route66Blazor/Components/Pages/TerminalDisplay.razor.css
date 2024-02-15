@@ -16,5 +16,11 @@
 
 ::deep input {
     font-family: Consolas, monospace;
-    font-size: 16px
+    font-size: 16px;
+    border: 0;
+}
+
+::deep input:focus {
+    border: 0;
+    outline: 0;
 }

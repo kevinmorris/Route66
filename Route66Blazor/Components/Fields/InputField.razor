@@ -5,7 +5,7 @@
 
 <input type="text"
        class="field"
-       style="left: @(FieldData.Col)ch"
+       style="left: @(FieldData.Col)ch; width: @(FieldData.Length)ch;"
        @bind="@(FieldData.Value)"
        @bind:event="oninput"
        @bind:after="OnValueChanged"
