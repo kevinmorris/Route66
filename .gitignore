@@ -13,3 +13,4 @@ Data/*
 .idea/*
 Route66Blazor/obj/*
 Route66Blazor/bin/*
+Services/GlobalSuppressions.cs

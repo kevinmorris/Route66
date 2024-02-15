@@ -20,21 +20,19 @@ namespace Services
 
             for (var col = 0; col < buffer.Length; col++)
             {
-                if (buffer[col] == 0)
+                byte fieldAttribute = 0x00;
+                var structuredFieldStart =
+                    (attributeSet.TryGetValue(col, out var attributes) && 
+                     attributes.TryGetValue(Attributes.FIELD, out fieldAttribute));
+
+                var structuredFieldAhead =
+                    (attributeSet.TryGetValue(col + 1, out var attributesAhead) &&
+                     attributesAhead.ContainsKey(Attributes.FIELD));
+
+                if (EBCDIC.Chars.ContainsKey(buffer[col]))
                 {
-                    if (current != null)
+                    if(structuredFieldStart)
                     {
-                        current.Value = str.ToString();
-                        current.Add(new XAttribute("length", str.Length));
-                        rowRoot.Add(current);
-                        str.Clear();
-                        current = null;
-                    }
-                }
-                else if (attributeSet.TryGetValue(col, out var attributes))
-                {
-                    if (attributes.TryGetValue(Attributes.FIELD, out var fieldAttribute))
-                    { //This is the start of a field
                         if (current != null)
                         {
                             current.Value = str.ToString();
@@ -47,34 +45,54 @@ namespace Services
                             BinaryUtil.isProtected(fieldAttribute) ? "label" : "input",
                             new XAttribute("row", Row),
                             new XAttribute("col", col));
-
-                        if (attributes.TryGetValue(Orders.INSERT_CURSOR, out var cursor) &&
-                            cursor == 1)
-                        {
-                            current.Add(new XAttribute("cursor", true));
-                        }
-
-                        var c = EBCDIC.Chars[buffer[col]];
-                        str.Append(c);
                     }
+                    else current ??= new XElement(
+                            "label",
+                            new XAttribute("row", Row),
+                            new XAttribute("col", col));
 
-                    foreach (var key in attributes.Keys.Except([Attributes.FIELD, Orders.INSERT_CURSOR]))
-                    {
-                        //TODO: Need to figure out color constants
-                        //current?.Add(new XAttribute(Attributes.ExtendedNames[key], Attributes.ExtendedValues[key][attributes[key]]));
-                    }
-                }
-                else if (EBCDIC.Chars.ContainsKey(buffer[col]))
-                {
                     var c = EBCDIC.Chars[buffer[col]];
                     str.Append(c);
+
+                    if ((attributes?.TryGetValue(Orders.INSERT_CURSOR, out var cursor) ?? false) &&
+                        cursor == 1)
+                    {
+                        current.Add(new XAttribute("cursor", true));
+                    }
+                }
+                else if(structuredFieldStart)
+                {
+                    if (current != null)
+                    {
+                        current.Value = str.ToString();
+                        current.Add(new XAttribute("length", str.Length));
+                        rowRoot.Add(current);
+                        str.Clear();
+                    }
+
+                    current = new XElement(
+                        BinaryUtil.isProtected(fieldAttribute) ? "label" : "input",
+                        new XAttribute("row", Row),
+                        new XAttribute("col", col));
+
+                    str.Append(' ');
+                    if ((attributes?.TryGetValue(Orders.INSERT_CURSOR, out var cursor) ?? false) &&
+                        cursor == 1)
+                    {
+                        current.Add(new XAttribute("cursor", true));
+                    }
+                }
+                else if (current?.Name.LocalName == "input" && !structuredFieldAhead)
+                {
+                    str.Append(' ');
                 }
             }
 
             if (current != null)
             {
-                rowRoot.Add(current);
+                current.Value = str.ToString();
                 current.Add(new XAttribute("length", str.Length));
+                rowRoot.Add(current);
             }
 
             return rowRoot;

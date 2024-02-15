@@ -12,56 +12,35 @@ namespace Services
     {
         public byte[] Buffer { get; } = new byte[Constants.SCREEN_WIDTH];
         public bool Dirty { get; private set; } = false;
-        public int CurrentCol { get; set; } = 0;
-        public bool Cursor { get; set; } = false;
-        private readonly List<byte> _currentField = [];
-
         private readonly IDictionary<int, IDictionary<byte, byte>> _extendedFieldAttr = 
             new Dictionary<int, IDictionary<byte, byte>>();
 
         public event EventHandler<RowUpdateEventArgs<T>>? RowUpdated;
 
-        internal void SetCharacters(byte[] bytes, int offset)
+        public void SetCharacter(int col, byte d)
         {
-            Dirty = true;
-            Array.Copy(
-                bytes, 
-                0, 
-                Buffer, 
-                offset,
-                Math.Min(bytes.Length, Buffer.Length - offset));
-        }
-
-        public void AddCharacter(byte d)
-        {
-            _currentField.Add(d);
-        }
-
-        public void FinalizeField()
-        {
-            if (_currentField.Count > 0)
+            if (col < Buffer.Length)
             {
-                if (Cursor)
-                {
-                    SetExtendedAttribute(CurrentCol, Orders.INSERT_CURSOR, 1);
-                }
-                SetCharacters([.. _currentField], CurrentCol);
-                CurrentCol = 0;
-                Cursor = false;
-                _currentField.Clear();
+                Dirty = true;
+                Buffer[col] = d;
             }
         }
 
-        internal void SetExtendedAttribute(int index, byte attrKey, byte attrValue)
+        public void SetCursor(int col)
+        {
+            SetExtendedAttribute(col, Orders.INSERT_CURSOR, 1);
+        }
+
+        internal void SetExtendedAttribute(int col, byte attrKey, byte attrValue)
         {
             Dirty = true;
 
-            if (!_extendedFieldAttr.ContainsKey(index))
+            if (!_extendedFieldAttr.ContainsKey(col))
             {
-                _extendedFieldAttr[index] = new Dictionary<byte, byte>();
+                _extendedFieldAttr[col] = new Dictionary<byte, byte>();
             }
 
-            var attrs = _extendedFieldAttr[index];
+            var attrs = _extendedFieldAttr[col];
             attrs[attrKey] = attrValue;
         }
 
@@ -69,8 +48,6 @@ namespace Services
         {
             Dirty = true;
             Array.Fill<byte>(Buffer, 0b0);
-            CurrentCol = 0;
-            _currentField.Clear();
             _extendedFieldAttr.Clear();
         }
 

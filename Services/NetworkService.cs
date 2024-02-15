@@ -13,8 +13,6 @@ namespace Services
         protected TcpClient? Tcp;
         public byte ActiveCommand { get; set; }= 0x00;
 
-        public RowHandler<T>? CurrentRow { get; private set; }
-
         public RowHandler<T>[] Handlers { get; init; } =
         [
             new RowHandler<T>(0, translator),
@@ -67,7 +65,7 @@ namespace Services
                 {
                     (i, a) = ProcessCommand(data, i, a);
                 }
-                else if (ActiveCommand == Commands.ERASE_WRITE)
+                else if (new[] {Commands.ERASE_WRITE, Commands.WRITE }.Contains(ActiveCommand))
                 {
                     (i, a) = ProcessOrder(data, i, a);
                 }
@@ -156,7 +154,6 @@ namespace Services
                         _ = Stream.Read(outbound, 0, outbound.Length);
                         _ = ProcessOutbound(outbound, 0, 0);
 
-                        CurrentRow = null;
                         foreach (var rowHandler in Handlers)
                         {
                             rowHandler.Update();
@@ -185,6 +182,10 @@ namespace Services
                         handler.Reset();
                     }
 
+                    return (i + 2, a);
+
+                case Commands.WRITE:
+                    ActiveCommand = Commands.WRITE;
                     return (i + 2, a);
 
                 case Commands.WRITE_STRUCTURED_FIELD:
@@ -275,6 +276,10 @@ namespace Services
             {
                 (i, a) = OrderInsertCursor(data, i, a);
             }
+            else if (d == Orders.REPEAT_TO_ADDRESS)
+            {
+                (i, a) = OrderRepeatToAddress(data, i, a);
+            }
             else if (d == Orders.SET_ATTRIBUTE)
             {
                 (i, a) = OrderSetAttribute(data, i, a);
@@ -289,83 +294,58 @@ namespace Services
 
         public (int, int) AddCharacter(Span<byte> data, int i, int a)
         {
-            CurrentRow?.AddCharacter(data[i]);
+            var (row, col) = BinaryUtil.AddressCoordinates(a);
+            Handlers[row].SetCharacter(col, data[i]);
             return (i + 1, a + 1);
         }
         
         public (int, int) OrderStartField(Span<byte> data, int i, int a)
         {
             var (row, col) = BinaryUtil.AddressCoordinates(a + 1);
-
-            CurrentRow?.FinalizeField();
-            if (row >= Handlers.Length)
-            {
-                return (i + 2, a + 1);
-            }
-
-            CurrentRow = Handlers[row];
-            CurrentRow.CurrentCol = col;
+            row = row % Handlers.Length;
 
             i += 1;
-
             var fieldAttr = data[i];
             i += 1;
 
-            CurrentRow.SetExtendedAttribute(col, Attributes.FIELD, fieldAttr);
+            Handlers[row].SetExtendedAttribute(col, Attributes.FIELD, fieldAttr);
             a += 1;
 
-
-            return (i, a);
-        }
-
-        public (int, int) OrderModifyField(Span<byte> data, int i, int a)
-        {
-            var (row, col) = BinaryUtil.AddressCoordinates(a);
-            var handler = Handlers[row];
-
-            i += 1;
-            var attrKeyValuePairCount = (data[i] & 0b00001111);
-            i += 1;
-
-            for (var j = 0; j < attrKeyValuePairCount; j++)
-            {
-                var key = data[i];
-                i += 1;
-                var value = data[i];
-                i += 1;
-
-                if (Attributes.FIELD == key)
-                {
-                    handler.SetCharacters([value], col);
-                }
-
-                handler.SetExtendedAttribute(col, key, value);
-            }
-
-            a += 1;
             return (i, a);
         }
 
         public (int, int) OrderInsertCursor(Span<byte> _, int i, int a)
         {
-            if (CurrentRow != null)
-            {
-                CurrentRow.Cursor = true;
-            }
+            var (row, col) = BinaryUtil.AddressCoordinates(a);
+            Handlers[row].SetCursor(col);
 
             return (i + 1, a);
+        }
+
+        public (int, int) OrderRepeatToAddress(Span<byte> data, int i, int a)
+        {
+            i += 1;
+            var stopA = BinaryUtil.BufferAddress(data.Slice(i, 2));
+            var (row, col) = BinaryUtil.AddressCoordinates(a);
+
+            if (row >= Handlers.Length)
+            {
+                return (i + 3, a + 1);
+            }
+
+            for (var j = a; j < stopA; j++)
+            {
+                Handlers[row].SetCharacter(col, data[i]);
+                col += 1;
+            }
+
+            return (i, stopA);
         }
         
         public (int, int) OrderSetBufferAddress(Span<byte> data, int i)
         {
             i += 1;
             var a = BinaryUtil.BufferAddress(data.Slice(i, 2));
-            var (row, col) = BinaryUtil.AddressCoordinates(a);
-
-            CurrentRow?.FinalizeField();
-            CurrentRow = Handlers[row];
-            CurrentRow.CurrentCol = col;
-
             i += 2;
 
             return (i, a);
@@ -373,10 +353,10 @@ namespace Services
 
         public (int, int) OrderSetAttribute(Span<byte> data, int i, int a)
         {
-            var (_, col) = BinaryUtil.AddressCoordinates(a);
+            var (row, col) = BinaryUtil.AddressCoordinates(a);
 
             i += 1;
-            CurrentRow?.SetExtendedAttribute(col, data[i], data[i + 1]);
+            Handlers[row].SetExtendedAttribute(col, data[i], data[i + 1]);
             i += 2;
 
             return (i, a);

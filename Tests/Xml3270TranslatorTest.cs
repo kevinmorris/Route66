@@ -126,7 +126,7 @@ namespace Tests
                 {
                     [Attributes.FIELD] = 0b11111000,
                 },
-                [12] = new Dictionary<byte, byte>()
+                [11] = new Dictionary<byte, byte>()
                 {
                     [Attributes.FIELD] = 0b11001000,
                 }
@@ -136,7 +136,7 @@ namespace Tests
                 """
                 <row>
                   <label row="7" col="0" length="10">Logon ===&gt;</label>
-                  <input row="7" col="12" length="68" />
+                  <input row="7" col="11" length="68">                                                                    </input>
                 </row>
                 """;
 
