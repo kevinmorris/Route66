@@ -2,20 +2,24 @@
 @using Services.Models
 @implements IFieldComponent
 @inject ILogger<InputField> Logger
+@inject IJSRuntime JS
 
-<input type="text"
+<input @ref="_inputField"
+       type="text"
        class="field"
        style="left: @(FieldData.Col)ch; width: @(FieldData.Length)ch;"
-       @bind="@(FieldData.Value)"
+       @bind:get="@(FieldData.Value)"
+       @bind:set="@(SetFieldValueAsync)"
        @bind:event="oninput"
-       @bind:after="OnValueChanged"
        @onfocus="OnFocus"
        @onblur="OnBlur"/>
 
 @code {
 
+    ElementReference _inputField;
+
     [Parameter]
-    public FieldData FieldData { get; set; } = new FieldData { Row = 0, Col = 0, Value = "", IsProtected = false };
+    public FieldData FieldData { get; set; } = new FieldData { Row = 0, Col = 0, Value = "", IsProtected = false, Cursor = -1 };
 
     [Parameter]
     public EventCallback<FieldData> FieldDataChanged { get; set; }
@@ -23,9 +27,33 @@
     [CascadingParameter(Name = "CursorAction")]
     public Action<(int, int)>? CursorAction { get; set; }
 
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        FieldData.Value = string.IsNullOrWhiteSpace(FieldData.Value) ? "" : FieldData.Value;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender && FieldData.Cursor > -1)
+        {
+            await _inputField.FocusAsync();
+        }
+    }
+
     private async Task OnValueChanged()
     {
+        FieldData.Dirty = true;
         await FieldDataChanged.InvokeAsync(FieldData);
+    }
+
+    private async Task SetFieldValueAsync(string value)
+    {
+        FieldData.Value = string.IsNullOrWhiteSpace(value) ? "" : value;
+        await OnValueChanged();
     }
 
     private void OnFocus()

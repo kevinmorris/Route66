@@ -397,7 +397,7 @@ namespace Tests
             Assert.AreEqual("<row>\r\n  <label row=\"19\" col=\"11\" length=\"45\">see SYS2.JCLLIB(CREDITS) for complete credits</label>\r\n  <label row=\"19\" col=\"57\" length=\"1\"> </label>\r\n</row>", rowXml[19]);
             Assert.AreEqual("<row>\r\n  <label row=\"20\" col=\"24\" length=\"19\">MVS 3.8j Level 8505</label>\r\n  <label row=\"20\" col=\"44\" length=\"1\"> </label>\r\n</row>", rowXml[20]);
             Assert.AreEqual("<row />", rowXml[21]);
-            Assert.AreEqual("<row>\r\n  <label row=\"22\" col=\"0\" length=\"10\">Logon ===&gt;</label>\r\n  <input row=\"22\" col=\"11\" cursor=\"true\" length=\"69\">                                                                     </input>\r\n</row>", rowXml[22]);
+            Assert.AreEqual("<row>\r\n  <label row=\"22\" col=\"0\" length=\"10\">Logon ===&gt;</label>\r\n  <input row=\"22\" col=\"11\" cursor=\"0\" length=\"69\">                                                                     </input>\r\n</row>", rowXml[22]);
             Assert.AreEqual("<row>\r\n  <label row=\"23\" col=\"0\" length=\"59\">                                                           </label>\r\n  <label row=\"23\" col=\"60\" length=\"12\">RUNNING  TK5</label>\r\n  <label row=\"23\" col=\"76\" length=\"1\"> </label>\r\n</row>", rowXml[23]);
         }
 
@@ -433,7 +433,7 @@ namespace Tests
             }
 
             Assert.AreEqual("<row>\r\n  <input row=\"0\" col=\"0\" length=\"1\"> </input>\r\n  <input row=\"0\" col=\"1\" length=\"34\">ENTER CURRENT PASSWORD FOR HERC02-</input>\r\n  <input row=\"0\" col=\"36\" length=\"44\">                                            </input>\r\n</row>", rowXml[0]);
-            Assert.AreEqual("<row>\r\n  <input row=\"1\" col=\"1\" cursor=\"true\" length=\"79\">                                                                               </input>\r\n</row>", rowXml[1]);
+            Assert.AreEqual("<row>\r\n  <input row=\"1\" col=\"1\" cursor=\"0\" length=\"79\">                                                                               </input>\r\n</row>", rowXml[1]);
             Assert.AreEqual("<row />", rowXml[2]);
             Assert.AreEqual("<row />", rowXml[3]);
             Assert.AreEqual("<row />", rowXml[4]);
@@ -456,6 +456,17 @@ namespace Tests
             Assert.AreEqual("<row />", rowXml[21]);
             Assert.AreEqual("<row />", rowXml[22]);
             Assert.AreEqual("<row />", rowXml[23]);
+        }
+
+        [Test]
+        public void WriteRepeatToAddress()
+        {
+            var data = new byte[]
+            {
+                0xf1, 0xc3, 0x11, 0x40, 0x40, 0x13, 0x3c, 0x5d, 0x7f, 0x00, 0xff, 0xef
+            };
+
+            _service.ProcessOutbound(data, 0, 0);
         }
 
         [TearDown]

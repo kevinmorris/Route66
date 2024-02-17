@@ -50,27 +50,32 @@ namespace Route66Blazor.Components.Pages
             await Task.CompletedTask;
         }
 
-        private async void Clear(MouseEventArgs args)
+        private async Task Clear(MouseEventArgs args)
         {
-            await NetworkService.SendKeyAsync(AID.CLEAR);
+            if (NetworkService != null)
+            {
+                await NetworkService.SendKeyAsync(AID.CLEAR);
+            }
         }
 
         private async Task SendUserData(byte aid)
         {
             if (NetworkService != null)
             {
-                var fields = _rows
-                    .SelectMany(row => row.FieldData)
-                    .Where(f => !f.IsProtected);
+                var fields = _rows.SelectMany(row => row.FieldData);
+                var inputFields = fields.Where(f => f is { IsProtected: false, Dirty: true });
 
-                var cursorField = fields.First(f => f.Row == _cursor.Item1 && f.Col == _cursor.Item2);
+                var cursorField = inputFields.FirstOrDefault(f => f.Row == _cursor.Item1 && f.Col == _cursor.Item2) ??
+                                  inputFields.LastOrDefault() ??
+                                  fields.Last();
+
                 _cursor = (_cursor.Item1, _cursor.Item2 + cursorField.Value.Length);
 
                 await NetworkService.SendFieldsAsync(
                     aid,
                     _cursor.Item1,
                     _cursor.Item2,
-                    fields);
+                    inputFields);
             }
         }
 

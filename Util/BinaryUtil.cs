@@ -64,7 +64,7 @@ namespace Util
             var b1 = (byte)(address & 0b00111111);
             var b0 = (byte)((address - b1) >> 6);
 
-            return [(byte)(0b11000000 + b0), (byte)(0b11000000 + b1)];
+            return [(byte)(0b11000000 + b0), (byte)(0b01000000 + b1)];
         }
 
         public static int CoordinateAddress((int, int) coords)

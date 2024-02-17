@@ -7,6 +7,7 @@ using Route66Blazor.Components.Fields;
 using Route66Blazor.Models;
 using Services;
 using Services.Models;
+using Util;
 
 namespace Route66Blazor.Components.Pages
 {
@@ -37,7 +38,9 @@ namespace Route66Blazor.Components.Pages
                     Col = int.Parse(element.Attribute("col").Value),
                     Value = element.Value,
                     IsProtected = element.Name.ToString() != "input",
-                    Length = int.Parse(element.Attribute("length").Value)
+                    Length = int.Parse(element.Attribute("length").Value),
+                    Cursor = element.Attribute("cursor")?
+                        .Let(c => int.Parse(c.Value)) ?? -1
                 }).ToArray();
 
             InvokeAsync(StateHasChanged);

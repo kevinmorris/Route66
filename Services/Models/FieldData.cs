@@ -15,5 +15,7 @@ namespace Services.Models
         public string Value { get; set; } = "";
         public bool IsProtected { get; set; }
         public int Length { get; set; }
+        public bool Dirty { get; set; } = false;
+        public int Cursor { get; set; } = -1;
     }
 }

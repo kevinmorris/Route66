@@ -52,13 +52,13 @@ namespace Services
                             new XAttribute("col", col));
 
                     var c = EBCDIC.Chars[buffer[col]];
-                    str.Append(c);
-
                     if ((attributes?.TryGetValue(Orders.INSERT_CURSOR, out var cursor) ?? false) &&
                         cursor == 1)
                     {
-                        current.Add(new XAttribute("cursor", true));
+                        current.Add(new XAttribute("cursor", str.Length));
                     }
+
+                    str.Append(c);
                 }
                 else if(structuredFieldStart)
                 {
@@ -75,12 +75,13 @@ namespace Services
                         new XAttribute("row", Row),
                         new XAttribute("col", col));
 
-                    str.Append(' ');
                     if ((attributes?.TryGetValue(Orders.INSERT_CURSOR, out var cursor) ?? false) &&
                         cursor == 1)
                     {
-                        current.Add(new XAttribute("cursor", true));
+                        current.Add(new XAttribute("cursor", str.Length));
                     }
+
+                    str.Append(' ');
                 }
                 else if (current?.Name.LocalName == "input" && !structuredFieldAhead)
                 {

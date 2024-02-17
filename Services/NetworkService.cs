@@ -75,6 +75,7 @@ namespace Services
                 }
                 else
                 {
+                    ActiveCommand = 0x00;
                     i = data.Length;
                 }
             }
@@ -288,6 +289,11 @@ namespace Services
             {
                 (i, a) = AddCharacter(data, i, a);
             }
+            else
+            {
+                ActiveCommand = 0x00;
+                i = data.Length;
+            }
 
             return (i, a);
         }
@@ -326,17 +332,14 @@ namespace Services
         {
             i += 1;
             var stopA = BinaryUtil.BufferAddress(data.Slice(i, 2));
-            var (row, col) = BinaryUtil.AddressCoordinates(a);
-
-            if (row >= Handlers.Length)
-            {
-                return (i + 3, a + 1);
-            }
+            i += 2;
 
             for (var j = a; j < stopA; j++)
             {
+                var (row, col) = BinaryUtil.AddressCoordinates(j);
+                row %= Handlers.Length;
+
                 Handlers[row].SetCharacter(col, data[i]);
-                col += 1;
             }
 
             return (i, stopA);

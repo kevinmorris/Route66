@@ -9,6 +9,7 @@
       &lt;TestId&gt;NUnit3x::CF32F8C4-D963-41B5-B737-A676A6C74145::net8.0::Tests.Xml3270TranslatorTest.FieldTest_EnhandedAttributes&lt;/TestId&gt;&#xD;
       &lt;TestId&gt;NUnit3x::CF32F8C4-D963-41B5-B737-A676A6C74145::net8.0::Tests.NetworkServiceTests.StartField&lt;/TestId&gt;&#xD;
       &lt;TestId&gt;NUnit3x::CF32F8C4-D963-41B5-B737-A676A6C74145::net8.0::Tests.NetworkServiceTests&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::CF32F8C4-D963-41B5-B737-A676A6C74145::net8.0::Tests.IntegrationTests.WriteRepeatToAddress&lt;/TestId&gt;&#xD;
     &lt;/TestAncestor&gt;&#xD;
     &lt;ProjectFile&gt;CF32F8C4-D963-41B5-B737-A676A6C74145/f:Xml3270TranslatorTest.cs&lt;/ProjectFile&gt;&#xD;
   &lt;/Or&gt;&#xD;
