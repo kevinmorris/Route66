@@ -41,7 +41,7 @@ namespace Services
             new RowHandler<T>(23, translator),
         ];
 
-        protected NetworkStream? Stream;
+        public Stream? Stream { get; set; }
         internal byte Aid { get; private set; } = AID.NO_AID;
 
         public void Connect(string address, int port)
@@ -215,12 +215,12 @@ namespace Services
 
             await WriteAndEndRecord([.. aidArray, .. address12Bit]);
         }
-
+        
         public async Task SendFieldsAsync(byte aid, int cursorRow, int cursorCol, IEnumerable<FieldData> fieldData)
         {
             var cursorAddress = BinaryUtil.AddressBuffer12Bit(
                 BinaryUtil.CoordinateAddress((cursorRow, cursorCol)));
-
+            
             var fieldBytes = fieldData.SelectMany<FieldData, byte>(f =>
             {
                 var fieldAddress = BinaryUtil.AddressBuffer12Bit(
@@ -243,7 +243,7 @@ namespace Services
         {
             if (Stream != null)
             {
-                await Stream.WriteAsync(buffer);
+                await Stream.WriteAsync(buffer, CancellationToken.None);
             }
         }
 
