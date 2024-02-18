@@ -285,7 +285,7 @@ namespace Services
             {
                 (i, a) = OrderSetAttribute(data, i, a);
             }
-            else if (EBCDIC.Chars.ContainsKey(d))
+            else if (EBCDIC.Chars.ContainsKey(d) || d == 0)
             {
                 (i, a) = AddCharacter(data, i, a);
             }
