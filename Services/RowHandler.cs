@@ -15,6 +15,9 @@ namespace Services
         private readonly IDictionary<int, IDictionary<byte, byte>> _extendedFieldAttr = 
             new Dictionary<int, IDictionary<byte, byte>>();
 
+        private readonly IDictionary<int, IDictionary<string, object>> _route66AttributeSet =
+            new Dictionary<int, IDictionary<string, object>>();
+
         public event EventHandler<RowUpdateEventArgs<T>>? RowUpdated;
 
         public void SetCharacter(int col, byte d)
@@ -44,6 +47,19 @@ namespace Services
             attrs[attrKey] = attrValue;
         }
 
+        internal void SetRoute66Attribute(int col, string attrKey, object attrValue)
+        {
+            Dirty = true;
+
+            if (!_route66AttributeSet.ContainsKey(col))
+            {
+                _route66AttributeSet[col] = new Dictionary<string, object>();
+            }
+
+            var attrs = _route66AttributeSet[col];
+            attrs[attrKey] = attrValue;
+        }
+
         public void Reset()
         {
             Dirty = true;
@@ -59,7 +75,7 @@ namespace Services
 
                 RowUpdated?.Invoke(this, new RowUpdateEventArgs<T>()
                 {
-                    Data = translator.Translate(Buffer, _extendedFieldAttr)
+                    Data = translator.Translate(Buffer, _extendedFieldAttr, _route66AttributeSet)
                 });
 
                 Dirty = false;

@@ -18,6 +18,7 @@
     font-family: Consolas, monospace;
     font-size: 16px;
     border: 0;
+    background: #f0f0f0;
 }
 
 ::deep input:focus {

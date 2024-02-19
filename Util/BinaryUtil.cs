@@ -48,13 +48,13 @@ namespace Util
                 address &= 0b00111111_11111111;
             }
 
-            return address;
+            return bytes[1] >= 0b10000000 ?  (address | 0b10000000_00000000) : address;
         }
 
         public static (int, int) AddressCoordinates(int address)
         {
-            var y = address / Constants.SCREEN_WIDTH;
-            var x = address % Constants.SCREEN_WIDTH;
+            var y = (address & 0b1111_1111_1111) / Constants.SCREEN_WIDTH;
+            var x = (address & 0b1111_1111_1111) % Constants.SCREEN_WIDTH;
 
             return (y, x);
         }
@@ -64,7 +64,9 @@ namespace Util
             var b1 = (byte)(address & 0b00111111);
             var b0 = (byte)((address - b1) >> 6);
 
-            return [(byte)(0b11000000 + b0), (byte)(0b01000000 + b1)];
+            return [
+                (byte)(0b11000000 + b0),
+                (byte)((((address >> 8) & 0b10000000) | 0b01000000) + b1)];
         }
 
         public static int CoordinateAddress((int, int) coords)

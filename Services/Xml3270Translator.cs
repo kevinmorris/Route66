@@ -12,7 +12,10 @@ namespace Services
     {
         public int Row { get; set; }
 
-        public XElement Translate(byte[] buffer, IDictionary<int, IDictionary<byte, byte>> attributeSet)
+        public XElement Translate(
+            byte[] buffer,
+            IDictionary<int, IDictionary<byte, byte>> attributeSet,
+            IDictionary<int, IDictionary<string, object>> route66AttributeSet)
         {
             var rowRoot = new XElement("row");
             XElement? current = null;
@@ -24,6 +27,13 @@ namespace Services
                 var structuredFieldStart =
                     (attributeSet.TryGetValue(col, out var attributes) && 
                      attributes.TryGetValue(Attributes.FIELD, out fieldAttribute));
+
+                var address = -1;
+                if (route66AttributeSet.TryGetValue(col, out var route66Attributes) &&
+                    route66Attributes.TryGetValue(Route66Attributes.ADDRESS, out var attribute))
+                {
+                    address = int.Parse(attribute?.ToString() ?? "-1");
+                }
 
                 var structuredFieldAhead =
                     (attributeSet.TryGetValue(col + 1, out var attributesAhead) &&
@@ -45,6 +55,11 @@ namespace Services
                             BinaryUtil.isProtected(fieldAttribute) ? "label" : "input",
                             new XAttribute("row", Row),
                             new XAttribute("col", col));
+
+                        if (!BinaryUtil.isProtected(fieldAttribute))
+                        {
+                            current.Add(new XAttribute("address", address));
+                        }
                     }
                     else current ??= new XElement(
                             "label",
@@ -74,6 +89,11 @@ namespace Services
                         BinaryUtil.isProtected(fieldAttribute) ? "label" : "input",
                         new XAttribute("row", Row),
                         new XAttribute("col", col));
+
+                    if (!BinaryUtil.isProtected(fieldAttribute))
+                    {
+                        current.Add(new XAttribute("address", address));
+                    }
 
                     if ((attributes?.TryGetValue(Orders.INSERT_CURSOR, out var cursor) ?? false) &&
                         cursor == 1)

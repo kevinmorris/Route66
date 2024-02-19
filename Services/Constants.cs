@@ -96,6 +96,11 @@ namespace Services
         ];
     }
 
+    public static class Route66Attributes
+    {
+        public const string ADDRESS = "address";
+    }
+
     public static class Attributes
     {
         public const byte ALL = 0x00;

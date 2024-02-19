@@ -1,0 +1,12 @@
+﻿div.field {
+    margin-bottom: 16px;
+}
+
+span {
+    width: 80px;
+    display: inline-block;
+}
+
+input {
+    width: 200px;
+}

@@ -223,9 +223,7 @@ namespace Services
             
             var fieldBytes = fieldData.SelectMany<FieldData, byte>(f =>
             {
-                var fieldAddress = BinaryUtil.AddressBuffer12Bit(
-                    BinaryUtil.CoordinateAddress((f.Row, f.Col)));
-
+                var fieldAddress = BinaryUtil.AddressBuffer12Bit(f.Address);
                 var fieldTextBytes = f.Value.Select(c => EBCDIC.EBCDICBytes[c]);
 
                 return
@@ -307,7 +305,9 @@ namespace Services
         
         public (int, int) OrderStartField(Span<byte> data, int i, int a)
         {
-            var (row, col) = BinaryUtil.AddressCoordinates(a + 1);
+            a += 1;
+
+            var (row, col) = BinaryUtil.AddressCoordinates(a);
             row = row % Handlers.Length;
 
             i += 1;
@@ -315,7 +315,7 @@ namespace Services
             i += 1;
 
             Handlers[row].SetExtendedAttribute(col, Attributes.FIELD, fieldAttr);
-            a += 1;
+            Handlers[row].SetRoute66Attribute(col, Route66Attributes.ADDRESS, a);
 
             return (i, a);
         }

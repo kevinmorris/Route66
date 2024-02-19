@@ -14,6 +14,9 @@ namespace Services
             set;
         }
 
-        public T Translate(byte[] buffer, IDictionary<int, IDictionary<byte, byte>> attributeSet);
+        public T Translate(
+            byte[] buffer,
+            IDictionary<int, IDictionary<byte, byte>> attributeSet,
+            IDictionary<int, IDictionary<string, object>> route66AttributeSet);
     }
 }

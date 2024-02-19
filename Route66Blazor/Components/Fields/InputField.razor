@@ -19,7 +19,7 @@
     ElementReference _inputField;
 
     [Parameter]
-    public FieldData FieldData { get; set; } = new FieldData { Row = 0, Col = 0, Value = "", IsProtected = false, Cursor = -1 };
+    public FieldData FieldData { get; set; } = new() { Row = 0, Col = 0, Value = "", IsProtected = false };
 
     [Parameter]
     public EventCallback<FieldData> FieldDataChanged { get; set; }

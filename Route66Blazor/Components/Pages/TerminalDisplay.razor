@@ -1,19 +1,30 @@
 ﻿@inject IJSRuntime JS
 
-@page "/"
+@page "/terminal"
+@using Services
 
-<h3>TerminalDisplay</h3>
 <div id="container" class="border-zero" tabindex="0" @ref="_container" @onkeydown="@KeyDown">
     <div>
         <button class="keypad-button" @onclick="Reset">Reset</button>
-        <button class="keypad-button">Erase EOF</button>
-        <button class="keypad-button">Erase Input</button>
-        <button class="keypad-button">PA1</button>
-        <button class="keypad-button">PA2</button>
-        <button class="keypad-button">PA3</button>
-        <button class="keypad-button">Attn</button>
-        <button class="keypad-button">Sys Req</button>
-        <button class="keypad-button" @onclick="Clear">Clear</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PA1)">PA1</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PA2)">PA2</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PA3)">PA3</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.SYSREQ)">Sys Req</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.CLEAR)">Clear</button>
+    </div>
+    <div>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF1)">PF1</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF2)">PF2</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF3)">PF3</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF4)">PF4</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF5)">PF5</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF6)">PF6</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF7)">PF7</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF8)">PF8</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF9)">PF9</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF10)">PF10</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF11)">PF11</button>
+        <button class="keypad-button" @onclick="() => FunctionKey(AID.PF12)">PF12</button>
     </div>
     
     <CascadingValue Name="CursorAction" Value="@_cursorAction">

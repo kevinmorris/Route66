@@ -38,6 +38,8 @@ namespace Route66Blazor.Components.Pages
                     Col = int.Parse(element.Attribute("col").Value),
                     Value = element.Value,
                     IsProtected = element.Name.ToString() != "input",
+                    Address = element.Attribute("address")?
+                        .Let(a => int.Parse(a.Value)) ?? -1,
                     Length = int.Parse(element.Attribute("length").Value),
                     Cursor = element.Attribute("cursor")?
                         .Let(c => int.Parse(c.Value)) ?? -1

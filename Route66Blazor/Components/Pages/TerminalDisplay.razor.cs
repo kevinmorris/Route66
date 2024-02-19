@@ -16,6 +16,12 @@ namespace Route66Blazor.Components.Pages
         [Inject]
         protected NetworkService<XElement>? NetworkService { get; init;  }
 
+        [SupplyParameterFromQuery]
+        public string Address { get; set; }
+
+        [SupplyParameterFromQuery]
+        public int Port { get; set; }
+
         private ElementReference _container;
         private readonly Row[] _rows = new Row[Constants.SCREEN_HEIGHT];
         private (int, int) _cursor = (-1, -1);
@@ -50,11 +56,11 @@ namespace Route66Blazor.Components.Pages
             await Task.CompletedTask;
         }
 
-        private async Task Clear(MouseEventArgs args)
+        private async Task FunctionKey(byte key)
         {
             if (NetworkService != null)
             {
-                await NetworkService.SendKeyAsync(AID.CLEAR);
+                await NetworkService.SendKeyAsync(key);
             }
         }
 
@@ -93,7 +99,7 @@ namespace Route66Blazor.Components.Pages
 
                 await _container.FocusAsync(true);
                 await JS.InvokeAsync<string>("setDotNetObjRef", _tdObjRef);
-                NetworkService?.Connect("127.0.0.1", 3270);
+                NetworkService?.Connect(Address, Port);
             }
         }
 
