@@ -13,14 +13,14 @@ using Services.Models;
 
 namespace Tests
 {
-    public class NetworkServiceTests
+    public class Tn3270ServiceTests
     {
-        private NetworkService<XElement> _service;
+        private TN3270Service<XElement> _service;
 
         [SetUp]
         public void SetUp()
         {
-            _service = new NetworkService<XElement> (new Xml3270Translator());
+            _service = new TN3270Service<XElement> (new Xml3270Translator());
         }
 
         [Test]
@@ -79,7 +79,6 @@ namespace Tests
         public void SendFieldsAsync()
         {
             var args = new List<byte[]>();
-
             var fields = new List<FieldData>()
             {
                 new ()

@@ -11,12 +11,12 @@ namespace Tests
 {
     public class IntegrationTests
     {
-        private NetworkService<XElement> _service = new(new Xml3270Translator());
+        private TN3270Service<XElement> _service = new(new Xml3270Translator());
 
         [SetUp]
         public void SetUp()
         {
-            _service = new NetworkService<XElement>(new Xml3270Translator());
+            _service = new TN3270Service<XElement>(new Xml3270Translator());
         }
 
         private void RunBytes(byte[] data, IList<string> rowXml)

@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Assertion", "NUnit2015:Consider using Assert.That(actual, Is.SameAs(expected)) instead of Assert.AreSame(expected, actual)", Justification = "<Pending>", Scope = "member", Target = "~M:Tests.NetworkServiceTests.StartField")]
+[assembly: SuppressMessage("Assertion", "NUnit2015:Consider using Assert.That(actual, Is.SameAs(expected)) instead of Assert.AreSame(expected, actual)", Justification = "<Pending>", Scope = "member", Target = "~M:Tests.Tn3270ServiceTests.StartField")]

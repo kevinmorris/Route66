@@ -14,7 +14,7 @@ namespace Route66Blazor.Components.Pages
     public partial class TerminalDisplay : IDisposable
     {
         [Inject]
-        protected NetworkService<XElement>? NetworkService { get; init;  }
+        protected TN3270Service<XElement>? NetworkService { get; init;  }
 
         [SupplyParameterFromQuery]
         public string Address { get; set; }

@@ -8,7 +8,7 @@ using Util;
 
 namespace Services
 {
-    public class NetworkService<T>(I3270Translator<T> translator)
+    public class TN3270Service<T>(I3270Translator<T> translator)
     {
         protected TcpClient? Tcp;
         public byte ActiveCommand { get; set; }= 0x00;
