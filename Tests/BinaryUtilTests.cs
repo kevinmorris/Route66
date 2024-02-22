@@ -26,14 +26,14 @@ namespace Tests
         [Test]
         public void AddressBuffer12Bit()
         {
-            Assert.AreEqual(new byte[] { 0xdc, 0x70 }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((23, 0))));
-            Assert.AreEqual(new byte[] { 0xc1, 0x5e }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((1, 14))));
-            Assert.AreEqual(new byte[] { 0xc0, 0x40 }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((0, 0))));
-            Assert.AreEqual(new byte[] { 0xc0, 0x54 }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((0, 20))));
-            Assert.AreEqual(new byte[] { 0xc1, 0x50 }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((1, 0))));
-            Assert.AreEqual(new byte[] { 0xc6, 0x6f }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((5, 31))));
-            Assert.AreEqual(new byte[] { 0xd8, 0x68 }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((19, 56))));
-            Assert.AreEqual(new byte[] { 0xdd, 0x7f }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((23, 79))));
+            Assert.AreEqual(new byte[] { 0x5c, 0x70 }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((23, 0))));
+            Assert.AreEqual(new byte[] { 0x41, 0x5e }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((1, 14))));
+            Assert.AreEqual(new byte[] { 0x40, 0x40 }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((0, 0))));
+            Assert.AreEqual(new byte[] { 0x40, 0x54 }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((0, 20))));
+            Assert.AreEqual(new byte[] { 0x41, 0x50 }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((1, 0))));
+            Assert.AreEqual(new byte[] { 0x46, 0x6f }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((5, 31))));
+            Assert.AreEqual(new byte[] { 0x58, 0x68 }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((19, 56))));
+            Assert.AreEqual(new byte[] { 0x5d, 0x7f }, BinaryUtil.AddressBuffer12Bit(BinaryUtil.CoordinateAddress((23, 79))));
         }
     }
 }

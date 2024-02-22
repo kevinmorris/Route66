@@ -48,7 +48,17 @@ namespace Util
                 address &= 0b00111111_11111111;
             }
 
-            return bytes[1] >= 0b10000000 ?  (address | 0b10000000_00000000) : address;
+            if (bytes[0] >= 0b10000000)
+            {
+                address |= 0b10000000_00000000;
+            }
+
+            if (bytes[1] >= 0b10000000)
+            {
+                address |= 0b01000000_00000000;
+            }
+
+            return address;
         }
 
         public static (int, int) AddressCoordinates(int address)
@@ -64,9 +74,12 @@ namespace Util
             var b1 = (byte)(address & 0b00111111);
             var b0 = (byte)((address - b1) >> 6);
 
+            var b0High = (address & 0b10000000_00000000) >> 15;
+            var b1High = (address & 0b01000000_00000000) >> 14;
+
             return [
-                (byte)(0b11000000 + b0),
-                (byte)((((address >> 8) & 0b10000000) | 0b01000000) + b1)];
+                (byte)((b0High << 7) + 0b01000000 + b0),
+                (byte)((b1High << 7) + 0b01000000 + b1)];
         }
 
         public static int CoordinateAddress((int, int) coords)

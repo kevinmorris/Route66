@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Route66Blazor.Models;
 using Services;
@@ -15,6 +16,9 @@ namespace Route66Blazor.Components.Pages
     {
         [Inject]
         protected TN3270Service<XElement>? NetworkService { get; init;  }
+
+        [Inject]
+        protected ILogger<TerminalDisplay> Logger { get; init; }
 
         [SupplyParameterFromQuery]
         public string Address { get; set; }

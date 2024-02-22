@@ -407,7 +407,7 @@ namespace Tests
             RunBytes(data, rowXml);
 
             Assert.AreEqual("<row>\r\n  <input row=\"0\" col=\"0\" address=\"1920\" length=\"1\"> </input>\r\n  <input row=\"0\" col=\"1\" address=\"1\" length=\"34\">ENTER CURRENT PASSWORD FOR HERC02-</input>\r\n  <input row=\"0\" col=\"36\" address=\"36\" length=\"44\">                                            </input>\r\n</row>", rowXml[0]);
-            Assert.AreEqual("<row>\r\n  <input row=\"1\" col=\"1\" address=\"81\" cursor=\"0\" length=\"79\">                                                                               </input>\r\n</row>", rowXml[1]);
+            Assert.AreEqual("<row>\r\n  <input row=\"1\" col=\"1\" address=\"32849\" cursor=\"0\" length=\"79\">                                                                               </input>\r\n</row>", rowXml[1]);
             Assert.AreEqual("<row />", rowXml[2]);
             Assert.AreEqual("<row />", rowXml[3]);
             Assert.AreEqual("<row />", rowXml[4]);
@@ -603,7 +603,7 @@ namespace Tests
             RunBytes(data, rowXml);
 
             Assert.AreEqual("<row>\r\n  <label row=\"0\" col=\"1\" length=\"79\">--------------------------------  RFE DSLIST  ---------------------------------</label>\r\n</row>", rowXml[0]);
-            Assert.AreEqual("<row>\r\n  <label row=\"1\" col=\"1\" length=\"12\">Command ===&gt;</label>\r\n  <input row=\"1\" col=\"14\" address=\"94\" length=\"66\">                                                                  </input>\r\n</row>", rowXml[1]);
+            Assert.AreEqual("<row>\r\n  <label row=\"1\" col=\"1\" length=\"12\">Command ===&gt;</label>\r\n  <input row=\"1\" col=\"14\" address=\"32862\" length=\"66\">                                                                  </input>\r\n</row>", rowXml[1]);
             Assert.AreEqual("<row>\r\n  <label row=\"2\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[2]);
             Assert.AreEqual("<row>\r\n  <label row=\"3\" col=\"0\" length=\"1\"> </label>\r\n  <label row=\"3\" col=\"1\" length=\"10\">     blank</label>\r\n  <label row=\"3\" col=\"12\" length=\"68\">- display data set list                                             </label>\r\n</row>", rowXml[3]);
             Assert.AreEqual("<row>\r\n  <label row=\"4\" col=\"1\" length=\"10\">     ALLOC</label>\r\n  <label row=\"4\" col=\"12\" length=\"68\">- allocate a new data set                                           </label>\r\n</row>", rowXml[4]);
@@ -787,9 +787,9 @@ namespace Tests
             RunBytes(data, rowXml);
 
             Assert.AreEqual("<row>\r\n  <label row=\"0\" col=\"1\" length=\"79\">--------------------------------  RFE DSLIST  ---------------------- Row 1 of 2</label>\r\n</row>", rowXml[0]);
-            Assert.AreEqual("<row>\r\n  <label row=\"1\" col=\"1\" length=\"12\">Command ===&gt;</label>\r\n  <input row=\"1\" col=\"14\" address=\"94\" cursor=\"0\" length=\"48\">                                                </input>\r\n  <label row=\"1\" col=\"63\" length=\"11\">Scroll ===&gt;</label>\r\n  <input row=\"1\" col=\"75\" address=\"155\" length=\"5\">CSR  </input>\r\n</row>", rowXml[1]);
+            Assert.AreEqual("<row>\r\n  <label row=\"1\" col=\"1\" length=\"12\">Command ===&gt;</label>\r\n  <input row=\"1\" col=\"14\" address=\"32862\" cursor=\"0\" length=\"48\">                                                </input>\r\n  <label row=\"1\" col=\"63\" length=\"11\">Scroll ===&gt;</label>\r\n  <input row=\"1\" col=\"75\" address=\"32923\" length=\"5\">CSR  </input>\r\n</row>", rowXml[1]);
             Assert.AreEqual("<row>\r\n  <label row=\"2\" col=\"0\" length=\"1\"> </label>\r\n  <label row=\"2\" col=\"1\" length=\"79\">S DATA-SET-NAME------- VOLUME ALTRK USTRK ORG FRMT % XT LRECL BLKSZ REFDT CREDT</label>\r\n</row>", rowXml[2]);
-            Assert.AreEqual("<row>\r\n  <label row=\"3\" col=\"0\" length=\"1\"> </label>\r\n  <input row=\"3\" col=\"1\" address=\"33009\" length=\"1\">'</input>\r\n  <label row=\"3\" col=\"3\" length=\"77\">HERC01.SCRATCH.TXT   WORK01     1     1 PO  FB 100  1    80  4000 24037 24037</label>\r\n</row>", rowXml[3]);
+            Assert.AreEqual("<row>\r\n  <label row=\"3\" col=\"0\" length=\"1\"> </label>\r\n  <input row=\"3\" col=\"1\" address=\"49393\" length=\"1\">'</input>\r\n  <label row=\"3\" col=\"3\" length=\"77\">HERC01.SCRATCH.TXT   WORK01     1     1 PO  FB 100  1    80  4000 24037 24037</label>\r\n</row>", rowXml[3]);
             Assert.AreEqual("<row>\r\n  <label row=\"4\" col=\"1\" length=\"9\">  **END**</label>\r\n  <label row=\"4\" col=\"11\" length=\"69\">   TOTALS:       1 TRKS ALLOC         1 TRKS USED       1 EXTENTS    </label>\r\n</row>", rowXml[4]);
             Assert.AreEqual("<row>\r\n  <label row=\"5\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[5]);
             Assert.AreEqual("<row>\r\n  <label row=\"6\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[6]);
