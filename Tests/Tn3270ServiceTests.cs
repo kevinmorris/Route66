@@ -13,7 +13,7 @@ using Services.Models;
 
 namespace Tests
 {
-    public class Tn3270ServiceTests
+    public class TN3270ServiceTests
     {
         private TN3270Service<XElement> _service;
 

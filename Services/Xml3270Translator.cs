@@ -8,10 +8,23 @@ using Util;
 
 namespace Services
 {
+    /// <summary>
+    /// Translates 3270 row data and attributes to XML.
+    /// </summary>
     public class Xml3270Translator : I3270Translator<XElement>
     {
+        /// <summary>
+        /// </summary>
+        /// <see cref="I3270Translator{T}"/>
         public int Row { get; set; }
 
+        /// <summary>
+        /// </summary>
+        /// <see cref="I3270Translator{T}"/>
+        /// <param name="buffer"></param>
+        /// <param name="attributeSet"></param>
+        /// <param name="route66AttributeSet"></param>
+        /// <returns></returns>
         public XElement Translate(
             byte[] buffer,
             IDictionary<int, IDictionary<byte, byte>> attributeSet,

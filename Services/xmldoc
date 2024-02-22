@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Services</name>
+    </assembly>
+    <members>
+        <member name="T:Services.TN3270Service`1">
+            <summary>
+            Implements IBM's TN3270 protocol.  An instance of this class wraps
+            a TcpClient in order to communicate with a TN3270 service.  
+            </summary>
+            <typeparam name="T">The type of output from each of the row translators</typeparam>
+            <param name="translator">the translator that converts the TN3270 byte stream to <code>T</code></param>
+            <see href="https://www.rfc-editor.org/rfc/rfc1576">
+                https://www.rfc-editor.org/rfc/rfc1576
+            </see>
+            <see href="http://bitsavers.trailing-edge.com/pdf/ibm/3270/GA23-0059-4_3270_Data_Stream_Programmers_Reference_Dec88.pdf">
+                3270_Data_Stream_Programmers_Reference
+            </see>
+            
+        </member>
+        <member name="M:Services.TN3270Service`1.#ctor(Services.I3270Translator{`0})">
+            <summary>
+            Implements IBM's TN3270 protocol.  An instance of this class wraps
+            a TcpClient in order to communicate with a TN3270 service.  
+            </summary>
+            <typeparam name="T">The type of output from each of the row translators</typeparam>
+            <param name="translator">the translator that converts the TN3270 byte stream to <code>T</code></param>
+            <see href="https://www.rfc-editor.org/rfc/rfc1576">
+                https://www.rfc-editor.org/rfc/rfc1576
+            </see>
+            <see href="http://bitsavers.trailing-edge.com/pdf/ibm/3270/GA23-0059-4_3270_Data_Stream_Programmers_Reference_Dec88.pdf">
+                3270_Data_Stream_Programmers_Reference
+            </see>
+            
+        </member>
+    </members>
+</doc>
