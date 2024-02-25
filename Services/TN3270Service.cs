@@ -20,9 +20,11 @@ namespace Services
     /// <see href="https://www.rfc-editor.org/rfc/rfc1576"></see>
     /// <see href="http://bitsavers.trailing-edge.com/pdf/ibm/3270/GA23-0059-4_3270_Data_Stream_Programmers_Reference_Dec88.pdf"></see>
     /// 
-    public class TN3270Service<T>(I3270Translator<T> translator)
+    public class TN3270Service<T>
     {
         protected TcpClient? Tcp;
+
+        protected I3270Translator<T> _translator;
 
         /// <summary>
         /// Commands control such things as whether the application program writes to or
@@ -34,36 +36,43 @@ namespace Services
         /// The collection of row handlers with each handler corresponding to
         /// a single row of a terminal display.
         /// </summary>
-        public RowHandler<T>[] Handlers { get; init; } =
-        [
-            new RowHandler<T>(0, translator),
-            new RowHandler<T>(1, translator),
-            new RowHandler<T>(2, translator),
-            new RowHandler<T>(3, translator),
-            new RowHandler<T>(4, translator),
-            new RowHandler<T>(5, translator),
-            new RowHandler<T>(6, translator),
-            new RowHandler<T>(7, translator),
-            new RowHandler<T>(8, translator),
-            new RowHandler<T>(9, translator),
-            new RowHandler<T>(10, translator),
-            new RowHandler<T>(11, translator),
-            new RowHandler<T>(12, translator),
-            new RowHandler<T>(13, translator),
-            new RowHandler<T>(14, translator),
-            new RowHandler<T>(15, translator),
-            new RowHandler<T>(16, translator),
-            new RowHandler<T>(17, translator),
-            new RowHandler<T>(18, translator),
-            new RowHandler<T>(19, translator),
-            new RowHandler<T>(20, translator),
-            new RowHandler<T>(21, translator),
-            new RowHandler<T>(22, translator),
-            new RowHandler<T>(23, translator),
-        ];
+        public RowHandler<T>[] Handlers { get; init; }
 
         public Stream? Stream { get; set; }
         internal byte Aid { get; private set; } = AID.NO_AID;
+
+        public TN3270Service(I3270Translator<T> translator, string address, int port)
+        {
+            _translator = translator;
+            Connect(address, port);
+            Handlers =
+            [
+                new RowHandler<T>(0, _translator),
+                new RowHandler<T>(1, _translator),
+                new RowHandler<T>(2, _translator),
+                new RowHandler<T>(3, _translator),
+                new RowHandler<T>(4, _translator),
+                new RowHandler<T>(5, _translator),
+                new RowHandler<T>(6, _translator),
+                new RowHandler<T>(7, _translator),
+                new RowHandler<T>(8, _translator),
+                new RowHandler<T>(9, _translator),
+                new RowHandler<T>(10, _translator),
+                new RowHandler<T>(11, _translator),
+                new RowHandler<T>(12, _translator),
+                new RowHandler<T>(13, _translator),
+                new RowHandler<T>(14, _translator),
+                new RowHandler<T>(15, _translator),
+                new RowHandler<T>(16, _translator),
+                new RowHandler<T>(17, _translator),
+                new RowHandler<T>(18, _translator),
+                new RowHandler<T>(19, _translator),
+                new RowHandler<T>(20, _translator),
+                new RowHandler<T>(21, _translator),
+                new RowHandler<T>(22, _translator),
+                new RowHandler<T>(23, _translator),
+            ];
+        }
 
         /// <summary>
         /// Connects this instance to the remote 3270 service
@@ -197,10 +206,7 @@ namespace Services
                         _ = Stream.Read(outbound, 0, outbound.Length);
                         _ = ProcessOutbound(outbound, 0, 0);
 
-                        foreach (var rowHandler in Handlers)
-                        {
-                            rowHandler.Update();
-                        }
+                        Update();
                     }
                     catch (ObjectDisposedException ode)
                     {
@@ -211,6 +217,14 @@ namespace Services
             }
 
             Stream = null;
+        }
+
+        public void Update(bool force = false)
+        {
+            foreach (var rowHandler in Handlers)
+            {
+                rowHandler.Update(force);
+            }
         }
 
         /// <summary>

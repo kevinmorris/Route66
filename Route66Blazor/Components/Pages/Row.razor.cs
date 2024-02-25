@@ -17,17 +17,19 @@ namespace Route66Blazor.Components.Pages
         protected ILogger<Row> Logger { get; set; }
 
         internal int Index { get; set; }
-        internal RowHandler<XElement>? Handler { get; set; } = default;
-        private FieldData[] _fieldData = [];
-        public IEnumerable<FieldData> FieldData => _fieldData;
 
-        protected override void OnAfterRender(bool firstRender)
+        private RowHandler<XElement> _handler;
+        internal RowHandler<XElement> Handler
         {
-            if (firstRender && Handler != null)
+            get => _handler;
+            set
             {
-                Handler.RowUpdated += OnRowUpdated;
+                _handler = value;
+                _handler.RowUpdated += OnRowUpdated;
             }
         }
+        private FieldData[] _fieldData = [];
+        public IEnumerable<FieldData> FieldData => _fieldData;
 
         private void OnRowUpdated(object sender, RowUpdateEventArgs<XElement> e)
         {

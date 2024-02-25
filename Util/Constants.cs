@@ -10,5 +10,7 @@ namespace Util
     {
         public const int SCREEN_WIDTH = 80;
         public const int SCREEN_HEIGHT = 24;
+
+        public const string KEY_TN3270SERVICE_SESSION_STORAGE = "TN3270ServiceId";
     }
 }

@@ -8,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped(provider => new TN3270Service<XElement>(new Xml3270Translator()));
+//builder.Services.AddScoped(provider => new TN3270Service<XElement>(new Xml3270Translator()));
+builder.Services.AddMemoryCache();
 builder.Services.AddLogging(b => b.AddConsole().SetMinimumLevel(LogLevel.Trace));
 
 var app = builder.Build();
