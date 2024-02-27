@@ -94,39 +94,42 @@ namespace Route66Blazor.Components.Pages
 
             var serviceIdResult = await SessionStorage.GetAsync<string>(Constants.KEY_TN3270SERVICE_SESSION_STORAGE);
 
-            string serviceId;
-            if (serviceIdResult.Success)
+            var serviceId = serviceIdResult is { Success: true, Value: not null }
+                ? serviceIdResult.Value
+                : await SessionStorage.Let(async s =>
+                {
+                    var id = Guid.NewGuid().ToString();
+                    await s.SetAsync(Constants.KEY_TN3270SERVICE_SESSION_STORAGE, id);
+                    return id;
+                });
+
+            NetworkService = FetchService(serviceId) ;
+            for (var i = 0; i < _rows.Length; i++)
             {
-                serviceId = serviceIdResult.Value ?? Guid.NewGuid().ToString();
-            }
-            else
-            {
-                serviceId = Guid.NewGuid().ToString();
-                await SessionStorage.SetAsync(Constants.KEY_TN3270SERVICE_SESSION_STORAGE, serviceId);
+                _rows[i].Handler = NetworkService.Handlers[i];
+                _rows[i].Index = i;
             }
 
+            await _container.FocusAsync(true);
+            NetworkService.Update(true);
+        }
+
+        private TN3270Service<XElement> FetchService(string serviceId)
+        {
             if (!Cache.TryGetValue(serviceId, out TN3270Service<XElement>? tn3270Service))
             {
-                tn3270Service = new TN3270Service<XElement>(new Xml3270Translator(), Address, Port);
+                tn3270Service = new TN3270Service<XElement>(new Xml3270Translator());
+                tn3270Service.Connect(Address, Port);
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     .SetSlidingExpiration(TimeSpan.FromMinutes(30));
 
                 Cache.Set(serviceId, tn3270Service, cacheEntryOptions);
             }
 
-            if (tn3270Service != null)
+            return tn3270Service ?? new TN3270Service<XElement>(new Xml3270Translator()).Also(service =>
             {
-                NetworkService = tn3270Service;
-
-                for (var i = 0; i < _rows.Length; i++)
-                {
-                    _rows[i].Handler = NetworkService.Handlers[i];
-                    _rows[i].Index = i;
-                }
-
-                await _container.FocusAsync(true);
-                NetworkService.Update(true);
-            }
+                service.Connect(Address, Port);
+            });
         }
     }
 }
