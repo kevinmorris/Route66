@@ -1,4 +1,4 @@
-![tests workflow](https://github.com/kevinmorris/Route66/actions/workflows/tests/badge.svg)
+![tests workflow](https://github.com/kevinmorris/Route66/actions/workflows/tests.yml/badge.svg)
 
 Route66
 =======
