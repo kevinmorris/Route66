@@ -1,0 +1,12 @@
+---
+name: Tests
+
+on: push
+
+jobs:
+  tests:
+    name: Unit Testing
+    runs-on: windows-latest
+    steps:
+      - name: dotnet-tests-report
+      - uses: zyborg/dotnet-tests-report@v1.4.4
