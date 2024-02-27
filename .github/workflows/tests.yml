@@ -8,5 +8,5 @@ jobs:
     name: Unit Testing
     runs-on: windows-latest
     steps:
-      - name: dotnet-tests-report
-        uses: zyborg/dotnet-tests-report@v1.4.4
+      - uses: actions/checkout@v2.1.0
+      - run: dotnet test
