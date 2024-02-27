@@ -1,5 +1,3 @@
-![tests workflow](https://github.com/kevinmorris/Route66/actions/workflows/tests/badge.svg
-
 Route66
 =======
 
