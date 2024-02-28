@@ -1,6 +1,7 @@
 using System.Xml.Linq;
 using Route66Blazor.Components;
 using Services;
+using Services.Translators;
 
 var builder = WebApplication.CreateBuilder(args);
 
