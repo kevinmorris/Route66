@@ -21,7 +21,7 @@ namespace Api.Controllers
         }
 
         [Route("")]
-        public IActionResult Index()
+        public ActionResult<IEnumerable<FieldData>[]> Index()
         {
             var terminalStateKey =
                 HttpContext.Session.GetString("KEY_TERMINAL_STATE") ?? 
@@ -33,9 +33,12 @@ namespace Api.Controllers
             if (terminalState == null)
             {
                 pool.Start(terminalStateKey);
+                return Ok();
             }
-
-            return Ok();
+            else
+            {
+                return terminalState.FieldData;
+            }
         }
     }
 }
