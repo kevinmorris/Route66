@@ -1,5 +1,6 @@
 using System.Xml.Linq;
 using Api.Models;
+using Api.Services;
 using Services;
 using Services.Models;
 using Services.Translators;
@@ -8,10 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLogging(b => b.AddConsole().SetMinimumLevel(LogLevel.Trace));
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSingleton(new TerminalState(
-    new TN3270Service<IEnumerable<FieldData>>(new Poco3270Translator()),
-    "127.0.0.1",
-    3270));
+builder.Services.AddSingleton(new TerminalStatePool("127.0.0.1", 3270));
 
 builder.Services.AddSession(options =>
 {

@@ -10,6 +10,7 @@ using Microsoft.JSInterop;
 using Route66Blazor.Models;
 using Services;
 using Services.Models;
+using Services.Translators;
 using Util;
 
 namespace Route66Blazor.Components.Pages
