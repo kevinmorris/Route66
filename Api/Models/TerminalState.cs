@@ -7,7 +7,18 @@ namespace Api.Models
 {
     public class TerminalState
     {
+        public bool NewDataAvailable { get; private set; }
+
         private readonly IEnumerable<FieldData>[] _fieldData;
+
+        public IEnumerable<FieldData>[] FieldData
+        {
+            get
+            {
+                NewDataAvailable = false;
+                return _fieldData;
+            }
+        }
 
         public TerminalState(string address, int port)
         {
@@ -26,11 +37,8 @@ namespace Api.Models
         {
             return (sender, args) =>
             {
-                _fieldData[row] = args.Data;
-                foreach (var field in args.Data)
-                {
-                    Console.WriteLine($"XXXXXA128 {row}: {field}");
-                }
+                FieldData[row] = args.Data;
+                NewDataAvailable = true;
             };
         }
     }

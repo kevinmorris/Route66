@@ -10,6 +10,16 @@ namespace Api.Controllers
     [ApiController]
     public class TerminalController(TerminalStatePool pool) : Controller
     {
+        [Route("poll")]
+        public bool Poll()
+        {
+            var terminalStateKey =
+                HttpContext.Session.GetString("KEY_TERMINAL_STATE");
+
+            var newDataAvailable = (terminalStateKey != null && (pool[terminalStateKey]?.NewDataAvailable ?? false));
+            return newDataAvailable;
+        }
+
         [Route("")]
         public IActionResult Index()
         {
