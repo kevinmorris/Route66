@@ -1,6 +1,7 @@
 ﻿@inject IJSRuntime JS
 
 @page "/terminal"
+@rendermode @(new InteractiveServerRenderMode(false))
 @using Services
 
 <div id="container" class="border-zero" tabindex="0" @ref="_container" @onkeydown="@KeyDown">

@@ -118,9 +118,9 @@ namespace Services
         /// if the Dirty flag is set.  The row then fires the RowUpdated event with
         /// the translation 
         /// </summary>
-        public void Update()
+        public void Update(bool force = false)
         {
-            if (Dirty)
+            if (Dirty || force)
             {
                 translator.Row = row;
 

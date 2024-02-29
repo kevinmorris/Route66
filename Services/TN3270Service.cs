@@ -197,10 +197,7 @@ namespace Services
                         _ = Stream.Read(outbound, 0, outbound.Length);
                         _ = ProcessOutbound(outbound, 0, 0);
 
-                        foreach (var rowHandler in Handlers)
-                        {
-                            rowHandler.Update();
-                        }
+                        Update();
                     }
                     catch (ObjectDisposedException ode)
                     {
@@ -211,6 +208,13 @@ namespace Services
             }
 
             Stream = null;
+        }
+        public void Update(bool force = false)
+        {
+            foreach (var rowHandler in Handlers)
+            {
+                rowHandler.Update(force);
+            }
         }
 
         /// <summary>
