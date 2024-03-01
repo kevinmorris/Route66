@@ -17,7 +17,7 @@ namespace Route66Blazor.Components.Pages
 {
     public partial class TerminalDisplay
     {
-        protected TN3270Service<XElement> NetworkService { get; private set;  }
+        protected ITN3270Service<XElement> NetworkService { get; private set;  }
 
         [Inject]
         protected ProtectedSessionStorage SessionStorage { get; init; }
@@ -115,9 +115,9 @@ namespace Route66Blazor.Components.Pages
             NetworkService.Update(true);
         }
 
-        private TN3270Service<XElement> FetchService(string serviceId)
+        private ITN3270Service<XElement> FetchService(string serviceId)
         {
-            if (!Cache.TryGetValue(serviceId, out TN3270Service<XElement>? tn3270Service))
+            if (!Cache.TryGetValue(serviceId, out ITN3270Service<XElement>? tn3270Service))
             {
                 tn3270Service = new TN3270Service<XElement>(new Xml3270Translator());
                 tn3270Service.Connect(Address, Port);

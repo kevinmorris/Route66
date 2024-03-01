@@ -18,8 +18,8 @@ namespace Route66Blazor.Components.Pages
 
         internal int Index { get; set; }
 
-        private RowHandler<XElement> _handler;
-        internal RowHandler<XElement> Handler
+        private IRowHandler<XElement> _handler;
+        internal IRowHandler<XElement> Handler
         {
             get => _handler;
             set

@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLogging(b => b.AddConsole().SetMinimumLevel(LogLevel.Trace));
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSingleton(new TerminalStatePool("127.0.0.1", 3270));
+builder.Services.AddTransient(s => new TN3270Service<IEnumerable<FieldData>>(new Poco3270Translator()));
+builder.Services.AddSingleton<TerminalStatePool>();
 
 builder.Services.AddSession(options =>
 {
