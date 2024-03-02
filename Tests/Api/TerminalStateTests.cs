@@ -73,8 +73,8 @@ namespace Tests.Api
             Assert.True(terminalState.NewDataAvailable);
 
             var actual = terminalState.FieldData;
-            Assert.AreEqual(expectedFieldData0, terminalState.FieldData[0]);
-            Assert.AreEqual(expectedFieldData1, terminalState.FieldData[1]);
+            Assert.AreEqual(expectedFieldData0, actual[0]);
+            Assert.AreEqual(expectedFieldData1, actual[1]);
 
             Assert.False(terminalState.NewDataAvailable);
 

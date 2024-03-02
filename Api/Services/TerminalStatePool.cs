@@ -12,12 +12,12 @@ namespace Api.Services
 
         public TerminalState? this[string key] => _pool.TryGetValue(key, out var item) ? item : null;
 
-        public void Start(string key)
+        public void Start(string key, string address, int port)
         {
             var terminalState = new TerminalState(
                 serviceProvider.GetService<TN3270Service<IEnumerable<FieldData>>>(),
-                "127.0.0.1",
-                3270);
+                address,
+                port);
 
             _pool[key] = terminalState;
         }
