@@ -3,7 +3,7 @@
 Route66
 =======
 
-Route66 is a partial implementation of IBM's TN3270 protocol.  It is a web based IBM 3270 terminal emulator written in C#.  It requires the 3270 to provide a Telnet endpoint.
+Route66 is a partial implementation of IBM's TN3270 protocol.  It is a web based IBM 3270 terminal emulator written in C#.  It requires a 3270 service to provide a Telnet endpoint.
 
 Usage
 -----
