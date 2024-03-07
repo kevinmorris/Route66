@@ -4,7 +4,7 @@ using Services;
 using Services.Models;
 using System.Collections.Generic;
 
-namespace Api.Services
+namespace Api.State
 {
     public class TerminalStatePool(IServiceProvider serviceProvider)
     {

@@ -303,7 +303,9 @@ namespace Services
             var cursorAddress = BinaryUtil.AddressBuffer12Bit(
                 BinaryUtil.CoordinateAddress((cursorRow, cursorCol)));
             
-            var fieldBytes = fieldData.SelectMany<FieldData, byte>(f =>
+            var fieldBytes = fieldData
+                .Where(f => !f.IsProtected)
+                .SelectMany<FieldData, byte>(f =>
             {
                 var fieldAddress = BinaryUtil.AddressBuffer12Bit(f.Address);
                 var fieldTextBytes = f.Value.Select(c => EBCDIC.EBCDICBytes[c]);

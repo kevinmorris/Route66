@@ -76,12 +76,12 @@ namespace Route66Blazor.Components.Pages
                               inputFields.LastOrDefault() ??
                               fields.Last();
 
-            _cursor = (_cursor.Item1, _cursor.Item2 + cursorField.Value.Length);
+            var cursor = (_cursor.Item1, _cursor.Item2 + cursorField.Value.Length);
 
             await NetworkService.SendFieldsAsync(
                 aid,
-                _cursor.Item1,
-                _cursor.Item2,
+                cursor.Item1,
+                cursor.Item2,
                 inputFields);
         }
 

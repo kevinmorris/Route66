@@ -1,5 +1,5 @@
 ﻿using Api.Models;
-using Api.Services;
+using Api.State;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Services;
@@ -37,7 +37,26 @@ namespace Api.Controllers
         }
 
         [Route("")]
+        [HttpGet]
         public ActionResult<IEnumerable<FieldData>[]> Index()
+        {
+            var terminalStateKey =
+                HttpContext.Session.GetString(KEY_TERMINAL_STATE);
+
+            if (terminalStateKey == null)
+            {
+                return BadRequest("No state key set in session");
+            }
+
+            var terminalState = pool[terminalStateKey];
+            return terminalState == null
+                ? BadRequest("No terminal launched for that state key")
+                : terminalState.FieldData;
+        }
+
+        [Route("")]
+        [HttpPost]
+        public async Task<IActionResult> SendKey([FromBody] FieldSubmission submission)
         {
             var terminalStateKey =
                 HttpContext.Session.GetString(KEY_TERMINAL_STATE);
@@ -54,8 +73,10 @@ namespace Api.Controllers
             }
             else
             {
-                return terminalState.FieldData;
+                await terminalState.SendFields(submission);
+                return Ok();
             }
         }
+
     }
 }
