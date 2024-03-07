@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Services;
+using Services.Translators;
 using Util;
 
-namespace Tests
+namespace Tests.Translators
 {
-    public class Xml3270TranslatorTest
+    public class Xml3270TranslatorTests
     {
         [Test]
         public void FieldTest_NoEnhandedAttributes()

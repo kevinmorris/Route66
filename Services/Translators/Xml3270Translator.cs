@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Util;
 
-namespace Services
+namespace Services.Translators
 {
     /// <summary>
     /// Translates 3270 row data and attributes to XML.
@@ -38,8 +38,8 @@ namespace Services
             {
                 byte fieldAttribute = 0x00;
                 var structuredFieldStart =
-                    (attributeSet.TryGetValue(col, out var attributes) && 
-                     attributes.TryGetValue(Attributes.FIELD, out fieldAttribute));
+                    attributeSet.TryGetValue(col, out var attributes) &&
+                     attributes.TryGetValue(Attributes.FIELD, out fieldAttribute);
 
                 var address = -1;
                 if (route66AttributeSet.TryGetValue(col, out var route66Attributes) &&
@@ -49,12 +49,12 @@ namespace Services
                 }
 
                 var structuredFieldAhead =
-                    (attributeSet.TryGetValue(col + 1, out var attributesAhead) &&
-                     attributesAhead.ContainsKey(Attributes.FIELD));
+                    attributeSet.TryGetValue(col + 1, out var attributesAhead) &&
+                     attributesAhead.ContainsKey(Attributes.FIELD);
 
                 if (EBCDIC.Chars.ContainsKey(buffer[col]))
                 {
-                    if(structuredFieldStart)
+                    if (structuredFieldStart)
                     {
                         if (current != null)
                         {
@@ -88,7 +88,7 @@ namespace Services
 
                     str.Append(c);
                 }
-                else if(structuredFieldStart)
+                else if (structuredFieldStart)
                 {
                     if (current != null)
                     {

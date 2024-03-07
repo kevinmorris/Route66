@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using Moq;
 using System.IO;
 using Services.Models;
+using Services.Translators;
 
 namespace Tests
 {

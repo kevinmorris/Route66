@@ -14,7 +14,7 @@ namespace Services
     /// <typeparam name="T">The type of output from the row translator</typeparam>
     /// <param name="row">the row number (y coodindate) of this handler</param>
     /// <param name="translator">the translator responsible for converting the TN3270 display bytes to <code>T</code></param>
-    public class RowHandler<T>(int row, I3270Translator<T> translator)
+    public class RowHandler<T>(int row, I3270Translator<T> translator) : IRowHandler<T>
     {
         /// <summary>
         /// The byte buffer that holds display data for the row
@@ -70,7 +70,7 @@ namespace Services
         /// <param name="col">the index or column (x coordinate) of the attribute</param>
         /// <param name="attrKey">the key of the attribute</param>
         /// <param name="attrValue">the value of the attribute</param>
-        internal void SetExtendedAttribute(int col, byte attrKey, byte attrValue)
+        public void SetExtendedAttribute(int col, byte attrKey, byte attrValue)
         {
             Dirty = true;
 
@@ -90,7 +90,7 @@ namespace Services
         /// <param name="col">the index or column (x coordinate) of the attribute</param>
         /// <param name="attrKey">the key of the attribute</param>
         /// <param name="attrValue">the value of the attribute</param>
-        internal void SetRoute66Attribute(int col, string attrKey, object attrValue)
+        public void SetRoute66Attribute(int col, string attrKey, object attrValue)
         {
             Dirty = true;
 

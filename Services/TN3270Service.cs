@@ -20,7 +20,7 @@ namespace Services
     /// <see href="https://www.rfc-editor.org/rfc/rfc1576"></see>
     /// <see href="http://bitsavers.trailing-edge.com/pdf/ibm/3270/GA23-0059-4_3270_Data_Stream_Programmers_Reference_Dec88.pdf"></see>
     /// 
-    public class TN3270Service<T>(I3270Translator<T> translator)
+    public class TN3270Service<T>(I3270Translator<T> translator) : ITN3270Service<T>
     {
         protected TcpClient? Tcp;
 
@@ -34,7 +34,7 @@ namespace Services
         /// The collection of row handlers with each handler corresponding to
         /// a single row of a terminal display.
         /// </summary>
-        public RowHandler<T>[] Handlers { get; init; } =
+        public IRowHandler<T>[] Handlers { get; init; } =
         [
             new RowHandler<T>(0, translator),
             new RowHandler<T>(1, translator),
@@ -84,7 +84,7 @@ namespace Services
         /// <param name="i">the current pointer within the stream</param>
         /// <param name="a">the current character display address within the character buffer</param>
         /// <returns>a tuple containing the new pointer within the stream and the new character display address</returns>
-        public virtual (int, int) ProcessOutbound(Span<byte> data, int i, int a)
+        public (int, int) ProcessOutbound(Span<byte> data, int i, int a)
         {
             while (i < data.Length)
             {
@@ -209,6 +209,7 @@ namespace Services
 
             Stream = null;
         }
+
         public void Update(bool force = false)
         {
             foreach (var rowHandler in Handlers)
@@ -302,7 +303,9 @@ namespace Services
             var cursorAddress = BinaryUtil.AddressBuffer12Bit(
                 BinaryUtil.CoordinateAddress((cursorRow, cursorCol)));
             
-            var fieldBytes = fieldData.SelectMany<FieldData, byte>(f =>
+            var fieldBytes = fieldData
+                .Where(f => !f.IsProtected)
+                .SelectMany<FieldData, byte>(f =>
             {
                 var fieldAddress = BinaryUtil.AddressBuffer12Bit(f.Address);
                 var fieldTextBytes = f.Value.Select(c => EBCDIC.EBCDICBytes[c]);

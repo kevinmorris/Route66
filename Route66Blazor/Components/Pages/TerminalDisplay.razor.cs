@@ -10,13 +10,14 @@ using Microsoft.JSInterop;
 using Route66Blazor.Models;
 using Services;
 using Services.Models;
+using Services.Translators;
 using Util;
 
 namespace Route66Blazor.Components.Pages
 {
     public partial class TerminalDisplay
     {
-        protected TN3270Service<XElement> NetworkService { get; private set;  }
+        protected ITN3270Service<XElement> NetworkService { get; private set;  }
 
         [Inject]
         protected ProtectedSessionStorage SessionStorage { get; init; }
@@ -75,12 +76,12 @@ namespace Route66Blazor.Components.Pages
                               inputFields.LastOrDefault() ??
                               fields.Last();
 
-            _cursor = (_cursor.Item1, _cursor.Item2 + cursorField.Value.Length);
+            var cursor = (_cursor.Item1, _cursor.Item2 + cursorField.Value.Length);
 
             await NetworkService.SendFieldsAsync(
                 aid,
-                _cursor.Item1,
-                _cursor.Item2,
+                cursor.Item1,
+                cursor.Item2,
                 inputFields);
         }
 
@@ -114,9 +115,9 @@ namespace Route66Blazor.Components.Pages
             NetworkService.Update(true);
         }
 
-        private TN3270Service<XElement> FetchService(string serviceId)
+        private ITN3270Service<XElement> FetchService(string serviceId)
         {
-            if (!Cache.TryGetValue(serviceId, out TN3270Service<XElement>? tn3270Service))
+            if (!Cache.TryGetValue(serviceId, out ITN3270Service<XElement>? tn3270Service))
             {
                 tn3270Service = new TN3270Service<XElement>(new Xml3270Translator());
                 tn3270Service.Connect(Address, Port);
