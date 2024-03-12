@@ -23,7 +23,7 @@ namespace Api.Controllers
             HttpContext.Session.SetString(KEY_TERMINAL_STATE, terminalStateKey);
             pool.Start(terminalStateKey, connection.Address, connection.Port);
 
-            return RedirectToAction("Index");
+            return Ok();
         }
 
         [Route("poll")]

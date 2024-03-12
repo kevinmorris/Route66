@@ -30,6 +30,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(b =>
+{
+    //TODO: Set your CORS Policy here
+    //b.SetIsOriginAllowed(_ => true);
+    //b.AllowAnyHeader();
+    //b.AllowCredentials();
+});
+
 app.UseSession();
 app.MapControllers();
 

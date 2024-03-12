@@ -1,0 +1,32 @@
+<h1>Route 66 Connect</h1>
+
+<div [formGroup]="apiConnectionForm">
+  <div class="field">
+    <span>Address:</span>
+    <input id="apiAddress" type="text" formControlName="address"/>
+  </div>
+  <div class="field">
+    <span>Port:</span>
+    <input id="apiPort" type="text" formControlName="port"/>
+  </div>
+</div>
+
+<div [formGroup]="tn3270ConnectionForm">
+  <div class="field">
+    <span>Address:</span>
+    <input id="tn3270Address" type="text" formControlName="address"/>
+  </div>
+  <div class="field">
+    <span>Port:</span>
+    <input id="tn3270Port" type="text" formControlName="port"/>
+  </div>
+</div>
+
+<p *ngIf="connectSuccess" id="connectionSuccess">
+  Successfully Connected.  Forwarding you to terminal in 3 seconds
+</p>
+
+<button (click)="submit()">Submit</button>
+
+
+
