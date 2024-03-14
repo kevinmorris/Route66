@@ -3,6 +3,7 @@ import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ConnectionData} from "../models/connection-data";
 import {Route66Service} from "../services/Route66Service";
 import {NgIf} from "@angular/common";
+import {Router} from "@angular/router"
 
 @Component({
   selector: 'app-connect',
@@ -31,12 +32,17 @@ export class ConnectComponent {
 
   constructor(
     private route66Service: Route66Service,
-    private formBuilder: FormBuilder) {}
+    private formBuilder: FormBuilder,
+    private router: Router) {}
 
   async submit() {
-    const result = await this.route66Service.connect(
+    await this.route66Service.connect(
       this.apiConnectionForm.getRawValue(),
       this.tn3270ConnectionForm.getRawValue())
+
     this.connectSuccess = true;
+    setTimeout(() => {
+      this.router.navigate(['/terminal'])
+    }, 3000)
   }
 }
