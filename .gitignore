@@ -16,3 +16,5 @@ Route66Blazor/bin/*
 Services/GlobalSuppressions.cs
 Api/bin/*
 Api/obj/*
+Route66Angular/server.crt
+Route66Angular/server.key

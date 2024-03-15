@@ -27,6 +27,7 @@ namespace Api.Controllers
         }
 
         [Route("poll")]
+        [HttpGet]
         public bool Poll()
         {
             var terminalStateKey =

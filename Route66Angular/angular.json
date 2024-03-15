@@ -61,6 +61,11 @@
             },
             "development": {
               "buildTarget": "Route66Angular:build:development"
+            },
+            "options": {
+              "sslKey": "server.key",
+              "sslCert": "server.crt",
+              "ssl": true
             }
           },
           "defaultConfiguration": "development"

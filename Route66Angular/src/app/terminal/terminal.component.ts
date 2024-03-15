@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Route66Service } from "../services/Route66Service";
+import { FieldData } from "../models/field-data";
+import { Observer } from "rxjs";
 
 @Component({
   selector: 'app-terminal',
@@ -9,4 +12,21 @@ import { Component } from '@angular/core';
 })
 export class TerminalComponent {
 
+
+
+  constructor(private route66Service: Route66Service) {}
+
+  ngOnInit(): void {
+    this.route66Service.startTerminalPolling({
+      next(fieldData : FieldData[][]) {
+        console.info(fieldData);
+      },
+      error(err: any) {
+        console.error(err);
+      },
+      complete() {}
+    });
+  }
 }
+
+
