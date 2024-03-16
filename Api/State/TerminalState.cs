@@ -3,7 +3,7 @@ using Services;
 using Services.Translators;
 using Util;
 
-namespace Api.Models
+namespace Api.State
 {
     public class TerminalState
     {
