@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Services.Models;
 
-namespace Api.Models
+namespace Api.State
 {
     public class FieldSubmission()
     {
