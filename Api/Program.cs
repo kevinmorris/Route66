@@ -1,5 +1,4 @@
 using System.Xml.Linq;
-using Api.Models;
 using Api.State;
 using Services;
 using Services.Models;
@@ -35,9 +34,9 @@ if (app.Environment.IsDevelopment())
 app.UseCors(b =>
 {
     //TODO: Set your CORS Policy here
-    //b.SetIsOriginAllowed(_ => true);
-    //b.AllowAnyHeader();
-    //b.AllowCredentials();
+    b.SetIsOriginAllowed(_ => true);
+    b.AllowAnyHeader();
+    b.AllowCredentials();
 });
 
 app.UseSession();
