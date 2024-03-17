@@ -42,6 +42,8 @@ export class ConnectComponent {
       this.tn3270ConnectionForm.getRawValue())
 
     this.connectSuccess = true;
-    await this.router.navigate(['/terminal'])
+    setTimeout(
+      () => this.router.navigate(['/terminal']),
+      1000);
   }
 }

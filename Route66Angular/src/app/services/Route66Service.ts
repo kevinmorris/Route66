@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { ConnectionData } from "../models/connection-data";
 import { Injectable } from "@angular/core";
-import { filter, interval, lastValueFrom, map, Observable, Observer, of, Subscription, switchMap } from "rxjs";
+import { filter, interval, lastValueFrom, map, Observable, Observer, startWith, switchMap } from "rxjs";
 import { FieldData } from "../models/field-data";
 
 @Injectable({
@@ -9,7 +9,6 @@ import { FieldData } from "../models/field-data";
 })
 export class Route66Service {
 
-  apiData : ConnectionData | null = null;
   terminalFeed : Observable<FieldData[][]> | null = null;
 
   constructor(private httpClient : HttpClient) {
@@ -17,7 +16,7 @@ export class Route66Service {
 
   connect(apiData : ConnectionData, tn3270Data : ConnectionData) {
 
-    this.apiData = apiData;
+    sessionStorage.setItem("apiData", JSON.stringify(apiData));
     const apiUrl = `https://${ apiData.address }:${ apiData.port }/connection`
     return lastValueFrom(this.httpClient.post(
       apiUrl,
@@ -27,15 +26,24 @@ export class Route66Service {
 
   startTerminalPolling(observer : Observer<FieldData[][]>) : void {
 
-    if(this.apiData == null) { return; }
+    const apiDataStr = sessionStorage.getItem("apiData");
+    if(apiDataStr == null) { return; }
+    const apiData = JSON.parse(apiDataStr) as ConnectionData;
+
     if(this.terminalFeed == null) {
 
-      const pollUrl = `https://${ this.apiData.address }:${ this.apiData.port }/poll`
-      const terminalUrl = `https://${ this.apiData.address }:${ this.apiData.port }/`
+      const pollUrl = `https://${ apiData.address }:${ apiData.port }/poll`
+      const terminalUrl = `https://${ apiData.address }:${ apiData.port }/`
+      let force = true;
 
       this.terminalFeed = interval(5000).pipe(
+        startWith(0),
         switchMap(() => this.httpClient.get(pollUrl, { withCredentials: true })),
-        filter(result => result as boolean),
+        filter(result => {
+          const fetch = force || result as boolean
+          force = false
+          return fetch
+        }),
         switchMap(() => this.httpClient.get(terminalUrl, { withCredentials: true })),
         map(response => response as FieldData[][])
       )
