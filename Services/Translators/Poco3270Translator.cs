@@ -53,7 +53,7 @@ namespace Services.Translators
 
                         current = new FieldData()
                         {
-                            IsProtected = BinaryUtil.isProtected(fieldAttribute),
+                            IsProtected = BinaryUtil.IsProtected(fieldAttribute),
                             Row = Row,
                             Col = col,
                             Address = address
@@ -61,10 +61,9 @@ namespace Services.Translators
                     }
                     else current ??= new FieldData()
                     {
-                        IsProtected = BinaryUtil.isProtected(fieldAttribute),
+                        IsProtected = true,
                         Row = Row,
                         Col = col,
-                        Address = address
                     };
 
                     var c = EBCDIC.Chars[buffer[col]];
@@ -88,7 +87,7 @@ namespace Services.Translators
 
                     current = new FieldData()
                     {
-                        IsProtected = BinaryUtil.isProtected(fieldAttribute),
+                        IsProtected = BinaryUtil.IsProtected(fieldAttribute),
                         Row = Row,
                         Col = col,
                         Address = address

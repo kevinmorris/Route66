@@ -87,7 +87,7 @@ namespace Util
             return coords.Item1 * Constants.SCREEN_WIDTH + coords.Item2;
         }
 
-        public static bool isProtected(byte fieldAttribute)
+        public static bool IsProtected(byte fieldAttribute)
         {
             return (fieldAttribute & 0b0010_0000) > 0;
         }

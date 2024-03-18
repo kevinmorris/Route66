@@ -65,11 +65,11 @@ namespace Services.Translators
                         }
 
                         current = new XElement(
-                            BinaryUtil.isProtected(fieldAttribute) ? "label" : "input",
+                            BinaryUtil.IsProtected(fieldAttribute) ? "label" : "input",
                             new XAttribute("row", Row),
                             new XAttribute("col", col));
 
-                        if (!BinaryUtil.isProtected(fieldAttribute))
+                        if (!BinaryUtil.IsProtected(fieldAttribute))
                         {
                             current.Add(new XAttribute("address", address));
                         }
@@ -99,11 +99,11 @@ namespace Services.Translators
                     }
 
                     current = new XElement(
-                        BinaryUtil.isProtected(fieldAttribute) ? "label" : "input",
+                        BinaryUtil.IsProtected(fieldAttribute) ? "label" : "input",
                         new XAttribute("row", Row),
                         new XAttribute("col", col));
 
-                    if (!BinaryUtil.isProtected(fieldAttribute))
+                    if (!BinaryUtil.IsProtected(fieldAttribute))
                     {
                         current.Add(new XAttribute("address", address));
                     }

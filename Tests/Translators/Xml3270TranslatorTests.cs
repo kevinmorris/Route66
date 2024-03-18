@@ -74,7 +74,7 @@ namespace Tests.Translators
         }
 
         [Test]
-        public void InputTest()
+        public void InputTest01()
         {
             var data = new byte[]
             {
@@ -124,6 +124,67 @@ namespace Tests.Translators
             var actual = new Xml3270Translator()
             {
                 Row = 7
+            }.Translate(data, attrs, route66Attributes);
+            Assert.AreEqual(expectedStr, actual.ToString());
+        }
+
+        [Test]
+        public void RowTest01()
+        {
+            var data = new byte[]
+            {
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x00, 0xd9, 0xe4, 0xd5,
+                0xd5, 0xc9, 0xd5, 0xc7, 0x40, 0x40, 0xe3, 0xd2, 0xf5,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+            };
+
+            var attrs = new Dictionary<int, IDictionary<byte, byte>>()
+            {
+                [60] = new Dictionary<byte, byte>()
+                {
+                    [Attributes.FIELD] = 0b11111000,
+                },
+                [76] = new Dictionary<byte, byte>()
+                {
+                    [Attributes.FIELD] = 0b11111000,
+                }
+            };
+
+
+            var route66Attributes = new Dictionary<int, IDictionary<string, object>>()
+            {
+                [1] = new Dictionary<string, object>()
+                {
+                    [Route66Attributes.ADDRESS] = 18225
+                },
+                [60] = new Dictionary<string, object>()
+                {
+                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((23, 60))
+                },
+                [76] = new Dictionary<string, object>()
+                {
+                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((23, 76))
+                }
+            };
+
+            var expectedStr =
+                """
+                <row>
+                  <label row="23" col="0" length="59">                                                           </label>
+                  <label row="23" col="60" length="12">RUNNING  TK5</label>
+                  <label row="23" col="76" length="1"> </label>
+                </row>
+                """;
+
+            var actual = new Xml3270Translator()
+            {
+                Row = 23
             }.Translate(data, attrs, route66Attributes);
             Assert.AreEqual(expectedStr, actual.ToString());
         }
