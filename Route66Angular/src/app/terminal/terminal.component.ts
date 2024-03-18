@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { Route66Service } from "../services/Route66Service";
+import { Route66Service } from "../services/route66.service";
 import { FieldData } from "../models/field-data";
 import { RowComponent } from "../row/row.component";
 import { Observer } from "rxjs";
 import { NgForOf } from "@angular/common";
+import { Aid } from "../models/aid";
 
 @Component({
   selector: 'app-terminal',
@@ -24,9 +25,9 @@ export class TerminalComponent {
 
   ngOnInit(): void {
     this.route66Service.startTerminalPolling(
-      this.terminalFeedObserver(fd =>
+      this.terminalFeedObserver(fd => {
         this.fieldData = fd
-      )
+      })
     )
   }
 
@@ -41,8 +42,23 @@ export class TerminalComponent {
       complete() {}
     };
   }
+
+  reset() {
+
+  }
+
+  functionKey(aid : Aid) {
+    this.route66Service.sendKey(aid)?.then(fd => {
+      if (fd) {
+        this.fieldData = fd;
+      }
+    })
+  }
+
+  protected readonly Aid = Aid;
 }
 
 type FieldDataSetter = (fd: FieldData[][]) => void
+
 
 

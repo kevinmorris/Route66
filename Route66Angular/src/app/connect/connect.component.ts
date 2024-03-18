@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ConnectionData } from "../models/connection-data";
-import { Route66Service } from "../services/Route66Service";
+import { Route66Service } from "../services/route66.service";
 import { NgIf } from "@angular/common";
 import { Router } from "@angular/router"
 

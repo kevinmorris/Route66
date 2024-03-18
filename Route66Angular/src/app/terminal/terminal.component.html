@@ -1,1 +1,26 @@
+<div id="container" class="border-zero" tabindex="0">
+  <div>
+    <button class="keypad-button" (click)="reset()">Reset</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PA1)">PA1</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PA2)">PA2</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PA3)">PA3</button>
+    <button class="keypad-button" (click)="functionKey(Aid.SYSREQ)">Sys Req</button>
+    <button class="keypad-button" (click)="functionKey(Aid.CLEAR)">Clear</button>
+  </div>
+  <div>
+    <button class="keypad-button" (click)="functionKey(Aid.PF1)">PF1</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PF2)">PF2</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PF3)">PF3</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PF4)">PF4</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PF5)">PF5</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PF6)">PF6</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PF7)">PF7</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PF8)">PF8</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PF9)">PF9</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PF10)">PF10</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PF11)">PF11</button>
+    <button class="keypad-button" (click)="functionKey(Aid.PF12)">PF12</button>
+  </div>
+</div>
+
 <app-row *ngFor="let data of fieldData; index as i" [index]="i" [fieldData]="data"></app-row>
