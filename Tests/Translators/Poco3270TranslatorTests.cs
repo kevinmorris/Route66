@@ -63,8 +63,8 @@ namespace Tests.Translators
                 {
                     Row = 5,
                     Col = 7,
-                    Length = "      BROWSE      ".Length,
-                    Value = "      BROWSE      ",
+                    Length = "BROWSE      ".Length,
+                    Value = "BROWSE      ",
                     IsProtected = true,
                     Address = 407
                 },

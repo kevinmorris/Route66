@@ -102,7 +102,7 @@ namespace Services.Translators
 
                     str.Append(' ');
                 }
-                else if (!(current?.IsProtected ?? false) && !structuredFieldAhead)
+                else if (!(current?.IsProtected ?? true) && !structuredFieldAhead)
                 {
                     str.Append(' ');
                 }
