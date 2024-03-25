@@ -1,1 +1,4 @@
-<span class="field" [ngStyle]="{ 'left.ch': fieldData.col }">{{fieldData.value}}</span>
+<input [ngStyle]="{ 'left.ch': fieldData.col, 'width.ch': fieldData.length }"
+       [(ngModel)]="fieldData.value"
+       (focus)="onFocus()"
+/>

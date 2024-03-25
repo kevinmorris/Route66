@@ -1,6 +1,6 @@
 <div class="row">
   <span *ngFor="let data of fieldData">
     <app-label-field *ngIf="data.isProtected" [fieldData]="data"/>
-    <app-input-field *ngIf="!data.isProtected" [fieldData]="data"/>
+    <app-input-field *ngIf="!data.isProtected" [fieldData]="data" (focused)="onInputFocus($event)"/>
   </span>
 </div>

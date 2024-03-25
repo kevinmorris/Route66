@@ -3,7 +3,7 @@ import { FieldData } from "./field-data";
 
 export type FieldSubmission = {
   aid : Aid;
-  cursorRow : number | undefined;
-  cursorCol : number | undefined;
-  fieldData : FieldData[] | undefined;
+  cursorRow : number;
+  cursorCol : number;
+  fieldData : FieldData[];
 }

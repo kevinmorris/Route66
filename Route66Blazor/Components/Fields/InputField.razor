@@ -7,8 +7,8 @@
 <input @ref="_inputField"
        type="text"
        class="field"
-       style="left: @(FieldData.Col)ch; width: @(FieldData.Length)ch;"
-       @bind:get="@(FieldData.Value)"
+       style="left: @(_fieldData.Col)ch; width: @(_fieldData.Length)ch;"
+       @bind:get="@(_fieldData.Value)"
        @bind:set="@(SetFieldValueAsync)"
        @bind:event="oninput"
        @onfocus="OnFocus"
@@ -17,6 +17,7 @@
 @code {
 
     ElementReference _inputField;
+    FieldData _fieldData;
 
     [Parameter]
     public FieldData FieldData { get; set; } = new() { Row = 0, Col = 0, Value = "", IsProtected = false };
@@ -27,11 +28,12 @@
     [CascadingParameter(Name = "CursorAction")]
     public Action<(int, int)>? CursorAction { get; set; }
 
-    protected override async Task OnParametersSetAsync()
+    protected override void OnInitialized()
     {
-        await base.OnParametersSetAsync();
-
-        FieldData.Value = string.IsNullOrWhiteSpace(FieldData.Value) ? "" : FieldData.Value;
+        _fieldData = FieldData with
+        {
+            Value = string.IsNullOrWhiteSpace(FieldData.Value) ? "" : FieldData.Value
+        };
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -44,21 +46,16 @@
         }
     }
 
-    private async Task OnValueChanged()
-    {
-        FieldData.Dirty = true;
-        await FieldDataChanged.InvokeAsync(FieldData);
-    }
-
     private async Task SetFieldValueAsync(string value)
     {
-        FieldData.Value = string.IsNullOrWhiteSpace(value) ? "" : value;
-        await OnValueChanged();
+        _fieldData.Dirty = true;
+        _fieldData.Value = string.IsNullOrWhiteSpace(value) ? "" : value;
+        await FieldDataChanged.InvokeAsync(_fieldData);
     }
 
     private void OnFocus()
     {
-        CursorAction?.Invoke((FieldData.Row, FieldData.Col));
+        CursorAction?.Invoke((_fieldData.Row, _fieldData.Col));
     }
 
     private void OnBlur()

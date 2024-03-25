@@ -19,8 +19,14 @@ import { Aid } from "../models/aid";
 export class TerminalComponent {
 
   fieldData : FieldData[][];
+  cursor : [number, number] | undefined
+
   constructor(private route66Service: Route66Service) {
     this.fieldData = [];
+  }
+
+  onFocusChanged(cursor : [number, number]) {
+    this.cursor = cursor
   }
 
   ngOnInit(): void {
@@ -47,11 +53,36 @@ export class TerminalComponent {
 
   }
 
+  enter() {
+    this.sendUserData(Aid.ENTER)
+  }
+
   functionKey(aid : Aid) {
     this.route66Service.sendKey(aid)?.then(fd => {
-      if (fd) {
-        this.fieldData = fd;
+      this.fieldData = fd;
+    })
+  }
+  sendUserData(aid : Aid) {
+
+    let fields : FieldData[] = []
+    fields = fields.concat(...this.fieldData)
+
+    const inputFields = fields.filter(f => !f.isProtected)
+    const cursorField = inputFields.find(f => {
+      return this.cursor && this.cursor[0] == f.row && this.cursor[1] == f.col
+    }) ?? inputFields.slice(-1)[0];
+
+    (() => {
+      if(this.cursor) {
+        const cursorRow = this.cursor[0]
+        const cursorCol = this.cursor[1] + cursorField.value.length
+
+        return this.route66Service.sendFields(aid, cursorRow, cursorCol, inputFields)
+      } else {
+        return this.route66Service.sendKey(aid)
       }
+    })().then((fd : FieldData[][]) => {
+      this.fieldData = fd
     })
   }
 

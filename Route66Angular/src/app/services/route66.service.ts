@@ -40,48 +40,77 @@ export class Route66Service {
 
   startTerminalPolling(observer : Observer<FieldData[][]>) : void {
 
-    const apiDataStr = sessionStorage.getItem(this.KEY_API_ADDRESS);
-    if(apiDataStr == null) { return; }
-    const apiData = JSON.parse(apiDataStr) as ConnectionData;
-
     if(this.terminalFeed == null) {
 
-      const pollUrl = `https://${ apiData.address }:${ apiData.port }/poll`
-      const terminalUrl = `https://${ apiData.address }:${ apiData.port }/`
-      let force = true;
+      const apiUrl = this.fetchApiUrl()
+      if(apiUrl) {
 
-      this.terminalFeed = interval(30000).pipe(
-        startWith(0),
-        switchMap(() => this.httpClient.get(pollUrl, { withCredentials: true })),
-        filter(result => {
-          const fetch = force || result as boolean
-          force = false
-          return fetch
-        }),
-        switchMap(() => this.httpClient.get(terminalUrl, { withCredentials: true })),
-        map(response => response as FieldData[][])
-      )
+        const pollUrl = `${ apiUrl }/poll`
+        let force = true;
+
+        this.terminalFeed = interval(5000).pipe(
+          startWith(0),
+          switchMap(() => this.httpClient.get(pollUrl, { withCredentials: true })),
+          filter(result => {
+            const fetch = force || result as boolean
+            force = false
+            return fetch
+          }),
+          switchMap(() => this.httpClient.get(apiUrl, { withCredentials: true })),
+          map(response => response as FieldData[][])
+        )
+      }
     }
 
-    this.terminalFeed.subscribe(observer)
+    this.terminalFeed?.subscribe(observer)
   }
 
   sendKey(aid : Aid) {
 
-    const apiDataStr = sessionStorage.getItem(this.KEY_API_ADDRESS)
-    if(apiDataStr == null) { return; }
-    const apiData = JSON.parse(apiDataStr) as ConnectionData
-    const apiUrl = `https://${ apiData.address }:${ apiData.port }/`
+    const apiUrl = this.fetchApiUrl()
+    if(!apiUrl) {
+      return Promise.reject("null apiUrl")
+    }
 
     const fieldSubmission : Partial<FieldSubmission> = {
       aid: aid
     }
 
-    return firstValueFrom(this.httpClient.post(apiUrl, fieldSubmission, { withCredentials: true }).pipe(
+    return firstValueFrom(this.httpClient.post(apiUrl!, fieldSubmission, { withCredentials: true }).pipe(
       delay(2000),
-      switchMap(() => this.httpClient.get(apiUrl, { withCredentials: true })),
+      switchMap(() => this.httpClient.get(apiUrl!, { withCredentials: true })),
       map(response => response as FieldData[][]),
     ))
+  }
+
+  sendFields(aid : Aid, cursorRow : number, cursorCol : number, fieldData : FieldData[]) {
+
+    const apiUrl = this.fetchApiUrl()
+    if(!apiUrl) {
+      return Promise.reject("null apiUrl")
+    }
+
+    const fieldSubmission : FieldSubmission = {
+      aid: aid,
+      cursorRow : cursorRow,
+      cursorCol : cursorCol,
+      fieldData : fieldData
+    }
+
+    return firstValueFrom(this.httpClient.post(apiUrl!, fieldSubmission, { withCredentials: true }).pipe(
+      delay(2000),
+      switchMap(() => this.httpClient.get(apiUrl!, { withCredentials: true })),
+      map(response => response as FieldData[][]),
+    ))
+  }
+
+  private fetchApiUrl() : string | null {
+    const apiDataStr = sessionStorage.getItem(this.KEY_API_ADDRESS)
+    if(apiDataStr == null) { return null; }
+    const apiData = JSON.parse(apiDataStr) as ConnectionData
+    const apiUrl = `https://${ apiData.address }:${ apiData.port }`
+
+    return apiUrl
   }
 }
 

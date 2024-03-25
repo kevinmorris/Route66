@@ -1,4 +1,4 @@
-<div id="container" class="border-zero" tabindex="0">
+<div id="container" class="border-zero" tabindex="0" (keyup.enter)="enter()">
   <div>
     <button class="keypad-button" (click)="reset()">Reset</button>
     <button class="keypad-button" (click)="functionKey(Aid.PA1)">PA1</button>
@@ -21,6 +21,11 @@
     <button class="keypad-button" (click)="functionKey(Aid.PF11)">PF11</button>
     <button class="keypad-button" (click)="functionKey(Aid.PF12)">PF12</button>
   </div>
+
+  <app-row *ngFor="let data of fieldData; index as i"
+           [index]="i"
+           [fieldData]="data"
+           (focused)="onFocusChanged($event)">
+  </app-row>
 </div>
 
-<app-row *ngFor="let data of fieldData; index as i" [index]="i" [fieldData]="data"></app-row>

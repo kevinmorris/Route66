@@ -3,14 +3,14 @@
 <div class="row">
 @for(var i = 0; i<_fieldData.Count(); i++)
 {
-    var data = _fieldData[i];
-    if (data.IsProtected)
+    var index = i;
+    if (_fieldData[index].IsProtected)
     {
-        <LabelField FieldData="data"/> 
+        <LabelField FieldData="_fieldData[index]"/> 
     }
     else
     {
-        <InputField @bind-FieldData="data" />
+        <InputField @bind-FieldData="_fieldData[index]" />
     }
 }
 </div>

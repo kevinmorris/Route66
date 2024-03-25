@@ -26,7 +26,7 @@
   Successfully Connected.  Forwarding you to terminal in 1 second
 </p>
 
-<button (click)="submit()">Submit</button>
+<button *ngIf="!connectSuccess" (click)="submit()">Submit</button>
 
 
 
