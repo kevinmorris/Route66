@@ -19,6 +19,11 @@ export class InputFieldComponent {
   @Output() focused = new EventEmitter<[number, number]>();
 
   onFocus() {
+    this.fieldData.value = this.fieldData.value.trim()
     this.focused.emit([this.fieldData.row, this.fieldData.col])
+  }
+
+  valueChanged(value : string) {
+    this.fieldData.value = value.trim()
   }
 }

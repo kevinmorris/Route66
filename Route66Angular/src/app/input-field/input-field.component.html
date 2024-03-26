@@ -1,4 +1,5 @@
 <input [ngStyle]="{ 'left.ch': fieldData.col, 'width.ch': fieldData.length }"
        [(ngModel)]="fieldData.value"
+       (ngModelChange)="valueChanged($event)"
        (focus)="onFocus()"
 />
