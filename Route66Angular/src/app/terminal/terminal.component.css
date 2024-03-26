@@ -2,3 +2,19 @@
   outline: none;
   border: none;
 }
+
+.spinner {
+  float: right;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: conic-gradient(white 10%, blue);
+  mask-image: radial-gradient(circle at center, transparent 40%, black 60%);
+  animation: spinner-zp9dbg 1s infinite linear;
+}
+
+@keyframes spinner-zp9dbg {
+  to {
+    transform: rotate(1turn);
+  }
+}

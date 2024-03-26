@@ -3,7 +3,7 @@ import { Route66Service } from "../services/route66.service";
 import { FieldData } from "../models/field-data";
 import { RowComponent } from "../row/row.component";
 import { Observer } from "rxjs";
-import { NgForOf } from "@angular/common";
+import { NgForOf, NgIf } from "@angular/common";
 import { Aid } from "../models/aid";
 
 @Component({
@@ -11,7 +11,8 @@ import { Aid } from "../models/aid";
   standalone: true,
   imports: [
     RowComponent,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './terminal.component.html',
   styleUrl: './terminal.component.css'
@@ -20,9 +21,11 @@ export class TerminalComponent {
 
   fieldData : FieldData[][];
   cursor : [number, number] | undefined
+  wait : boolean
 
   constructor(private route66Service: Route66Service) {
     this.fieldData = [];
+    this.wait = false
   }
 
   onFocusChanged(cursor : [number, number]) {
@@ -54,12 +57,15 @@ export class TerminalComponent {
   }
 
   enter() {
+    this.wait = true
     this.sendUserData(Aid.ENTER)
   }
 
   functionKey(aid : Aid) {
+    this.wait = true
     this.route66Service.sendKey(aid)?.then(fd => {
       this.fieldData = fd;
+      this.wait = false
     })
   }
   sendUserData(aid : Aid) {
@@ -83,6 +89,7 @@ export class TerminalComponent {
       }
     })().then((fd : FieldData[][]) => {
       this.fieldData = fd
+      this.wait = false
     })
   }
 
