@@ -77,7 +77,7 @@ export class Route66Service {
     }
 
     return firstValueFrom(this.httpClient.post(apiUrl!, fieldSubmission, { withCredentials: true }).pipe(
-      delay(1000),
+      delay(3000),
       switchMap(() => this.httpClient.get(apiUrl!, { withCredentials: true })),
       map(response => response as FieldData[][]),
     ))
@@ -98,7 +98,7 @@ export class Route66Service {
     }
 
     return firstValueFrom(this.httpClient.post(apiUrl!, fieldSubmission, { withCredentials: true }).pipe(
-      delay(2000),
+      delay(3000),
       switchMap(() => this.httpClient.get(apiUrl!, { withCredentials: true })),
       map(response => response as FieldData[][]),
     ))

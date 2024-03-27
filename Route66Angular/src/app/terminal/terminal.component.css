@@ -3,18 +3,43 @@
   border: none;
 }
 
-.spinner {
-  float: right;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: conic-gradient(white 10%, blue);
-  mask-image: radial-gradient(circle at center, transparent 40%, black 60%);
-  animation: spinner-zp9dbg 1s infinite linear;
+#container {
+  width: 80ch;
+  font-family: Consolas, monospace;
+  font-size: 16px;
+  overflow: hidden;
 }
 
-@keyframes spinner-zp9dbg {
-  to {
-    transform: rotate(1turn);
+.wait {
+  width: 25%;
+  height: 2px;
+  margin-top: 10px;
+  position: relative;
+  background: linear-gradient(to right, white 0%, #8080ff 75%, blue 100%);
+  animation: move-line 2s linear infinite;
+}
+
+.error {
+  color: red;
+}
+
+@keyframes move-line {
+  0% {
+    left: -25%;
+    transform: scaleX(1);
+  }
+  49.99% {
+    transform: scale(1);
+  }
+  50% {
+    left: 100%;
+    transform: scaleX(-1);
+  }
+  99.99% {
+    transform: scaleX(-1);
+  }
+  100% {
+    left: -25%;
+    transform: scaleX(1);
   }
 }

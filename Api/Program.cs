@@ -6,7 +6,8 @@ using Services.Translators;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddLogging(b => b.AddConsole().SetMinimumLevel(LogLevel.Trace));
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddTransient(s => new TN3270Service<IEnumerable<FieldData>>(new Poco3270Translator()));
 builder.Services.AddSingleton<TerminalStatePool>();

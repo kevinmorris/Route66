@@ -6,7 +6,6 @@
     <button class="keypad-button" (click)="functionKey(Aid.PA3)">PA3</button>
     <button class="keypad-button" (click)="functionKey(Aid.SYSREQ)">Sys Req</button>
     <button class="keypad-button" (click)="functionKey(Aid.CLEAR)">Clear</button>
-    <div *ngIf="wait" class="spinner"></div>
   </div>
   <div>
     <button class="keypad-button" (click)="functionKey(Aid.PF1)">PF1</button>
@@ -28,5 +27,7 @@
            [fieldData]="data"
            (focused)="onFocusChanged($event)">
   </app-row>
+  <div *ngIf="wait" class="wait"></div>
+  <p *ngIf="errorMessage" class="error">{{errorMessage}}</p>
 </div>
 

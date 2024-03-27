@@ -24,6 +24,7 @@ export class InputFieldComponent {
   }
 
   valueChanged(value : string) {
+    this.fieldData.dirty = true
     this.fieldData.value = value.trim()
   }
 }
