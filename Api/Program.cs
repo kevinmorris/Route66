@@ -40,6 +40,13 @@ app.UseCors(b =>
     b.AllowCredentials();
 });
 
+var webSocketOptions = new WebSocketOptions();
+
+//TODO: Set allowed websocket origins here
+webSocketOptions.AllowedOrigins.Add("http://localhost:63343");
+
+app.UseWebSockets(webSocketOptions);
+
 app.UseSession();
 app.MapControllers();
 
