@@ -2,9 +2,12 @@
 {
     public enum WebSocketInstruction
     {
+        OK,
         CONNECT,
-        SET_SESSION_KEY,
+        STARTING_CONNECTION,
         DISPLAY,
-        SEND_TERMINAL_KEY
+        ROW,
+        SUBMIT_FIELDS,
+        ERROR
     }
 }

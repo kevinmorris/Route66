@@ -12,12 +12,13 @@ namespace Api.State
 
         public TerminalState? this[string key] => _pool.TryGetValue(key, out var item) ? item : null;
 
-        public void Start(string key, string address, int port)
+        public void Start(string key, string address, int port, EventHandler<FieldsChangedEventArgs>? customHandler)
         {
             var terminalState = new TerminalState(
                 serviceProvider.GetService<TN3270Service<IEnumerable<FieldData>>>(),
                 address,
-                port);
+                port,
+                customHandler);
 
             _pool[key] = terminalState;
         }

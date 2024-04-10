@@ -12,6 +12,8 @@ namespace Api.State
         private readonly IEnumerable<FieldData>[] _fieldData;
         private readonly ITN3270Service<IEnumerable<FieldData>> _tn3270Service;
 
+        public event EventHandler<FieldsChangedEventArgs>? FieldsChanged;
+
         public IEnumerable<FieldData>[] FieldData
         {
             get
@@ -21,10 +23,19 @@ namespace Api.State
             }
         }
 
-        public TerminalState(ITN3270Service<IEnumerable<FieldData>> tn3270Service, string address, int port)
+        public TerminalState(
+            ITN3270Service<IEnumerable<FieldData>> tn3270Service,
+            string address,
+            int port,
+            EventHandler<FieldsChangedEventArgs>? customHandler)
         {
             _tn3270Service = tn3270Service;
             _fieldData = new IEnumerable<FieldData>[Util.Constants.SCREEN_HEIGHT];
+            if (customHandler != null)
+            {
+                FieldsChanged += customHandler;
+            }
+
             for (var i = 0; i < _tn3270Service.Handlers.Length; i++)
             {
                 _tn3270Service.Handlers[i].RowUpdated += RowUpdatedFunc(i);
@@ -47,6 +58,7 @@ namespace Api.State
             return (sender, args) =>
             {
                 FieldData[row] = args.Data;
+                FieldsChanged?.Invoke(this, new FieldsChangedEventArgs(row, args.Data));
                 NewDataAvailable = true;
             };
         }

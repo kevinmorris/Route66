@@ -20,7 +20,7 @@ namespace Api.Controllers
                 Guid.NewGuid().ToString();
 
             HttpContext.Session.SetString(KEY_TERMINAL_STATE, terminalStateKey);
-            pool.Start(terminalStateKey, connection.Address, connection.Port);
+            pool.Start(terminalStateKey, connection.Address, connection.Port, null);
 
             return Ok();
         }

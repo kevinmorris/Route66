@@ -1,7 +1,10 @@
-﻿using System.Text;
+﻿using System.Net.WebSockets;
+using System.Text;
 using Api.Models.WebSocket;
 using Api.State;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -25,12 +28,12 @@ namespace Api.Controllers
 
                 while (!result.CloseStatus.HasValue)
                 {
-                    var output = CreateMessage(buffer);
-                    await webSocket.SendAsync(
-                        new ArraySegment<byte>(output, 0, output.Length),
-                        result.MessageType,
-                        result.EndOfMessage,
-                        CancellationToken.None);
+                    var outboundMessage = await CreateMessage(buffer, webSocket);
+                    if (outboundMessage is StartingConnectionResponse sc)
+                    {
+                        Start(sc, webSocket);
+                    }
+                    await SendMessage(webSocket, outboundMessage);
 
                     result = await webSocket.ReceiveAsync(buffer, CancellationToken.None);
                 }
@@ -46,7 +49,7 @@ namespace Api.Controllers
             }
         }
 
-        private byte[] CreateMessage(byte[] input)
+        private async Task<IWebSocketMessage> CreateMessage(byte[] input, WebSocket webSocket)
         {
             var inJson = Encoding.UTF8.GetString(input);
             dynamic inboundMessage = JObject.Parse(inJson);
@@ -56,42 +59,73 @@ namespace Api.Controllers
             switch(instruction) {
                 case WebSocketInstruction.CONNECT:
                     var connectRequest = (ConnectRequest)inboundMessage.ToObject<ConnectRequest>();
-                    outboundMessage = new SetSessionKeyResponse
-                    {
-                        SessionKey = Start(connectRequest)
-                    };
+                    outboundMessage = new StartingConnectionResponse(
+                        Guid.NewGuid().ToString(),
+                        connectRequest.Address,
+                        connectRequest.Port);
                     break;
 
                 case WebSocketInstruction.DISPLAY:
                     var displayRequest = (DisplayRequest)inboundMessage.ToObject<DisplayRequest>();
-                    outboundMessage = new DisplayResponse
-                    {
-                        FieldData = GetFieldData(displayRequest.SessionKey)
-                    };
+                    outboundMessage = GetFieldData(displayRequest.SessionKey);
+                    break;
+
+                case WebSocketInstruction.SUBMIT_FIELDS:
+                    var submitRequest = (SubmitFieldsRequest)inboundMessage.ToObject<SubmitFieldsRequest>();
+                    outboundMessage = await SubmitFields(submitRequest);
+                    break;
+
+                case WebSocketInstruction.OK:
+                    outboundMessage = new OkResponse();
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    outboundMessage = new ErrorResponse("Invalid web socket instruction");
+                    break;
             }
 
-            var outJson = JsonConvert.SerializeObject(outboundMessage);
-            return Encoding.UTF8.GetBytes(outJson);
+            return outboundMessage;
         }
 
-        private string Start(ConnectRequest connectRequest)
+        private void Start(StartingConnectionResponse connect, WebSocket webSocket)
         {
-            var sessionKey = Guid.NewGuid().ToString();
-            pool.Start(sessionKey, connectRequest.Address, connectRequest.Port);
-
-            return sessionKey;
+            pool.Start(connect.SessionKey, connect.Address, connect.Port, async (sender, args) =>
+            {
+                var outboundMessage = new RowResponse(args.Row, args.FieldData);
+                await SendMessage(webSocket, outboundMessage);
+            });
         }
 
-        private IEnumerable<FieldData>[] GetFieldData(string sessionKey)
+        private IWebSocketMessage GetFieldData(string sessionKey)
         {
             var terminalState = pool[sessionKey];
-            return terminalState == null
-                ? throw new InvalidOperationException($"{sessionKey} is invalid")
-                : terminalState.FieldData;
+            return terminalState != null
+                ? new DisplayResponse(terminalState.FieldData)
+                : new ErrorResponse($"{sessionKey} is invalid");
+        }
+
+        private async Task<IWebSocketMessage> SubmitFields(SubmitFieldsRequest request)
+        {
+            var terminalState = pool[request.SessionKey];
+            if (terminalState == null)
+            {
+                return new ErrorResponse($"{request.SessionKey} is invalid");
+            }
+
+            await terminalState.SendFields(request.Submission);
+            return new OkResponse();
+        }
+
+        private async Task SendMessage(WebSocket webSocket, IWebSocketMessage message)
+        {
+            var outJson = JsonConvert.SerializeObject(message);
+            var output = Encoding.UTF8.GetBytes(outJson);
+
+            await webSocket.SendAsync(
+                new ArraySegment<byte>(output, 0, output.Length),
+                WebSocketMessageType.Text,
+                true,
+                CancellationToken.None);
         }
     }
 }
