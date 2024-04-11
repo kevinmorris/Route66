@@ -45,6 +45,12 @@ namespace Tests.Api
             var mockHandler1 = new Mock<IRowHandler<IEnumerable<FieldData>>>();
             var mockService = new Mock<ITN3270Service<IEnumerable<FieldData>>>();
 
+            bool[] customHandlerCalled = [false, false];
+            void CustomHandler(object? sender, FieldsChangedEventArgs args)
+            {
+                customHandlerCalled[args.Row] = true;
+            }
+
             mockService
                 .Setup(s => s.Handlers)
                 .Returns([
@@ -55,7 +61,7 @@ namespace Tests.Api
             mockService
                 .Setup(s => s.Connect(It.IsAny<string>(), It.IsAny<int>()));
 
-            var terminalState = new TerminalState(mockService.Object, "", 0, null);
+            var terminalState = new TerminalState(mockService.Object, "", 0, CustomHandler);
             Assert.False(terminalState.NewDataAvailable);
 
             mockHandler0.Raise(h => h.RowUpdated += null,
@@ -77,7 +83,7 @@ namespace Tests.Api
             Assert.AreEqual(expectedFieldData1, actual[1]);
 
             Assert.False(terminalState.NewDataAvailable);
-
+            Assert.True(customHandlerCalled.All(x => x));
         }
     }
 }
