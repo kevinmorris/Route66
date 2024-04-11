@@ -55,7 +55,7 @@ namespace Tests.Api
             mockService
                 .Setup(s => s.Connect(It.IsAny<string>(), It.IsAny<int>()));
 
-            var terminalState = new TerminalState(mockService.Object, "", 0);
+            var terminalState = new TerminalState(mockService.Object, "", 0, null);
             Assert.False(terminalState.NewDataAvailable);
 
             mockHandler0.Raise(h => h.RowUpdated += null,
