@@ -18,3 +18,5 @@ Api/bin/*
 Api/obj/*
 Route66Angular/server.crt
 Route66Angular/server.key
+docker-tk5-debian/mvs-tk5.zip
+route66-react/.idea/*
