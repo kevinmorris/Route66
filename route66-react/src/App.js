@@ -1,19 +1,24 @@
 import './App.css';
 import Label from "./Label";
 import Input from "./Input";
-import {useState} from "react";
+import useWebSocket, { ReadyState } from "react-use-websocket";
+import Terminal from "./Terminal";
+
 
 function App() {
 
-  const [fieldData, setFieldData] = useState({ col: 4, value: "HERC01"});
-  const onValueChange = (value) => {
-    console.info("XXXXXA128", value);
-    setFieldData({ ...fieldData, value })
-  }
+  const {
+    sendJsonMessage,
+    lastJsonMessage,
+    readyState
+  } = useWebSocket("ws://127.0.0.1:7149/ws", {
+    onError: (err) => {
+      console.error("XXXXXA128", err)
+    }
+  });
 
-  return (
-    <Input fieldData={fieldData} valueChanged={onValueChange}/>
-  );
+  console.info("XXXXXA128", readyState)
+  return <Terminal webSocket={{sendJsonMessage, lastJsonMessage, readyState}}/>
 }
 
 export default App;
