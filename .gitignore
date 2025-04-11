@@ -18,3 +18,5 @@ Api/bin/*
 Api/obj/*
 Route66Angular/server.crt
 Route66Angular/server.key
+route66-react/node_modules/*
+route66-react/.idea/*
