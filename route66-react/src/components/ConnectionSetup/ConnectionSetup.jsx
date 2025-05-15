@@ -1,5 +1,5 @@
 import useWebSocket from "react-use-websocket";
-import Terminal from "./Terminal";
+import Terminal from "../Terminal/Terminal";
 import {useState} from "react";
 
 export default function ConnectionSetup() {

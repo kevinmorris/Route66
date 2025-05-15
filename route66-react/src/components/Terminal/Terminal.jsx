@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import {ReadyState} from "react-use-websocket";
-import WebSocketInstruction from "./WebSocketInstruction";
-import Constants from "./Constants";
-import Row from "./Row";
+import WebSocketInstruction from "../../WebSocketInstruction";
+import Constants from "../../Constants";
+import Row from "../Row/Row";
 
 export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, readyState}}) {
 

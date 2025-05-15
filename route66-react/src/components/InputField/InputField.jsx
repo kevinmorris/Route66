@@ -1,4 +1,4 @@
-import styles from './css/InputField.module.css';
+import styles from './InputField.module.css';
 
 export default function InputField({fieldData, valueChanged }) {
 

@@ -1,5 +1,5 @@
 import './App.css';
-import ConnectionSetup from "./ConnectionSetup";
+import ConnectionSetup from "./components/ConnectionSetup/ConnectionSetup";
 
 function App() {
 
