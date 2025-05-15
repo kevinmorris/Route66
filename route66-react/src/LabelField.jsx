@@ -1,6 +1,6 @@
-import styles from './css/Label.module.css';
+import styles from './css/LabelField.module.css';
 
-export default function Label({ fieldData }) {
+export default function LabelField({ fieldData }) {
 
     const style = {
         "left": fieldData.col + 'ch'

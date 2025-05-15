@@ -1,6 +1,6 @@
-import styles from './css/Input.module.css';
+import styles from './css/InputField.module.css';
 
-export default function Input({fieldData, valueChanged }) {
+export default function InputField({fieldData, valueChanged }) {
 
     const style = {
         left: fieldData.col + 'ch',
