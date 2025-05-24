@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import LabelField from "./LabelField";
 
 test('renders label field', () => {
-    render(<LabelField row={3} fieldData={{col: 5, value: "Alpha" }}/>);
+    render(<LabelField fieldData={{row: 3, col: 5, value: "Alpha" }}/>);
     const labelElement = screen.getByTestId("3-5");
     expect(labelElement).toBeInTheDocument();
     expect(labelElement).toHaveTextContent("Alpha");

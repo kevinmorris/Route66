@@ -1,6 +1,6 @@
 import styles from './InputField.module.css';
 
-export default function InputField({fieldData, valueChanged }) {
+export default function InputField({fieldData, valueChanged, inputFocused }) {
 
     const style = {
         left: fieldData.col + 'ch',
@@ -11,7 +11,8 @@ export default function InputField({fieldData, valueChanged }) {
         <input
             style={style}
             value={fieldData.value}
-            onInput={(event) => valueChanged(event.target.value)}
+            onInput={(event) => valueChanged(fieldData.row, fieldData.col, event.target.value)}
+            onFocus={(event) => inputFocused(fieldData.row, fieldData.col)}
         />);
 
 }
