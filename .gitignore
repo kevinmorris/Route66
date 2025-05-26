@@ -21,3 +21,5 @@ Route66Angular/server.key
 docker-tk5-debian/mvs-tk5.zip
 route66-react/.idea/*
 Route66.sln.DotSettings.user
+route66-vue/.idea/*
+route66-vue/node_modules/*
