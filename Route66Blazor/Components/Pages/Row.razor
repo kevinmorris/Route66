@@ -1,11 +1,4 @@
 ﻿@using Route66Blazor.Components.Fields
-@using Services.Models
-
-@code {
-    private void Callback(FieldData fieldData, int index)
-    {
-    }
-}
 
 <div class="row">
 @for(var i = 0; i<_fieldData.Count(); i++)
@@ -13,12 +6,11 @@
     var index = i;
     if (_fieldData[index].IsProtected)
     {
-        <LabelField FieldData="_fieldData[index]"/>
+        <LabelField FieldData="_fieldData[index]"/> 
     }
     else
     {
-        @* <InputField bind-FieldData="_fieldData[index]"></InputField> *@
-        <InputField FieldData="_fieldData[index]" FieldDataChanged="(fieldData) => Callback(fieldData, index)" />
+        <InputField @bind-FieldData="_fieldData[index]" />
     }
 }
 </div>
