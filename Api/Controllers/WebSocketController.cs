@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using Services.Models;
 
 namespace Api.Controllers
@@ -15,6 +16,11 @@ namespace Api.Controllers
     [ApiController]
     public class WebSocketController(TerminalStatePool pool) : ControllerBase
     {
+        private readonly JsonSerializerSettings _jsonSerializerSettings = new()
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+        };
+
         [Route("/ws")]
         public async Task Connect()
         {
@@ -118,7 +124,7 @@ namespace Api.Controllers
 
         private async Task SendMessage(WebSocket webSocket, IWebSocketMessage message)
         {
-            var outJson = JsonConvert.SerializeObject(message);
+            var outJson = JsonConvert.SerializeObject(message, _jsonSerializerSettings);
             var output = Encoding.UTF8.GetBytes(outJson);
 
             await webSocket.SendAsync(
