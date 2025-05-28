@@ -30,11 +30,39 @@ export function processMessage(lastJsonMessage, setSessionKey, processRow) {
 }
 
 export function processRow(setFieldData) {
-    return function(message) {
-        const index = message.row;
+    return function(rowMessage) {
+        const index = rowMessage.row;
 
         setFieldData(prevFields => {
-            return prevFields.map((field, i) => i === index ? message.fieldData : field);
+            return prevFields.map((field, i) => i === index ? rowMessage.fieldData : field);
         })
     }
+}
+
+export function createFieldSubmission(cursor, fieldData) {
+
+    const dirtyFields = fieldData.flatMap(row => {
+        return row.filter(field => field.dirty && !field.isProtected)
+    });
+
+    const strippedFields = dirtyFields.map(field => {
+        return Object.fromEntries(Object.entries(field).filter(([key]) => {
+            return [ 'row', 'col', 'value', 'address' ].includes(key)
+        }))
+    });
+
+    const cursorField = strippedFields.find(f => f.row === cursor[0] && f.col === cursor[1]) ||
+        strippedFields.at(-1);
+
+    const cursorSubmission = {
+        cursorRow: cursor[0],
+        cursorCol: cursorField?.col != null ?
+            (cursorField.col + cursorField.value.length)
+            : cursor[1]
+    };
+
+    return {
+        ...cursorSubmission,
+        fieldData: strippedFields
+    };
 }
