@@ -1,0 +1,26 @@
+{
+    "row": 22,
+    "fieldData": [
+        {
+            "row": 22,
+            "col": 0,
+            "value": "Logon ===>",
+            "isProtected": true,
+            "address": 1760,
+            "length": 10,
+            "dirty": false,
+            "cursor": -1
+        },
+        {
+            "row": 22,
+            "col": 11,
+            "value": "                                                                     ",
+            "isProtected": false,
+            "address": 1771,
+            "length": 69,
+            "dirty": false,
+            "cursor": 11
+        }
+    ],
+    "instruction": 4
+}

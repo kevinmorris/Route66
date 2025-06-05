@@ -28,7 +28,7 @@
     [CascadingParameter(Name = "CursorAction")]
     public Action<(int, int)>? CursorAction { get; set; }
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
         _fieldData = FieldData with
         {
