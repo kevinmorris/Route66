@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {ReadyState} from "react-use-websocket";
 import Constants from "../../Constants";
 import Row from "../Row/Row";
-import {inputValueChanged, processMessage, processRow} from "../../services/terminal_services";
+import {createFieldSubmission, inputValueChanged, processMessage, processRow} from "../../services/terminal_services";
 
 export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, readyState}}) {
 
@@ -11,11 +11,8 @@ export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, 
     const [fieldData, setFieldData] = useState(rowRange.map(() => []));
     const [cursor, setCursor] = useState([-1, -1])
 
-    console.info("XXXXXA256", lastJsonMessage)
-
     useEffect(() => {
         if(readyState === ReadyState.OPEN) {
-            console.info("XXXXXA192")
             sendJsonMessage({
                 instruction: 1,
                 address: "127.0.0.1",
@@ -25,11 +22,44 @@ export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, 
     }, [readyState])
 
     useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown)
+        return () => window.removeEventListener('keydown', handleKeyDown)
+    })
+
+    useEffect(() => {
         processMessage(lastJsonMessage, setSessionKey, processRow(setFieldData))
     }, [lastJsonMessage]);
 
-    function functionKey(key) {
+    function handleKeyDown(event) {
+        if(event.key === 'Enter') {
+            enterKey();
+        }
+    }
 
+    function functionKey(key) {
+        const body = {
+            instruction: Constants.WEB_SOCKET_INSTRUCTION.SUBMIT_FIELDS,
+            sessionKey: sessionKey,
+            submission: {
+                aid: key,
+            }
+        }
+
+        sendJsonMessage(body)
+    }
+
+    function enterKey() {
+        const fieldSubmission = createFieldSubmission(cursor, fieldData)
+        const body = {
+            instruction: Constants.WEB_SOCKET_INSTRUCTION.SUBMIT_FIELDS,
+            sessionKey: sessionKey,
+            submission: {
+                aid: Constants.AID.ENTER,
+                ...fieldSubmission
+            }
+        }
+
+        sendJsonMessage(body)
     }
 
     const rows = rowRange.map(i => <Row i={i}

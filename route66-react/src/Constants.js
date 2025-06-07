@@ -1,5 +1,14 @@
 const Constants = Object.freeze({
     SCREEN_HEIGHT: 24,
+    WEB_SOCKET_INSTRUCTION: {
+        OK: 0,
+        CONNECT: 1,
+        STARTING_CONNECTION: 2,
+        DISPLAY: 3,
+        ROW: 4,
+        SUBMIT_FIELDS: 5,
+        ERROR: 6
+    },
     AID: {
         NO_AID: "NO_AID",
         STRUCTURED_FIELD: "STRUCTURED_FIELD",
