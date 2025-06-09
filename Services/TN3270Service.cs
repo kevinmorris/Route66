@@ -457,18 +457,20 @@ namespace Services
         public (int, int) OrderRepeatToAddress(Span<byte> data, int i, int a)
         {
             i += 1;
+            var startCoords = new Coords(a);
             var stopA = BinaryUtil.BufferAddress(data.Slice(i, 2));
+            var stopCoords = new Coords(stopA);
             i += 2;
 
-            for (var j = a; j < stopA; j++)
+            var d = data[i];
+            for (var j = startCoords; j < stopCoords; j = j.Increment())
             {
-                var (row, col) = BinaryUtil.AddressCoordinates(j);
-                row %= Handlers.Length;
-
-                Handlers[row].SetCharacter(col, data[i]);
+                Handlers[j.Row].SetCharacter(j.Col, d);
+                a += 1;
             }
 
-            return (i, stopA);
+            i += 1;
+            return (i, a);
         }
 
         /// <summary>

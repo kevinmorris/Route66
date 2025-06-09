@@ -36,7 +36,7 @@ namespace Tests
                 };
             }
 
-            _service.ProcessOutbound(data, 0, new Coords());
+            _service.ProcessOutbound(data, 0, 0);
             foreach (var rowHandler in _service.Handlers)
             {
                 rowHandler.Update();
@@ -721,25 +721,25 @@ namespace Tests
             Assert.AreEqual("<row>\r\n  <label row=\"2\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[2]);
             Assert.AreEqual("<row>\r\n  <label row=\"3\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[3]);
             Assert.AreEqual("<row>\r\n  <label row=\"4\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[4]);
-            Assert.AreEqual("<row>\r\n  <label row=\"5\" col=\"0\" length=\"59\">                                                           </label>\r\n</row>", rowXml[5]);
-            Assert.AreEqual("<row>\r\n  <label row=\"6\" col=\"0\" length=\"59\">                                                           </label>\r\n</row>", rowXml[6]);
-            // Assert.AreEqual("<row />", rowXml[7]);
-            // Assert.AreEqual("<row />", rowXml[8]);
-            // Assert.AreEqual("<row />", rowXml[9]);
-            // Assert.AreEqual("<row />", rowXml[10]);
-            // Assert.AreEqual("<row />", rowXml[11]);
-            // Assert.AreEqual("<row />", rowXml[12]);
-            // Assert.AreEqual("<row />", rowXml[13]);
-            // Assert.AreEqual("<row />", rowXml[14]);
-            // Assert.AreEqual("<row />", rowXml[15]);
-            // Assert.AreEqual("<row />", rowXml[16]);
-            // Assert.AreEqual("<row />", rowXml[17]);
-            // Assert.AreEqual("<row />", rowXml[18]);
-            // Assert.AreEqual("<row />", rowXml[19]);
-            // Assert.AreEqual("<row />", rowXml[20]);
-            // Assert.AreEqual("<row />", rowXml[21]);
-            // Assert.AreEqual("<row />", rowXml[22]);
-            // Assert.AreEqual("<row />", rowXml[23]);
+            Assert.AreEqual("<row>\r\n  <label row=\"5\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[5]);
+            Assert.AreEqual("<row>\r\n  <label row=\"6\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[6]);
+            Assert.AreEqual("<row>\r\n  <label row=\"7\" col=\"1\" length=\"26\">      NAME OF NEW DATA SET</label>\r\n  <label row=\"7\" col=\"28\" length=\"3\">==&gt;</label>\r\n  <input row=\"7\" col=\"32\" address=\"592\" cursor=\"0\" length=\"46\">                                              </input>\r\n  <label row=\"7\" col=\"79\" length=\"1\"> </label>\r\n</row>", rowXml[7]);
+            Assert.AreEqual("<row>\r\n  <label row=\"8\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[8]);
+            Assert.AreEqual("<row>\r\n  <label row=\"9\" col=\"0\" length=\"27\">              RECORD FORMAT</label>\r\n  <label row=\"9\" col=\"28\" length=\"3\">==&gt;</label>\r\n  <input row=\"9\" col=\"32\" address=\"752\" length=\"5\">     </input>\r\n  <label row=\"9\" col=\"38\" length=\"42\">                                          </label>\r\n</row>", rowXml[9]);
+            Assert.AreEqual("<row>\r\n  <label row=\"10\" col=\"0\" length=\"27\">      LOGICAL RECORD LENGTH</label>\r\n  <label row=\"10\" col=\"28\" length=\"3\">==&gt;</label>\r\n  <input row=\"10\" col=\"32\" address=\"832\" length=\"5\">0    </input>\r\n  <label row=\"10\" col=\"38\" length=\"42\">                                          </label>\r\n</row>", rowXml[10]);
+            Assert.AreEqual("<row>\r\n  <label row=\"11\" col=\"0\" length=\"27\">        PHYSICAL BLOCK SIZE</label>\r\n  <label row=\"11\" col=\"28\" length=\"3\">==&gt;</label>\r\n  <input row=\"11\" col=\"32\" address=\"912\" length=\"5\">0    </input>\r\n  <label row=\"11\" col=\"38\" length=\"42\">                                          </label>\r\n</row>", rowXml[11]);
+            Assert.AreEqual("<row>\r\n  <label row=\"12\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[12]);
+            Assert.AreEqual("<row>\r\n  <label row=\"13\" col=\"0\" length=\"27\">                     VOLUME</label>\r\n  <label row=\"13\" col=\"28\" length=\"3\">==&gt;</label>\r\n  <input row=\"13\" col=\"32\" address=\"1072\" length=\"6\">      </input>\r\n  <label row=\"13\" col=\"39\" length=\"41\">                                         </label>\r\n</row>", rowXml[13]);
+            Assert.AreEqual("<row>\r\n  <label row=\"14\" col=\"0\" length=\"27\">                       UNIT</label>\r\n  <label row=\"14\" col=\"28\" length=\"3\">==&gt;</label>\r\n  <input row=\"14\" col=\"32\" address=\"1152\" length=\"8\">        </input>\r\n  <label row=\"14\" col=\"41\" length=\"39\">                                       </label>\r\n</row>", rowXml[14]);
+            Assert.AreEqual("<row>\r\n  <label row=\"15\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[15]);
+            Assert.AreEqual("<row>\r\n  <label row=\"16\" col=\"0\" length=\"27\">      ALLOCATION SPACE UNIT</label>\r\n  <label row=\"16\" col=\"28\" length=\"3\">==&gt;</label>\r\n  <input row=\"16\" col=\"32\" address=\"1312\" length=\"1\">T</input>\r\n  <label row=\"16\" col=\"34\" length=\"7\">      (</label>\r\n  <label row=\"16\" col=\"42\" length=\"1\">T</label>\r\n  <label row=\"16\" col=\"44\" length=\"2\">OR</label>\r\n  <label row=\"16\" col=\"47\" length=\"1\">C</label>\r\n  <label row=\"16\" col=\"49\" length=\"2\">OR</label>\r\n  <label row=\"16\" col=\"52\" length=\"1\">B</label>\r\n  <label row=\"16\" col=\"54\" length=\"26\">)                         </label>\r\n</row>", rowXml[16]);
+            Assert.AreEqual("<row>\r\n  <label row=\"17\" col=\"0\" length=\"27\">     PRIMARY SPACE QUANTITY</label>\r\n  <label row=\"17\" col=\"28\" length=\"3\">==&gt;</label>\r\n  <input row=\"17\" col=\"32\" address=\"1392\" length=\"5\">0    </input>\r\n  <label row=\"17\" col=\"38\" length=\"42\">                                          </label>\r\n</row>", rowXml[17]);
+            Assert.AreEqual("<row>\r\n  <label row=\"18\" col=\"0\" length=\"27\">   SECONDARY SPACE QUANTITY</label>\r\n  <label row=\"18\" col=\"28\" length=\"3\">==&gt;</label>\r\n  <input row=\"18\" col=\"32\" address=\"1472\" length=\"5\">0    </input>\r\n  <label row=\"18\" col=\"38\" length=\"42\">                                          </label>\r\n</row>", rowXml[18]);
+            Assert.AreEqual("<row>\r\n  <label row=\"19\" col=\"0\" length=\"27\"> NUMBER OF DIRECTORY BLOCKS</label>\r\n  <label row=\"19\" col=\"28\" length=\"3\">==&gt;</label>\r\n  <input row=\"19\" col=\"32\" address=\"1552\" length=\"5\">0    </input>\r\n  <label row=\"19\" col=\"38\" length=\"42\">                                          </label>\r\n</row>", rowXml[19]);
+            Assert.AreEqual("<row>\r\n  <label row=\"20\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[20]);
+            Assert.AreEqual("<row>\r\n  <label row=\"21\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[21]);
+            Assert.AreEqual("<row>\r\n  <label row=\"22\" col=\"0\" length=\"80\">                                                                                </label>\r\n</row>", rowXml[22]);
+            Assert.AreEqual("<row>\r\n  <label row=\"23\" col=\"0\" length=\"80\">                                                                      6956K FREE</label>\r\n</row>", rowXml[23]);
         }
 
 
@@ -935,7 +935,7 @@ namespace Tests
                 0xf1, 0xc3, 0x11, 0x40, 0x40, 0x13, 0x3c, 0x5d, 0x7f, 0x00, 0xff, 0xef
             };
 
-            _service.ProcessOutbound(data, 0, new Coords());
+            _service.ProcessOutbound(data, 0, 0);
         }
 
         [TearDown]
