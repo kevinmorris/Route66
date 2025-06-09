@@ -4,6 +4,9 @@ namespace Services
 {
     public static class Telnet
     {
+        public const int SCREEN_WIDTH = 80;
+        public const int SCREEN_HEIGHT = 24;
+
         public const byte IAC = 0xff;
         public const byte BINARY_TRANSMISSION_ABILITY = 0x00;
         public const byte TERMINAL_TYPE_ABILITY = 0x18;
