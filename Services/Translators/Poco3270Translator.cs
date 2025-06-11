@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -11,99 +12,89 @@ namespace Services.Translators
 {
     public class Poco3270Translator : I3270Translator<IList<FieldData>>
     {
-        public int Row { get; set; }
         public IList<FieldData> Translate(
             byte[] buffer,
-            IDictionary<int, IDictionary<byte, byte>> attributeSet,
-            IDictionary<int, IDictionary<string, object>> route66AttributeSet)
+            IDictionary<byte, byte>[] attributeSet,
+            IDictionary<string, object>[] route66AttributeSet,
+            int cursor)
         {
-            var rowRoot = new List<FieldData>();
+            var gridRoot = new List<FieldData>();
             FieldData? current = null;
+            var address = -1;
+            Coords? nextCoords = null;
+            byte fieldAttribute = 0x00;
+
             var str = new StringBuilder();
 
-            for (var col = 0; col < buffer.Length; col++)
+            for (var index = 0; index < buffer.Length; index++)
             {
-                byte fieldAttribute = 0x00;
-                var structuredFieldStart =
-                    attributeSet.TryGetValue(col, out var attributes) &&
-                     attributes.TryGetValue(Attributes.FIELD, out fieldAttribute);
+                var d = buffer[index];
+                var row = index / Constants.SCREEN_WIDTH;
+                var col = index % Constants.SCREEN_WIDTH;
 
-                var address = -1;
-                if (route66AttributeSet.TryGetValue(col, out var route66Attributes) &&
-                    route66Attributes.TryGetValue(Route66Attributes.ADDRESS, out var attribute))
+                if (nextCoords != null)
                 {
-                    address = int.Parse(attribute?.ToString() ?? "-1");
-                }
-
-                var structuredFieldAhead =
-                    attributeSet.TryGetValue(col + 1, out var attributesAhead) &&
-                     attributesAhead.ContainsKey(Attributes.FIELD);
-
-                if (EBCDIC.Chars.ContainsKey(buffer[col]))
-                {
-                    if (structuredFieldStart)
+                    current = new FieldData()
                     {
-                        if (current != null)
-                        {   
-                            current.Value = str.ToString();
-                            current.Length = str.Length;
-                            rowRoot.Add(current);
-                            str.Clear();
-                        }
-
-                        current = new FieldData()
-                        {
-                            IsProtected = BinaryUtil.IsProtected(fieldAttribute),
-                            Row = Row,
-                            Col = col,
-                            Address = address
-                        };
-                    }
-                    else current ??= new FieldData()
-                    {
-                        IsProtected = true,
-                        Row = Row,
+                        IsProtected = BinaryUtil.IsProtected(fieldAttribute),
+                        Row = row,
                         Col = col,
+                        Address = address
                     };
 
-                    var c = EBCDIC.Chars[buffer[col]];
-                    if ((attributes?.TryGetValue(Orders.INSERT_CURSOR, out var cursor) ?? false) &&
-                        cursor == 1)
-                    {
-                        current.Cursor = col;
-                    }
-
-                    str.Append(c);
+                    nextCoords = null;
                 }
-                else if (structuredFieldStart)
+
+                var structuredFieldStart =
+                    attributeSet[index].TryGetValue(Attributes.FIELD, out fieldAttribute);
+
+                if (structuredFieldStart)
                 {
                     if (current != null)
                     {
                         current.Value = str.ToString();
                         current.Length = str.Length;
-                        rowRoot.Add(current);
+                        gridRoot.Add(current);
                         str.Clear();
                     }
 
-                    current = new FieldData()
+                    if (route66AttributeSet[index].TryGetValue(Route66Attributes.ADDRESS, out var attribute))
                     {
-                        IsProtected = BinaryUtil.IsProtected(fieldAttribute),
-                        Row = Row,
-                        Col = col,
-                        Address = address
-                    };
-
-                    if ((attributes?.TryGetValue(Orders.INSERT_CURSOR, out var cursor) ?? false) &&
-                        cursor == 1)
-                    {
-                        current.Cursor = col;
+                        address = int.Parse(attribute?.ToString() ?? "-1");
                     }
 
-                    str.Append(' ');
+                    nextCoords = new Coords(
+                        index / Constants.SCREEN_WIDTH,
+                        index % Constants.SCREEN_WIDTH).Increment();
+
+                    continue;
                 }
-                else if (!(current?.IsProtected ?? true) && !structuredFieldAhead)
+
+                if (EBCDIC.Chars.ContainsKey(d))
+                {
+                    current ??= new FieldData()
+                    {
+                        IsProtected = true,
+                        Row = row,
+                        Col = col,
+                    };
+
+                    var c = EBCDIC.Chars[d];
+                    if (cursor == index)
+                    {
+                        current.Cursor = index;
+                    }
+
+                    str.Append(c);
+                }
+
+                if(d == 0 && !(current?.IsProtected ?? true))
                 {
                     str.Append(' ');
+                    if (cursor == index)
+                    {
+                        current.Cursor = index;
+                    }
                 }
             }
 
@@ -111,11 +102,13 @@ namespace Services.Translators
             {
                 current.Value = str.ToString();
                 current.Length = str.Length;
-                rowRoot.Add(current);
+                gridRoot.Add(current);
                 str.Clear();
             }
 
-            return rowRoot;
+            gridRoot = gridRoot.FindAll(field => !(field.IsProtected && string.IsNullOrWhiteSpace(field.Value)));
+
+            return gridRoot;
         }
     }
 }

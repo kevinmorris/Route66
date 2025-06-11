@@ -13,7 +13,7 @@ namespace Tests.Translators
 {
     public class Poco3270TranslatorTests
     {
-        [Test]
+    [Test]
         public void FieldTest_NoEnhandedAttributes()
         {
             var data = new byte[]
@@ -25,77 +25,80 @@ namespace Tests.Translators
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
             };
 
-            var attrs = new Dictionary<int, IDictionary<byte, byte>>()
+            var attrs = new IDictionary<byte, byte>[80];
+            for (var i = 0; i < 80; i++)
             {
-                [7] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000
-                },
-                [20] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000
-                },
-                [60] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000
-                }
+                attrs[i] = new Dictionary<byte, byte>();
+            }
+
+            attrs[6] = new Dictionary<byte, byte>()
+            {
+                [Attributes.FIELD] = 0b11111000
+            };
+            attrs[19] = new Dictionary<byte, byte>()
+            {
+                [Attributes.FIELD] = 0b11111000
+            };
+            attrs[59] = new Dictionary<byte, byte>()
+            {
+                [Attributes.FIELD] = 0b11111000
             };
 
-            var route66Attributes = new Dictionary<int, IDictionary<string, object>>()
+            var route66Attributes = new IDictionary<string, object>[80];
+            for (var i = 0; i < 80; i++)
             {
-                [7] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 7))
-                },
-                [20] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 20))
-                },
-                [60] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 60))
-                }
+                route66Attributes[i] = new Dictionary<string, object>();
+            }
+
+            route66Attributes[7] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 7))
+            };
+            route66Attributes[20] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 20))
+            };
+            route66Attributes[60] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 60))
             };
 
             var expected = new List<FieldData>
             {
                 new()
                 {
-                    Row = 5,
+                    Row = 0,
                     Col = 7,
                     Length = "BROWSE      ".Length,
                     Value = "BROWSE      ",
                     IsProtected = true,
-                    Address = 407
+                    Address = -1
                 },
                 new()
                 {
-                    Row = 5,
+                    Row = 0,
                     Col = 20,
                     Length = " Display source data using Review      ".Length,
                     Value = " Display source data using Review      ",
                     IsProtected = true,
-                    Address = 420
+                    Address = -1
                 },
                 new()
                 {
-                    Row = 5,
+                    Row = 0,
                     Col = 60,
                     Length = "TERMINAL".Length,
                     Value = "TERMINAL",
                     IsProtected = true,
-                    Address = 460
+                    Address = -1
                 },
             };
-
-            var actual = new Poco3270Translator()
-            {
-                Row = 5
-            }.Translate(data, attrs, route66Attributes);
-
+        
+            var actual = new Poco3270Translator().Translate(data, attrs, route66Attributes, -1);
+        
             Assert.AreEqual(expected, actual);
         }
-
+        
         [Test]
         public void InputTest01()
         {
@@ -111,60 +114,54 @@ namespace Tests.Translators
                 0x40, 0x40, 0x40
             };
 
-            var attrs = new Dictionary<int, IDictionary<byte, byte>>()
+            var attrs = new IDictionary<byte, byte>[80];
+            for (var i = 0; i < 80; i++)
             {
-                [0] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000,
-                },
-                [11] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11001000,
-                }
+                attrs[i] = new Dictionary<byte, byte>();
+            }
+
+            attrs[11] = new Dictionary<byte, byte>()
+            {
+                [Attributes.FIELD] = 0b11001000,
             };
 
 
-            var route66Attributes = new Dictionary<int, IDictionary<string, object>>()
+            var route66Attributes = new IDictionary<string, object>[80];
+            for (var i = 0; i < 80; i++)
             {
-                [0] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((7, 0))
-                },
-                [11] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((7, 11))
-                }
+                route66Attributes[i] = new Dictionary<string, object>();
+            }
+            route66Attributes[11] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((7, 11))
             };
 
             var expected = new List<FieldData>
             {
                 new()
                 {
-                    Row = 7,
+                    Row = 0,
                     Col = 0,
                     Length = "Logon ===>".Length,
                     Value = "Logon ===>",
                     IsProtected = true,
-                    Address = 560
+                    Address = -1
                 },
                 new()
                 {
-                    Row = 7,
-                    Col = 11,
-                    Length = "                                                                    ".Length,
-                    Value = "                                                                    ",
+                    Row = 0,
+                    Col = 12,
+                    Length = "                                                                   ".Length,
+                    Value = "                                                                   ",
                     IsProtected = false,
                     Address = 571
                 },
             };
-
-            var actual = new Poco3270Translator()
-            {
-                Row = 7
-            }.Translate(data, attrs, route66Attributes);
+        
+            var actual = new Poco3270Translator().Translate(data, attrs, route66Attributes, -1);
             Assert.AreEqual(expected, actual);
         }
-
+        
         [Test]
         public void RowTest01()
         {
@@ -181,68 +178,53 @@ namespace Tests.Translators
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
             };
 
-            var attrs = new Dictionary<int, IDictionary<byte, byte>>()
+            var attrs = new IDictionary<byte, byte>[80];
+            for (var i = 0; i < 80; i++)
             {
-                [60] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000,
-                },
-                [76] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000,
-                }
+                attrs[i] = new Dictionary<byte, byte>();
+            }
+
+            attrs[59] = new Dictionary<byte, byte>()
+            {
+                [Attributes.FIELD] = 0b11111000,
             };
 
-            var route66Attributes = new Dictionary<int, IDictionary<string, object>>()
+            attrs[75] = new Dictionary<byte, byte>()
             {
-                [1] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = 18225
-                },
-                [60] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((23, 60))
-                },
-                [76] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((23, 76))
-                }
+                [Attributes.FIELD] = 0b11111000,
             };
+
+
+            var route66Attributes = new IDictionary<string, object>[80];
+            for (var i = 0; i < 80; i++)
+            {
+                route66Attributes[i] = new Dictionary<string, object>();
+            }
+
+            route66Attributes[59] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((23, 60))
+            };
+            route66Attributes[75] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((23, 76))
+            };
+
 
             var expected = new List<FieldData>
             {
                 new()
                 {
-                    Row = 23,
-                    Col = 0,
-                    Length = 59,
-                    Value = string.Concat(Enumerable.Repeat(" ", 59)),
-                    IsProtected = true,
-                },
-                new()
-                {
-                    Row = 23,
+                    Row = 0,
                     Col = 60,
                     Length = "RUNNING  TK5".Length,
                     Value = "RUNNING  TK5",
                     IsProtected = true,
                     Address = 1900
                 },
-                new()
-                {
-                    Row = 23,
-                    Col = 76,
-                    Length = 1,
-                    Value = " ",
-                    IsProtected = true,
-                    Address = 1916
-                },
             };
-
-            var actual = new Poco3270Translator()
-            {
-                Row = 23
-            }.Translate(data, attrs, route66Attributes);
+        
+            var actual = new Poco3270Translator().Translate(data, attrs, route66Attributes, -1);
             Assert.AreEqual(expected, actual);
         }
     }

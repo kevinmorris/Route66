@@ -1,0 +1,20 @@
+﻿@using Route66Blazor.Components.Fields
+
+@for(var i=0; i<FieldData.Length; i++)
+{
+    var rowFields = FieldData[i];
+    <div class="row" id="@($"row-{i}")">
+        @for(var j=0; j<rowFields.Count(); j++)
+        {
+            var index = j;
+            if (rowFields[index].IsProtected)
+            {
+                <LabelField FieldData="rowFields[index]" />
+            }
+            else
+            {
+                <InputField @bind-FieldData="rowFields[index]" />
+            }
+        }
+    </div>
+}

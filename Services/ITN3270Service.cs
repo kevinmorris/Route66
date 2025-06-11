@@ -13,7 +13,7 @@ namespace Services
         /// The collection of row handlers with each handler corresponding to
         /// a single row of a terminal display.
         /// </summary>
-        public IRowHandler<T>[] Handlers { get; init; }
+        public IGridHandler<T> Handler { get; init; }
 
         /// <summary>
         /// Connects this instance to the remote 3270 service

@@ -30,37 +30,7 @@ namespace Services
         /// </summary>
         public byte ActiveCommand { get; set; }= 0x00;
 
-        /// <summary>
-        /// The collection of row handlers with each handler corresponding to
-        /// a single row of a terminal display.
-        /// </summary>
-        public IRowHandler<T>[] Handlers { get; init; } =
-        [
-            new RowHandler<T>(0, translator),
-            new RowHandler<T>(1, translator),
-            new RowHandler<T>(2, translator),
-            new RowHandler<T>(3, translator),
-            new RowHandler<T>(4, translator),
-            new RowHandler<T>(5, translator),
-            new RowHandler<T>(6, translator),
-            new RowHandler<T>(7, translator),
-            new RowHandler<T>(8, translator),
-            new RowHandler<T>(9, translator),
-            new RowHandler<T>(10, translator),
-            new RowHandler<T>(11, translator),
-            new RowHandler<T>(12, translator),
-            new RowHandler<T>(13, translator),
-            new RowHandler<T>(14, translator),
-            new RowHandler<T>(15, translator),
-            new RowHandler<T>(16, translator),
-            new RowHandler<T>(17, translator),
-            new RowHandler<T>(18, translator),
-            new RowHandler<T>(19, translator),
-            new RowHandler<T>(20, translator),
-            new RowHandler<T>(21, translator),
-            new RowHandler<T>(22, translator),
-            new RowHandler<T>(23, translator),
-        ];
+        public IGridHandler<T> Handler { get; init; } = new GridHandler<T>(translator);
 
         public Stream? Stream { get; set; }
         internal byte Aid { get; private set; } = AID.NO_AID;
@@ -86,6 +56,7 @@ namespace Services
         /// <returns>a tuple containing the new pointer within the stream and the new character display address</returns>
         public (int, int) ProcessOutbound(Span<byte> data, int i, int a)
         {
+            Handler.SetCursor(0, -1);
             while (i < data.Length)
             {
                 var d = data[i];
@@ -211,11 +182,8 @@ namespace Services
         }
 
         public void Update(bool force = false)
-        {
-            foreach (var rowHandler in Handlers)
-            {
-                rowHandler.Update(force);
-            }
+        { 
+            Handler.Update(force);
         }
 
         /// <summary>
@@ -235,10 +203,7 @@ namespace Services
                 case Commands.ERASE_WRITE:
                     Aid = AID.NO_AID;
                     ActiveCommand = Commands.ERASE_WRITE;
-                    foreach (var handler in Handlers)
-                    {
-                        handler.Reset();
-                    }
+                    Handler.Reset();
 
                     return (i + 2, a);
 
@@ -399,7 +364,8 @@ namespace Services
         public (int, int) AddCharacter(Span<byte> data, int i, int a)
         {
             var (row, col) = BinaryUtil.AddressCoordinates(a);
-            Handlers[row].SetCharacter(col, data[i]);
+            var d = data[i];
+            Handler.SetCharacter(row, col, d);
             return (i + 1, a + 1);
         }
 
@@ -415,18 +381,15 @@ namespace Services
         /// <returns>a tuple containing the new pointer within the stream and the new character display address</returns>
         public (int, int) OrderStartField(Span<byte> data, int i, int a)
         {
-            a += 1;
-
             var (row, col) = BinaryUtil.AddressCoordinates(a);
-            row = row % Handlers.Length;
 
             i += 1;
             var fieldAttr = data[i];
             i += 1;
 
-            Handlers[row].SetExtendedAttribute(col, Attributes.FIELD, fieldAttr);
-            Handlers[row].SetRoute66Attribute(col, Route66Attributes.ADDRESS, a);
-
+            Handler.SetExtendedAttribute(row, col, Attributes.FIELD, fieldAttr);
+            a += 1;
+            Handler.SetRoute66Attribute(row, col, Route66Attributes.ADDRESS, a);
             return (i, a);
         }
 
@@ -441,7 +404,7 @@ namespace Services
         public (int, int) OrderInsertCursor(Span<byte> _, int i, int a)
         {
             var (row, col) = BinaryUtil.AddressCoordinates(a);
-            Handlers[row].SetCursor(col);
+            Handler.SetCursor(row, col);
 
             return (i + 1, a);
         }
@@ -465,12 +428,12 @@ namespace Services
             var d = data[i];
             for (var j = startCoords; j < stopCoords; j = j.Increment())
             {
-                Handlers[j.Row].SetCharacter(j.Col, d);
+                Handler.SetCharacter(j.Row, j.Col, d);
                 a += 1;
             }
 
             i += 1;
-            return (i, a);
+            return (i, stopA);
         }
 
         /// <summary>
@@ -504,7 +467,7 @@ namespace Services
             var (row, col) = BinaryUtil.AddressCoordinates(a);
 
             i += 1;
-            Handlers[row].SetExtendedAttribute(col, data[i], data[i + 1]);
+            Handler.SetExtendedAttribute(row, col, data[i], data[i + 1]);
             i += 2;
 
             return (i, a);

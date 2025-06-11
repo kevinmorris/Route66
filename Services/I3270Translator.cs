@@ -14,15 +14,6 @@ namespace Services
     public interface I3270Translator<out T>
     {
         /// <summary>
-        /// The row that owns this translator
-        /// </summary>
-        int Row
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
         /// Performs the translation of 3270 bytes and attributes to the concrete type <code>T</code>
         /// </summary>
         /// <param name="buffer">the raw row bytes from the 3270 service</param>
@@ -31,7 +22,8 @@ namespace Services
         /// <returns></returns>
         public T Translate(
             byte[] buffer,
-            IDictionary<int, IDictionary<byte, byte>> attributeSet,
-            IDictionary<int, IDictionary<string, object>> route66AttributeSet);
+            IDictionary<byte, byte>[] attributeSet,
+            IDictionary<string, object>[] route66AttributeSet,
+            int cursor);
     }
 }
