@@ -127,7 +127,7 @@ namespace Api.Controllers
         {
             pool.Start(connect.SessionKey, connect.Address, connect.Port, async (sender, args) =>
             {
-                var outboundMessage = new RowResponse(args.Row, args.FieldData);
+                var outboundMessage = new DisplayResponse(args.FieldData);
                 await SendMessage(webSocket, outboundMessage);
             });
         }
