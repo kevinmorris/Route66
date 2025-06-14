@@ -19,13 +19,26 @@ export function inputValueChanged(setFieldData) {
     }
 }
 
-export function processMessage(lastJsonMessage, setSessionKey, processRow) {
+export function processMessage(
+    lastJsonMessage,
+    setSessionKey,
+    processRowMessage,
+    processErrorMessage) {
+
     if (!lastJsonMessage) return;
 
     if (lastJsonMessage.instruction === WebSocketInstruction.STARTING_CONNECTION) {
         setSessionKey(lastJsonMessage.sessionKey);
     } else if (lastJsonMessage.instruction === WebSocketInstruction.ROW) {
-        processRow(lastJsonMessage);
+        processRowMessage(lastJsonMessage);
+    } else if (lastJsonMessage.instruction === WebSocketInstruction.ERROR) {
+        processErrorMessage(lastJsonMessage);
+    }
+}
+
+export function processError(setErrorMessage) {
+    return function(errorMessage) {
+        setErrorMessage(errorMessage);
     }
 }
 

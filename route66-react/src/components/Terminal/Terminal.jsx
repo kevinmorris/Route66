@@ -1,15 +1,23 @@
+import styles from './Terminal.module.css';
 import {useEffect, useState} from "react";
 import {ReadyState} from "react-use-websocket";
 import Constants from "../../Constants";
 import Row from "../Row/Row";
-import {createFieldSubmission, inputValueChanged, processMessage, processRow} from "../../services/terminal_services";
+import {
+    createFieldSubmission,
+    inputValueChanged,
+    processError,
+    processMessage,
+    processRow
+} from "../../services/terminal_services";
 
 export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, readyState}}) {
 
     const rowRange = Array.from({length: Constants.SCREEN_HEIGHT}, (_, i) => i)
     const [sessionKey, setSessionKey] = useState("");
     const [fieldData, setFieldData] = useState(rowRange.map(() => []));
-    const [cursor, setCursor] = useState([-1, -1])
+    const [cursor, setCursor] = useState([-1, -1]);
+    const [errorMessage, setErrorMessage] = useState();
 
     useEffect(() => {
         if(readyState === ReadyState.OPEN) {
@@ -27,7 +35,12 @@ export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, 
     })
 
     useEffect(() => {
-        processMessage(lastJsonMessage, setSessionKey, processRow(setFieldData))
+        processMessage(
+            lastJsonMessage,
+            setSessionKey,
+            processRow(setFieldData),
+            processError(setErrorMessage)
+        )
     }, [lastJsonMessage]);
 
     function handleKeyDown(event) {
@@ -63,6 +76,7 @@ export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, 
     }
 
     const rows = rowRange.map(i => <Row i={i}
+                                        key={i}
                                         fieldData={fieldData[i]}
                                         inputChanged={inputValueChanged(setFieldData)}
                                         focusChanged={setCursor}></Row>)
@@ -92,5 +106,6 @@ export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, 
                 <button className="keypad-button" onClick={() => functionKey(Constants.AID.PF12)}>PF12</button>
             </div>
             <div>{rows}</div>
+            {errorMessage && <div className={styles.error}>{errorMessage}</div>}
         </div>);
 }

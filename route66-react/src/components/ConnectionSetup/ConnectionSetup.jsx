@@ -16,9 +16,8 @@ export default function ConnectionSetup() {
         readyState
     } = useWebSocket( "ws://127.0.0.1:7149/ws",
         {
-            onOpen: () => console.info("XXXXXA64"),
             onError: (err) => {
-                console.error("XXXXXA128", err)
+                console.error("Error", err)
             },
         },
         shouldConnect);
