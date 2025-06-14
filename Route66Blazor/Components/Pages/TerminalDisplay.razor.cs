@@ -35,7 +35,7 @@ namespace Route66Blazor.Components.Pages
         public int Port { get; set; }
 
         private ElementReference _container;
-        private readonly Row[] _rows = new Row[Constants.SCREEN_HEIGHT];
+        private Grid _grid;
         private (int, int) _cursor = (-1, -1);
         private readonly Action<(int, int)> _cursorAction;
 
@@ -69,15 +69,17 @@ namespace Route66Blazor.Components.Pages
 
         private async Task SendUserData(byte aid)
         {
-            var fields = _rows.SelectMany(row => row.FieldData);
-            var inputFields = fields.Where(f => f is { IsProtected: false, Dirty: true });
-
+            var fields = _grid.FieldData.SelectMany(list => list).ToList();
+            var inputFields = fields
+                .Where(f => f is { IsProtected: false, Dirty: true })
+                .ToList();
+            
             var cursorField = inputFields.FirstOrDefault(f => f.Row == _cursor.Item1 && f.Col == _cursor.Item2) ??
                               inputFields.LastOrDefault() ??
                               fields.Last();
-
+            
             var cursor = (_cursor.Item1, _cursor.Item2 + cursorField.Value.Length);
-
+            
             await NetworkService.SendFieldsAsync(
                 aid,
                 cursor.Item1,
@@ -105,11 +107,7 @@ namespace Route66Blazor.Components.Pages
                 });
 
             NetworkService = FetchService(serviceId) ;
-            for (var i = 0; i < _rows.Length; i++)
-            {
-                _rows[i].Handler = NetworkService.Handlers[i];
-                _rows[i].Index = i;
-            }
+            _grid.Handler = NetworkService.Handler;
 
             await _container.FocusAsync(true);
             NetworkService.Update(true);
@@ -120,17 +118,15 @@ namespace Route66Blazor.Components.Pages
             if (!Cache.TryGetValue(serviceId, out ITN3270Service<XElement>? tn3270Service))
             {
                 tn3270Service = new TN3270Service<XElement>(new Xml3270Translator());
-                tn3270Service.Connect(Address, Port);
                 var cacheEntryOptions = new MemoryCacheEntryOptions()
                     .SetSlidingExpiration(TimeSpan.FromMinutes(30));
 
                 Cache.Set(serviceId, tn3270Service, cacheEntryOptions);
             }
 
-            return tn3270Service ?? new TN3270Service<XElement>(new Xml3270Translator()).Also(service =>
-            {
-                service.Connect(Address, Port);
-            });
+            return tn3270Service is not null
+                ? tn3270Service.Also(service => service.Connect(Address, Port))
+                : throw new InvalidOperationException("ITN3270Service creation or retrieval failed.");
         }
     }
 }

@@ -29,10 +29,6 @@
     </div>
     
     <CascadingValue Name="CursorAction" Value="@_cursorAction">
-        @for (var i = 0; i < _rows.Length; i++)
-        {
-            var index = i;
-            <Row @ref="_rows[index]" ></Row>
-        }
+        <Grid @ref="_grid"/>
     </CascadingValue>
 </div>

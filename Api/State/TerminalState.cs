@@ -36,11 +36,7 @@ namespace Api.State
                 FieldsChanged += customHandler;
             }
 
-            for (var i = 0; i < _tn3270Service.Handlers.Length; i++)
-            {
-                _tn3270Service.Handlers[i].RowUpdated += RowUpdatedFunc(i);
-            }
-
+            //_tn3270Service.Handler.GridUpdated += RowUpdatedFunc;
             _tn3270Service.Connect(address, port);
         }
 
@@ -53,7 +49,7 @@ namespace Api.State
                 submission.FieldData);
         }
 
-        private EventHandler<RowUpdateEventArgs<IEnumerable<FieldData>>> RowUpdatedFunc(int row)
+        private EventHandler<GridUpdateEventArgs<IEnumerable<FieldData>>> RowUpdatedFunc(int row)
         {
             return (sender, args) =>
             {
