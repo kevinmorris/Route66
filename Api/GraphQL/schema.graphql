@@ -1,0 +1,85 @@
+﻿type Query {
+  display: Display
+}
+
+type Mutation {
+  connect(connectParams: ConnectParams!): Connection
+  submitFields(submission: Submission!): Display
+}
+
+input ConnectParams {
+  address: String!
+  port: Int!
+}
+
+type Connection {
+  sessionKey: String!
+  address: String!
+  port: Int!
+}
+
+type Display {
+  fieldData: [[FieldData!]!]!
+}
+
+input Submission {
+  sessionKey: String!
+  fieldSubmission: FieldSubmission
+}
+
+input FieldSubmission {
+  aid: AID!
+  cursorRow: Int
+  cursorCol: Int
+  fieldData: [FieldInput]
+}
+
+input FieldInput {
+  row: Int!
+  col: Int!
+  value: String!
+  address: Int
+}
+
+type FieldData {
+  row: Int!
+  col: Int!
+  value: String!
+  isProtected: Boolean!
+  address: Int
+  length: Int!
+  dirty: Boolean!
+  cursor: Int
+}
+
+enum AID {
+  PF1
+  PF2
+  PF3
+  PF4
+  PF5
+  PF6
+  PF7
+  PF8
+  PF9
+  PF10
+  PF11
+  PF12
+  PF13
+  PF14
+  PF15
+  PF16
+  PF17
+  PF18
+  PF19
+  PF20
+  PF21
+  PF22
+  PF23
+  PF24
+  PA1
+  PA2
+  PA3
+  CLEAR
+  ENTER
+}

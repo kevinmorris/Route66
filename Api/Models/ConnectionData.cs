@@ -1,4 +1,4 @@
-﻿namespace Api.State
+﻿namespace Api.Models
 {
     public record ConnectionData(string Address, int Port);
 }

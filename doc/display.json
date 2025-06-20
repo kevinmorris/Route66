@@ -1,0 +1,351 @@
+{
+    "fieldData": [
+        [
+            {
+                "row": 0,
+                "col": 1,
+                "value": "Hercules Version  :",
+                "isProtected": true,
+                "address": 1,
+                "length": 19,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 0,
+                "col": 21,
+                "value": "4.7.0.11119-SDL-gf7d2360a",
+                "isProtected": true,
+                "address": 16405,
+                "length": 25,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 1,
+                "col": 1,
+                "value": "Host name         :",
+                "isProtected": true,
+                "address": 32849,
+                "length": 19,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 1,
+                "col": 21,
+                "value": "YPRES",
+                "isProtected": true,
+                "address": 49253,
+                "length": 5,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 2,
+                "col": 1,
+                "value": "Host OS           :",
+                "isProtected": true,
+                "address": 32929,
+                "length": 19,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 2,
+                "col": 21,
+                "value": "Windows 11 Home 24H2-10.0.26100 Windows 11 Home  64-bit",
+                "isProtected": true,
+                "address": 49333,
+                "length": 55,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 3,
+                "col": 1,
+                "value": "Host Architecture :",
+                "isProtected": true,
+                "address": 49393,
+                "length": 19,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 3,
+                "col": 21,
+                "value": "Intel(R) x64",
+                "isProtected": true,
+                "address": 49413,
+                "length": 12,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 4,
+                "col": 1,
+                "value": "Processors        :",
+                "isProtected": true,
+                "address": 33089,
+                "length": 19,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 4,
+                "col": 21,
+                "value": "LP=20, Cores=14, CPUs=1",
+                "isProtected": true,
+                "address": 49493,
+                "length": 23,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 5,
+                "col": 1,
+                "value": "LPAR Name         :",
+                "isProtected": true,
+                "address": 33169,
+                "length": 19,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 5,
+                "col": 21,
+                "value": "HERCULES",
+                "isProtected": true,
+                "address": 49573,
+                "length": 8,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 6,
+                "col": 1,
+                "value": "Device number     :",
+                "isProtected": true,
+                "address": 33249,
+                "length": 19,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 6,
+                "col": 21,
+                "value": "0:00C0",
+                "isProtected": true,
+                "address": 49653,
+                "length": 6,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 7,
+                "col": 1,
+                "value": "                           TTTTTTTTTTTT   KKKK  KKKKK     555555555555",
+                "isProtected": true,
+                "address": 49713,
+                "length": 70,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 8,
+                "col": 1,
+                "value": "                           TT   TT   TT    KK    KK       55",
+                "isProtected": true,
+                "address": 641,
+                "length": 60,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 9,
+                "col": 1,
+                "value": "                           TT   TT   TT    KK   KK        55       Update 3",
+                "isProtected": true,
+                "address": 721,
+                "length": 75,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 10,
+                "col": 1,
+                "value": "                                TT         KK  KK         55",
+                "isProtected": true,
+                "address": 801,
+                "length": 60,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 11,
+                "col": 1,
+                "value": "        4l      _,,,---,,_      TT         KK KK          55     ",
+                "isProtected": true,
+                "address": 17265,
+                "length": 65,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 12,
+                "col": 1,
+                "value": " ZZZzz /,'.-'`'    -.  ;-;;,    TT         KKKK           55555555555    ",
+                "isProtected": true,
+                "address": 961,
+                "length": 73,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 13,
+                "col": 1,
+                "value": "      4,4-  ) )-,_. ,( (  ''-'  TT         KKKKK                    55      ",
+                "isProtected": true,
+                "address": 1041,
+                "length": 76,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 14,
+                "col": 1,
+                "value": "     '---''(_/--'  `-')_)       TT         KK  KK                   55",
+                "isProtected": true,
+                "address": 33889,
+                "length": 70,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 15,
+                "col": 1,
+                "value": "                                TT         KK   KK                  55",
+                "isProtected": true,
+                "address": 50353,
+                "length": 70,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 16,
+                "col": 1,
+                "value": "       The MVS 3.8j             TT         KK    KK                 55",
+                "isProtected": true,
+                "address": 34049,
+                "length": 70,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 17,
+                "col": 1,
+                "value": "     Tur(n)key System           TT         KK     KK                55",
+                "isProtected": true,
+                "address": 34129,
+                "length": 70,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 18,
+                "col": 1,
+                "value": "                              TTTTTT      KKKK     KKK    55555555555",
+                "isProtected": true,
+                "address": 34209,
+                "length": 69,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 20,
+                "col": 1,
+                "value": "    TK3 created by   Volker Bandke       volker@bandke.org",
+                "isProtected": true,
+                "address": 34369,
+                "length": 58,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 21,
+                "col": 1,
+                "value": "    TK4- update by   Juergen Winkelmann  juergen.winkelmann@pebble-beach.ch",
+                "isProtected": true,
+                "address": 1681,
+                "length": 75,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 22,
+                "col": 1,
+                "value": "    TK5  update by   Rob Prins           prin0096@gmail.com",
+                "isProtected": true,
+                "address": 1761,
+                "length": 59,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 23,
+                "col": 1,
+                "value": "         see SYS2.JCLLIB(CREDITS) for complete credits",
+                "isProtected": true,
+                "address": 18225,
+                "length": 54,
+                "dirty": false,
+                "cursor": -1
+            }
+        ]
+    ],
+    "instruction": 3
+}
