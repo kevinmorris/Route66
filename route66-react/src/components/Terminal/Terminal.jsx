@@ -8,7 +8,6 @@ import {
     inputValueChanged,
     processError,
     processMessage,
-    processRow
 } from "../../services/terminal_services";
 
 export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, readyState}}) {
@@ -27,7 +26,7 @@ export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, 
                 port: "3270"
             })
         }
-    }, [readyState])
+    }, [sendJsonMessage, readyState])
 
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown)
@@ -38,7 +37,7 @@ export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, 
         processMessage(
             lastJsonMessage,
             setSessionKey,
-            processRow(setFieldData),
+            setFieldData,
             processError(setErrorMessage)
         )
     }, [lastJsonMessage]);

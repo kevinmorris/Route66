@@ -3,7 +3,7 @@ import styles from './Row.module.css';
 import InputField from "../InputField/InputField";
 
 
-export default function Row({ i, fieldData, inputChanged, focusChanged })  {
+export default function Row({ i, fieldData = [], inputChanged, focusChanged })  {
 
     const fields = fieldData.map((field, i) => {
         if(field.isProtected) {

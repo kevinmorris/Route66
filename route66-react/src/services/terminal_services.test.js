@@ -1,4 +1,4 @@
-import {createFieldSubmission, processRow} from "./terminal_services";
+import {createFieldSubmission, processDisplay} from "./terminal_services";
 
 describe('processRow', () => {
     test('updates the correct row', () => {
@@ -14,7 +14,7 @@ describe('processRow', () => {
             fieldData: { value: 'Alpha', dirty: true }
         };
 
-        const updateRow = processRow(mockSetFieldData);
+        const updateRow = processDisplay(mockSetFieldData);
         updateRow(rowMessage);
 
         const updaterFn = mockSetFieldData.mock.calls[0][0]

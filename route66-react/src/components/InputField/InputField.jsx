@@ -1,5 +1,3 @@
-import styles from './InputField.module.css';
-
 export default function InputField({fieldData, valueChanged, inputFocused }) {
 
     const style = {
