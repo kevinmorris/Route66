@@ -1,0 +1,17 @@
+{
+    "instruction": 5,
+    "sessionKey": "55b48c1b-e2a3-4114-87cd-c1c381a1aa87",
+    "submission" : {
+        "aid": "ENTER",
+        "cursorRow": 22,
+        "cursorCol": 17,
+        "fieldData": [
+            {
+                "row" : 22,
+                "col" : 11,
+                "value": "HERC01",
+                "address": 1771
+            }
+        ]
+    }
+}

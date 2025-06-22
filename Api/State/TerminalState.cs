@@ -2,6 +2,7 @@
 using Services;
 using Services.Translators;
 using Util;
+using Api.Models.WebSocket;
 
 namespace Api.State
 {

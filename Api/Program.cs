@@ -1,4 +1,5 @@
 using System.Xml.Linq;
+using Api.GraphQL;
 using Api.State;
 using Services;
 using Services.Models;
@@ -24,6 +25,11 @@ builder.Services.AddSession(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services
+    .AddGraphQLServer()
+    .AddDocumentFromFile("GraphQL/schema.graphql")
+    .BindRuntimeType<Query>("Query")
+    .BindRuntimeType<Mutation>("Mutation");
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -50,5 +56,6 @@ app.UseWebSockets(webSocketOptions);
 
 app.UseSession();
 app.MapControllers();
+app.MapGraphQL();
 
 app.Run();
