@@ -5,7 +5,7 @@ import Constants from "../../Constants";
 import Row from "../Row/Row";
 import {
     createFieldSubmission,
-    inputValueChanged,
+    inputValueChanged, processDisplayMessage,
     processError,
     processMessage,
 } from "../../services/terminal_services";
@@ -37,7 +37,7 @@ export default function Terminal({websocket: {sendJsonMessage, lastJsonMessage, 
         processMessage(
             lastJsonMessage,
             setSessionKey,
-            setFieldData,
+            processDisplayMessage(setFieldData),
             processError(setErrorMessage)
         )
     }, [lastJsonMessage]);

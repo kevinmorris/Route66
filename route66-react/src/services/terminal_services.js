@@ -1,4 +1,5 @@
 import WebSocketInstruction from "../WebSocketInstruction";
+import Constants from "../Constants";
 
 export function inputValueChanged(setFieldData) {
     return function(row, col, value) {
@@ -33,6 +34,21 @@ export function processMessage(
         processDisplayMessage(lastJsonMessage.fieldData);
     } else if (lastJsonMessage.instruction === WebSocketInstruction.ERROR) {
         processErrorMessage(lastJsonMessage);
+    }
+}
+
+export function processDisplayMessage(setFieldData) {
+    return function(fieldData) {
+        const rowRange = Array.from({length: Constants.SCREEN_HEIGHT}, (_, i) => i)
+        const fields = rowRange.map(() => []);
+        for (const fieldRow of fieldData) {
+            if(fieldRow.length > 0) {
+                const row = fieldRow[0].row;
+                fields[row] = fieldRow;
+            }
+        }
+
+        setFieldData(fields);
     }
 }
 

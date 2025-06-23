@@ -5,9 +5,8 @@ const Constants = Object.freeze({
         CONNECT: 1,
         STARTING_CONNECTION: 2,
         DISPLAY: 3,
-        ROW: 4,
-        SUBMIT_FIELDS: 5,
-        ERROR: 6
+        SUBMIT_FIELDS: 4,
+        ERROR: 5
     },
     AID: {
         NO_AID: "NO_AID",
