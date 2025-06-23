@@ -177,7 +177,6 @@ namespace Tests
             var expected = XDocument.Parse(expectedStr);
             var actual = XDocument.Parse(actualStr);
             Assert.AreEqual(expected.ToString(SaveOptions.DisableFormatting), actual.ToString(SaveOptions.DisableFormatting));
-
         }
 
         [Test]
@@ -308,7 +307,7 @@ namespace Tests
                     <row i="20">  <label row="20" col="24" length="19">MVS 3.8j Level 8505</label></row>
                     <row i="21" />
                     <row i="22">  <label row="22" col="0" length="10">Logon ===&gt;</label><input row="22" col="11" address="1771" cursor="0" length="69">                                                                     </input></row>
-                    <row i="23">  <label row="23" col="60" length="12">RUNNING  TK5</label></row>
+                    <row i="23">  <input row="23" col="0" address="1771" length="59">                                                           </input><label row="23" col="60" length="12">RUNNING  TK5</label></row>
                 </grid>
                 """;
 
@@ -541,7 +540,7 @@ namespace Tests
                 <grid>
                 <row i="0">  <label row="0" col="1" length="79">--------------------------------  RFE DSLIST  ---------------------------------</label></row>
                 <row i="1">  <label row="1" col="1" length="12">Command ===&gt;</label>  <input row="1" col="14" address="32862" length="66">                                                                  </input></row>
-                <row i="2"/>
+                <row i="2">  <input row="2" col="0" address="32862" length="80">                                                                                 </input></row>
                 <row i="3">  <label row="3" col="1" length="10">     blank</label><label row="3" col="12" length="68">- display data set list                                             </label></row>
                 <row i="4">  <label row="4" col="1" length="10">     ALLOC</label>  <label row="4" col="12" length="68">- allocate a new data set                                           </label></row>
                 <row i="5"/>

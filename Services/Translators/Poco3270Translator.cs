@@ -23,6 +23,8 @@ namespace Services.Translators
             var address = -1;
             Coords? nextCoords = null;
             byte fieldAttribute = 0x00;
+            var inputRowContinuation = false;
+
 
             var str = new StringBuilder();
 
@@ -31,6 +33,16 @@ namespace Services.Translators
                 var d = buffer[index];
                 var row = index / Constants.SCREEN_WIDTH;
                 var col = index % Constants.SCREEN_WIDTH;
+
+                if (index % Constants.SCREEN_WIDTH == 0 && current != null)
+                {
+                    inputRowContinuation = !current.IsProtected;
+                    current.Value = str.ToString();
+                    current.Length = str.Length;
+                    gridRoot.Add(current);
+                    current = null;
+                    str.Clear();
+                }
 
                 if (nextCoords != null)
                 {
@@ -50,6 +62,7 @@ namespace Services.Translators
 
                 if (structuredFieldStart)
                 {
+                    inputRowContinuation = false;
                     if (current != null)
                     {
                         current.Value = str.ToString();
@@ -74,11 +87,17 @@ namespace Services.Translators
                 {
                     current ??= new FieldData()
                     {
-                        IsProtected = true,
+                        IsProtected = !inputRowContinuation,
                         Row = row,
                         Col = col,
                     };
 
+                    if (inputRowContinuation)
+                    {
+                        current.Address = address;
+                    }
+
+                    inputRowContinuation = false;
                     var c = EBCDIC.Chars[d];
                     if (cursor == index)
                     {
