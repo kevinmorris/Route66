@@ -161,7 +161,97 @@ namespace Tests.Translators
             var actual = new Poco3270Translator().Translate(data, attrs, route66Attributes, -1);
             Assert.AreEqual(expected, actual);
         }
-        
+
+        [Test]
+        public void InputTest02()
+        {
+            var data = new byte[]
+            {
+                0xd3, 0x96, 0x87, 0x96, 0x95, 0X40, 0x7e, 0x7e, 0x7e, 0x6e, 0x00, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40,
+                0x40, 0x40, 0x40, 0x40, 0x40, 0x40, 0x40
+            };
+
+            var attrs = new IDictionary<byte, byte>[168];
+            for (var i = 0; i < 168; i++)
+            {
+                attrs[i] = new Dictionary<byte, byte>();
+            }
+
+            attrs[11] = new Dictionary<byte, byte>()
+            {
+                [Attributes.FIELD] = 0b11001000,
+            };
+
+
+            var route66Attributes = new IDictionary<string, object>[168];
+            for (var i = 0; i < 168; i++)
+            {
+                route66Attributes[i] = new Dictionary<string, object>();
+            }
+            route66Attributes[11] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((7, 11))
+            };
+
+            var expected = new List<FieldData>
+            {
+                new()
+                {
+                    Row = 0,
+                    Col = 0,
+                    Length = "Logon ===>".Length,
+                    Value = "Logon ===>",
+                    IsProtected = true,
+                    Address = -1
+                },
+                new()
+                {
+                    Row = 0,
+                    Col = 12,
+                    Length = 68,
+                    Value = "                                                                    ",
+                    IsProtected = false,
+                    Address = 571
+                },
+                new()
+                {
+                    Row = 1,
+                    Col = 0,
+                    Length = 80,
+                    Value = "                                                                                ",
+                    IsProtected = false,
+                    Address = 571
+                },
+                new()
+                {
+                    Row = 2,
+                    Col = 0,
+                    Length = 8,
+                    Value = "        ",
+                    IsProtected = false,
+                    Address = 571
+                },
+            };
+
+            var actual = new Poco3270Translator().Translate(data, attrs, route66Attributes, -1);
+            Assert.AreEqual(expected, actual);
+        }
+
         [Test]
         public void RowTest01()
         {

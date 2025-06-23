@@ -35,6 +35,7 @@ namespace Services.Translators
 
             byte fieldAttribute = 0x00;
             var address = -1;
+            var inputRowContinuation = false;
 
             for (var index = 0; index < buffer.Length; index++)
             {
@@ -44,12 +45,12 @@ namespace Services.Translators
                 {
                     if (current != null)
                     {
+                        inputRowContinuation = current.Name.LocalName == "input";
                         current.Value = str.ToString();
                         current.Add(new XAttribute("length", str.Length));
                         currentRow?.Add(current);
                         current = null;
                         str.Clear();
-                        address = 0x00;
                     }
 
                     currentRow?.Elements("label")
@@ -79,6 +80,7 @@ namespace Services.Translators
 
                 if (structuredFieldStart)
                 {
+                    inputRowContinuation = false;
                     if (current != null)
                     {
                         current.Value = str.ToString();
@@ -104,10 +106,16 @@ namespace Services.Translators
 
                 if (EBCDIC.Chars.ContainsKey(d))
                 {
-                    current ??= new XElement("label",
+                    current ??= new XElement(inputRowContinuation ? "input" : "label",
                             new XAttribute("row", index / Constants.SCREEN_WIDTH),
                             new XAttribute("col", index % Constants.SCREEN_WIDTH));
 
+                    if (inputRowContinuation)
+                    {
+                        current.Add(new XAttribute("address", address));
+                    }
+
+                    inputRowContinuation = false;
                     var c = EBCDIC.Chars[d];
                     if (cursor == index)
                     {

@@ -12,7 +12,8 @@
        @bind:set="@(SetFieldValueAsync)"
        @bind:event="oninput"
        @onfocus="OnFocus"
-       @onblur="OnBlur"/>
+       @onblur="OnBlur"
+       maxlength="@(_fieldData.Length)"/>
 
 @code {
 
