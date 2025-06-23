@@ -3,21 +3,41 @@
         [
             {
                 "row": 0,
-                "col": 1,
-                "value": "Hercules Version  :",
+                "col": 0,
+                "value": "Terminal",
                 "isProtected": true,
-                "address": 1,
-                "length": 19,
+                "address": -1,
+                "length": 8,
                 "dirty": false,
                 "cursor": -1
             },
             {
                 "row": 0,
-                "col": 21,
-                "value": "4.7.0.11119-SDL-gf7d2360a",
+                "col": 11,
+                "value": "CUU0C0  ",
                 "isProtected": true,
-                "address": 16405,
-                "length": 25,
+                "address": 11,
+                "length": 8,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 0,
+                "col": 66,
+                "value": "Date",
+                "isProtected": true,
+                "address": 49218,
+                "length": 4,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 0,
+                "col": 72,
+                "value": "23.06.25",
+                "isProtected": true,
+                "address": 49224,
+                "length": 8,
                 "dirty": false,
                 "cursor": -1
             }
@@ -25,64 +45,62 @@
         [
             {
                 "row": 1,
-                "col": 1,
-                "value": "Host name         :",
+                "col": 66,
+                "value": "Time",
                 "isProtected": true,
-                "address": 32849,
-                "length": 19,
+                "address": 49298,
+                "length": 4,
                 "dirty": false,
                 "cursor": -1
             },
             {
                 "row": 1,
-                "col": 21,
-                "value": "YPRES",
+                "col": 72,
+                "value": "18:38:30",
                 "isProtected": true,
-                "address": 49253,
+                "address": 49304,
+                "length": 8,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 3,
+                "col": 27,
+                "value": "TTTTTTTTTTTT",
+                "isProtected": true,
+                "address": 33035,
+                "length": 12,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 3,
+                "col": 42,
+                "value": "KKKK",
+                "isProtected": true,
+                "address": 49434,
+                "length": 4,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 3,
+                "col": 48,
+                "value": "KKKKK",
+                "isProtected": true,
+                "address": 33056,
                 "length": 5,
                 "dirty": false,
                 "cursor": -1
-            }
-        ],
-        [
-            {
-                "row": 2,
-                "col": 1,
-                "value": "Host OS           :",
-                "isProtected": true,
-                "address": 32929,
-                "length": 19,
-                "dirty": false,
-                "cursor": -1
-            },
-            {
-                "row": 2,
-                "col": 21,
-                "value": "Windows 11 Home 24H2-10.0.26100 Windows 11 Home  64-bit",
-                "isProtected": true,
-                "address": 49333,
-                "length": 55,
-                "dirty": false,
-                "cursor": -1
-            }
-        ],
-        [
-            {
-                "row": 3,
-                "col": 1,
-                "value": "Host Architecture :",
-                "isProtected": true,
-                "address": 49393,
-                "length": 19,
-                "dirty": false,
-                "cursor": -1
             },
             {
                 "row": 3,
-                "col": 21,
-                "value": "Intel(R) x64",
+                "col": 57,
+                "value": "555555555555",
                 "isProtected": true,
-                "address": 49413,
+                "address": 49449,
                 "length": 12,
                 "dirty": false,
                 "cursor": -1
@@ -91,21 +109,61 @@
         [
             {
                 "row": 4,
-                "col": 1,
-                "value": "Processors        :",
+                "col": 27,
+                "value": "TT",
                 "isProtected": true,
-                "address": 33089,
-                "length": 19,
+                "address": 33115,
+                "length": 2,
                 "dirty": false,
                 "cursor": -1
             },
             {
                 "row": 4,
-                "col": 21,
-                "value": "LP=20, Cores=14, CPUs=1",
+                "col": 32,
+                "value": "TT",
                 "isProtected": true,
-                "address": 49493,
-                "length": 23,
+                "address": 33120,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 4,
+                "col": 37,
+                "value": "TT",
+                "isProtected": true,
+                "address": 49509,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 4,
+                "col": 43,
+                "value": "KK",
+                "isProtected": true,
+                "address": 33131,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 4,
+                "col": 49,
+                "value": "KK",
+                "isProtected": true,
+                "address": 49521,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 4,
+                "col": 57,
+                "value": "55",
+                "isProtected": true,
+                "address": 49529,
+                "length": 2,
                 "dirty": false,
                 "cursor": -1
             }
@@ -113,20 +171,70 @@
         [
             {
                 "row": 5,
-                "col": 1,
-                "value": "LPAR Name         :",
+                "col": 27,
+                "value": "TT",
                 "isProtected": true,
-                "address": 33169,
-                "length": 19,
+                "address": 33195,
+                "length": 2,
                 "dirty": false,
                 "cursor": -1
             },
             {
                 "row": 5,
-                "col": 21,
-                "value": "HERCULES",
+                "col": 32,
+                "value": "TT",
                 "isProtected": true,
-                "address": 49573,
+                "address": 33200,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 5,
+                "col": 37,
+                "value": "TT",
+                "isProtected": true,
+                "address": 49589,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 5,
+                "col": 43,
+                "value": "KK",
+                "isProtected": true,
+                "address": 33211,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 5,
+                "col": 48,
+                "value": "KK",
+                "isProtected": true,
+                "address": 33216,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 5,
+                "col": 57,
+                "value": "55",
+                "isProtected": true,
+                "address": 49609,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 5,
+                "col": 66,
+                "value": "Update 3",
+                "isProtected": true,
+                "address": 49618,
                 "length": 8,
                 "dirty": false,
                 "cursor": -1
@@ -135,21 +243,41 @@
         [
             {
                 "row": 6,
-                "col": 1,
-                "value": "Device number     :",
+                "col": 32,
+                "value": "TT",
                 "isProtected": true,
-                "address": 33249,
-                "length": 19,
+                "address": 33280,
+                "length": 2,
                 "dirty": false,
                 "cursor": -1
             },
             {
                 "row": 6,
-                "col": 21,
-                "value": "0:00C0",
+                "col": 43,
+                "value": "KK",
                 "isProtected": true,
-                "address": 49653,
-                "length": 6,
+                "address": 33291,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 6,
+                "col": 47,
+                "value": "KK",
+                "isProtected": true,
+                "address": 33295,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 6,
+                "col": 57,
+                "value": "55",
+                "isProtected": true,
+                "address": 49689,
+                "length": 2,
                 "dirty": false,
                 "cursor": -1
             }
@@ -157,11 +285,51 @@
         [
             {
                 "row": 7,
-                "col": 1,
-                "value": "                           TTTTTTTTTTTT   KKKK  KKKKK     555555555555",
+                "col": 8,
+                "value": "!l",
                 "isProtected": true,
-                "address": 49713,
-                "length": 70,
+                "address": 49720,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 7,
+                "col": 16,
+                "value": "_,,,---,,_",
+                "isProtected": true,
+                "address": 33344,
+                "length": 10,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 7,
+                "col": 32,
+                "value": "TT",
+                "isProtected": true,
+                "address": 33360,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 7,
+                "col": 43,
+                "value": "KK KK",
+                "isProtected": true,
+                "address": 33371,
+                "length": 5,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 7,
+                "col": 57,
+                "value": "55",
+                "isProtected": true,
+                "address": 49769,
+                "length": 2,
                 "dirty": false,
                 "cursor": -1
             }
@@ -170,10 +338,40 @@
             {
                 "row": 8,
                 "col": 1,
-                "value": "                           TT   TT   TT    KK    KK       55",
+                "value": "ZZZzz /,'.-'`'    -.  ;-;;,",
                 "isProtected": true,
                 "address": 641,
-                "length": 60,
+                "length": 27,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 8,
+                "col": 32,
+                "value": "TT",
+                "isProtected": true,
+                "address": 672,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 8,
+                "col": 43,
+                "value": "KKKK",
+                "isProtected": true,
+                "address": 683,
+                "length": 4,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 8,
+                "col": 57,
+                "value": "55555555555",
+                "isProtected": true,
+                "address": 17081,
+                "length": 11,
                 "dirty": false,
                 "cursor": -1
             }
@@ -181,11 +379,41 @@
         [
             {
                 "row": 9,
-                "col": 1,
-                "value": "                           TT   TT   TT    KK   KK        55       Update 3",
+                "col": 6,
+                "value": "!,4-  ) )-,_. ,( (  ''-'",
                 "isProtected": true,
-                "address": 721,
-                "length": 75,
+                "address": 17110,
+                "length": 24,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 9,
+                "col": 32,
+                "value": "TT",
+                "isProtected": true,
+                "address": 752,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 9,
+                "col": 43,
+                "value": "KKKKK",
+                "isProtected": true,
+                "address": 763,
+                "length": 5,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 9,
+                "col": 67,
+                "value": "55",
+                "isProtected": true,
+                "address": 17171,
+                "length": 2,
                 "dirty": false,
                 "cursor": -1
             }
@@ -193,11 +421,51 @@
         [
             {
                 "row": 10,
-                "col": 1,
-                "value": "                                TT         KK  KK         55",
+                "col": 5,
+                "value": "'---''(_/--'  `-')_)",
                 "isProtected": true,
-                "address": 801,
-                "length": 60,
+                "address": 17189,
+                "length": 20,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 10,
+                "col": 32,
+                "value": "TT",
+                "isProtected": true,
+                "address": 832,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 10,
+                "col": 43,
+                "value": "KK",
+                "isProtected": true,
+                "address": 843,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 10,
+                "col": 47,
+                "value": "KK",
+                "isProtected": true,
+                "address": 847,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 10,
+                "col": 67,
+                "value": "55",
+                "isProtected": true,
+                "address": 17251,
+                "length": 2,
                 "dirty": false,
                 "cursor": -1
             }
@@ -205,11 +473,41 @@
         [
             {
                 "row": 11,
-                "col": 1,
-                "value": "        4l      _,,,---,,_      TT         KK KK          55     ",
+                "col": 32,
+                "value": "TT",
                 "isProtected": true,
-                "address": 17265,
-                "length": 65,
+                "address": 912,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 11,
+                "col": 43,
+                "value": "KK",
+                "isProtected": true,
+                "address": 923,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 11,
+                "col": 48,
+                "value": "KK",
+                "isProtected": true,
+                "address": 928,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 11,
+                "col": 67,
+                "value": "55",
+                "isProtected": true,
+                "address": 17331,
+                "length": 2,
                 "dirty": false,
                 "cursor": -1
             }
@@ -217,11 +515,51 @@
         [
             {
                 "row": 12,
-                "col": 1,
-                "value": " ZZZzz /,'.-'`'    -.  ;-;;,    TT         KKKK           55555555555    ",
+                "col": 7,
+                "value": "The MVS 3.8j",
                 "isProtected": true,
-                "address": 961,
-                "length": 73,
+                "address": 17351,
+                "length": 12,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 12,
+                "col": 32,
+                "value": "TT",
+                "isProtected": true,
+                "address": 992,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 12,
+                "col": 43,
+                "value": "KK",
+                "isProtected": true,
+                "address": 1003,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 12,
+                "col": 49,
+                "value": "KK",
+                "isProtected": true,
+                "address": 17393,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 12,
+                "col": 67,
+                "value": "55",
+                "isProtected": true,
+                "address": 17411,
+                "length": 2,
                 "dirty": false,
                 "cursor": -1
             }
@@ -229,11 +567,51 @@
         [
             {
                 "row": 13,
-                "col": 1,
-                "value": "      4,4-  ) )-,_. ,( (  ''-'  TT         KKKKK                    55      ",
+                "col": 5,
+                "value": "Tur(n)key System",
                 "isProtected": true,
-                "address": 1041,
-                "length": 76,
+                "address": 17429,
+                "length": 16,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 13,
+                "col": 32,
+                "value": "TT",
+                "isProtected": true,
+                "address": 1072,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 13,
+                "col": 43,
+                "value": "KK",
+                "isProtected": true,
+                "address": 1083,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 13,
+                "col": 50,
+                "value": "KK",
+                "isProtected": true,
+                "address": 50242,
+                "length": 2,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 13,
+                "col": 67,
+                "value": "55",
+                "isProtected": true,
+                "address": 50259,
+                "length": 2,
                 "dirty": false,
                 "cursor": -1
             }
@@ -241,23 +619,41 @@
         [
             {
                 "row": 14,
-                "col": 1,
-                "value": "     '---''(_/--'  `-')_)       TT         KK  KK                   55",
+                "col": 30,
+                "value": "TTTTTT",
                 "isProtected": true,
-                "address": 33889,
-                "length": 70,
+                "address": 33918,
+                "length": 6,
                 "dirty": false,
                 "cursor": -1
-            }
-        ],
-        [
+            },
             {
-                "row": 15,
-                "col": 1,
-                "value": "                                TT         KK   KK                  55",
+                "row": 14,
+                "col": 42,
+                "value": "KKKK",
                 "isProtected": true,
-                "address": 50353,
-                "length": 70,
+                "address": 50314,
+                "length": 4,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 14,
+                "col": 51,
+                "value": "KKK",
+                "isProtected": true,
+                "address": 50323,
+                "length": 3,
+                "dirty": false,
+                "cursor": -1
+            },
+            {
+                "row": 14,
+                "col": 57,
+                "value": "55555555555",
+                "isProtected": true,
+                "address": 50329,
+                "length": 11,
                 "dirty": false,
                 "cursor": -1
             }
@@ -265,11 +661,11 @@
         [
             {
                 "row": 16,
-                "col": 1,
-                "value": "       The MVS 3.8j             TT         KK    KK                 55",
+                "col": 6,
+                "value": "TK3  created by Volker Bandke      volker@bandke.org",
                 "isProtected": true,
-                "address": 34049,
-                "length": 70,
+                "address": 50438,
+                "length": 52,
                 "dirty": false,
                 "cursor": -1
             }
@@ -277,22 +673,10 @@
         [
             {
                 "row": 17,
-                "col": 1,
-                "value": "     Tur(n)key System           TT         KK     KK                55",
+                "col": 6,
+                "value": "TK4- update by Juergen Winkelmann  juergen.winkelmann@pebble-beach.ch",
                 "isProtected": true,
-                "address": 34129,
-                "length": 70,
-                "dirty": false,
-                "cursor": -1
-            }
-        ],
-        [
-            {
-                "row": 18,
-                "col": 1,
-                "value": "                              TTTTTT      KKKK     KKK    55555555555",
-                "isProtected": true,
-                "address": 34209,
+                "address": 50518,
                 "length": 69,
                 "dirty": false,
                 "cursor": -1
@@ -300,24 +684,36 @@
         ],
         [
             {
-                "row": 20,
-                "col": 1,
-                "value": "    TK3 created by   Volker Bandke       volker@bandke.org",
+                "row": 18,
+                "col": 6,
+                "value": "TK5  update by Rob Prins           prin0096@gmail.com",
                 "isProtected": true,
-                "address": 34369,
-                "length": 58,
+                "address": 50598,
+                "length": 53,
                 "dirty": false,
                 "cursor": -1
             }
         ],
         [
             {
-                "row": 21,
-                "col": 1,
-                "value": "    TK4- update by   Juergen Winkelmann  juergen.winkelmann@pebble-beach.ch",
+                "row": 19,
+                "col": 11,
+                "value": "see SYS2.JCLLIB(CREDITS) for complete credits",
                 "isProtected": true,
-                "address": 1681,
-                "length": 75,
+                "address": 34299,
+                "length": 45,
+                "dirty": false,
+                "cursor": -1
+            }
+        ],
+        [
+            {
+                "row": 20,
+                "col": 24,
+                "value": "MVS 3.8j Level 8505",
+                "isProtected": true,
+                "address": 50776,
+                "length": 19,
                 "dirty": false,
                 "cursor": -1
             }
@@ -325,23 +721,33 @@
         [
             {
                 "row": 22,
-                "col": 1,
-                "value": "    TK5  update by   Rob Prins           prin0096@gmail.com",
+                "col": 0,
+                "value": "Logon ===>",
                 "isProtected": true,
-                "address": 1761,
-                "length": 59,
+                "address": 1760,
+                "length": 10,
                 "dirty": false,
                 "cursor": -1
+            },
+            {
+                "row": 22,
+                "col": 11,
+                "value": "                                                                                                                                ",
+                "isProtected": false,
+                "address": 1771,
+                "length": 128,
+                "dirty": false,
+                "cursor": 1771
             }
         ],
         [
             {
                 "row": 23,
-                "col": 1,
-                "value": "         see SYS2.JCLLIB(CREDITS) for complete credits",
+                "col": 60,
+                "value": "RUNNING  TK5",
                 "isProtected": true,
-                "address": 18225,
-                "length": 54,
+                "address": 1900,
+                "length": 12,
                 "dirty": false,
                 "cursor": -1
             }
