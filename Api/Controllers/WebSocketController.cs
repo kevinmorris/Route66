@@ -25,33 +25,63 @@ namespace Api.Controllers
         public async Task Connect()
         {
             var webSocketManager = HttpContext.WebSockets;
-            if (webSocketManager.IsWebSocketRequest)
-            {
-                using var webSocket = await webSocketManager.AcceptWebSocketAsync();
-
-                var buffer = new byte[1024 * 4];
-                var result = await webSocket.ReceiveAsync(buffer, CancellationToken.None);
-
-                while (!result.CloseStatus.HasValue)
-                {
-                    var outboundMessage = await CreateMessage(buffer, webSocket);
-                    if (outboundMessage is StartingConnectionResponse sc)
-                    {
-                        Start(sc, webSocket);
-                    }
-                    await SendMessage(webSocket, outboundMessage);
-
-                    result = await webSocket.ReceiveAsync(buffer, CancellationToken.None);
-                }
-
-                await webSocket.CloseAsync(
-                    result.CloseStatus.Value,
-                    result.CloseStatusDescription,
-                    CancellationToken.None);
-            }
-            else
+            if (!webSocketManager.IsWebSocketRequest)
             {
                 HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                return;
+            }
+
+            using var webSocket = await webSocketManager.AcceptWebSocketAsync();
+            var buffer = new byte[1024 * 4];
+            var cancellationToken = CancellationToken.None;
+
+            try
+            {
+                while (webSocket.State == WebSocketState.Open)
+                {
+                    WebSocketReceiveResult? result = null;
+                    try
+                    {
+                        result = await webSocket.ReceiveAsync(buffer, cancellationToken);
+                    }
+                    catch (WebSocketException wse)
+                    {
+                        Console.WriteLine($"WebSocket error: {wse.Message}");
+                    }
+
+                    if (result is { MessageType: WebSocketMessageType.Close })
+                    {
+                        Console.WriteLine("Client initiated close");
+                        break;
+                    }
+
+                    try
+                    {
+                        var outboundMessage = await CreateMessage(buffer, webSocket);
+                        if (outboundMessage is StartingConnectionResponse sc)
+                        {
+                            Start(sc, webSocket);
+                        }
+
+                        await SendMessage(webSocket, outboundMessage);
+
+                    }
+                    catch (JsonException jse)
+                    {
+                        var errorStr = $"JSON parse error: {jse.Message}";
+                        Console.WriteLine(errorStr);
+                        await SendMessage(webSocket, new ErrorResponse(errorStr));
+                    }
+
+                    Array.Clear(buffer);
+                }
+            }
+            finally
+            {
+                if (webSocket.State != WebSocketState.Closed)
+                {
+                    await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", cancellationToken);
+                }
             }
         }
 
@@ -97,7 +127,7 @@ namespace Api.Controllers
         {
             pool.Start(connect.SessionKey, connect.Address, connect.Port, async (sender, args) =>
             {
-                var outboundMessage = new RowResponse(args.Row, args.FieldData);
+                var outboundMessage = new DisplayResponse(args.FieldData);
                 await SendMessage(webSocket, outboundMessage);
             });
         }

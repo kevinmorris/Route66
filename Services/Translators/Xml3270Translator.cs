@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Services.Models;
 using Util;
 
 namespace Services.Translators
@@ -16,109 +17,122 @@ namespace Services.Translators
         /// <summary>
         /// </summary>
         /// <see cref="I3270Translator{T}"/>
-        public int Row { get; set; }
-
-        /// <summary>
-        /// </summary>
-        /// <see cref="I3270Translator{T}"/>
         /// <param name="buffer"></param>
         /// <param name="attributeSet"></param>
         /// <param name="route66AttributeSet"></param>
         /// <returns></returns>
         public XElement Translate(
             byte[] buffer,
-            IDictionary<int, IDictionary<byte, byte>> attributeSet,
-            IDictionary<int, IDictionary<string, object>> route66AttributeSet)
+            IDictionary<byte, byte>[] attributeSet,
+            IDictionary<string, object>[] route66AttributeSet,
+            int cursor)
         {
-            var rowRoot = new XElement("row");
+            var gridRoot = new XElement("grid");
+            XElement? currentRow = null;
             XElement? current = null;
+            Coords? nextCoords = null;
             var str = new StringBuilder();
 
-            for (var col = 0; col < buffer.Length; col++)
+            byte fieldAttribute = 0x00;
+            var address = -1;
+            var inputRowContinuation = false;
+
+            for (var index = 0; index < buffer.Length; index++)
             {
-                byte fieldAttribute = 0x00;
-                var structuredFieldStart =
-                    attributeSet.TryGetValue(col, out var attributes) &&
-                     attributes.TryGetValue(Attributes.FIELD, out fieldAttribute);
-
-                var address = -1;
-                if (route66AttributeSet.TryGetValue(col, out var route66Attributes) &&
-                    route66Attributes.TryGetValue(Route66Attributes.ADDRESS, out var attribute))
-                {
-                    address = int.Parse(attribute?.ToString() ?? "-1");
-                }
-
-                var structuredFieldAhead =
-                    attributeSet.TryGetValue(col + 1, out var attributesAhead) &&
-                     attributesAhead.ContainsKey(Attributes.FIELD);
-
-                if (EBCDIC.Chars.ContainsKey(buffer[col]))
-                {
-                    if (structuredFieldStart)
-                    {
-                        if (current != null)
-                        {
-                            current.Value = str.ToString();
-                            current.Add(new XAttribute("length", str.Length));
-                            rowRoot.Add(current);
-                            str.Clear();
-                        }
-
-                        current = new XElement(
-                            BinaryUtil.IsProtected(fieldAttribute) ? "label" : "input",
-                            new XAttribute("row", Row),
-                            new XAttribute("col", col));
-
-                        if (!BinaryUtil.IsProtected(fieldAttribute))
-                        {
-                            current.Add(new XAttribute("address", address));
-                        }
-                    }
-                    else current ??= new XElement(
-                            "label",
-                            new XAttribute("row", Row),
-                            new XAttribute("col", col));
-
-                    var c = EBCDIC.Chars[buffer[col]];
-                    if ((attributes?.TryGetValue(Orders.INSERT_CURSOR, out var cursor) ?? false) &&
-                        cursor == 1)
-                    {
-                        current.Add(new XAttribute("cursor", str.Length));
-                    }
-
-                    str.Append(c);
-                }
-                else if (structuredFieldStart)
+                var d = buffer[index];
+                //We're starting a new row
+                if (index % Constants.SCREEN_WIDTH == 0)
                 {
                     if (current != null)
                     {
+                        inputRowContinuation = current.Name.LocalName == "input";
                         current.Value = str.ToString();
                         current.Add(new XAttribute("length", str.Length));
-                        rowRoot.Add(current);
+                        currentRow?.Add(current);
+                        current = null;
                         str.Clear();
                     }
 
+                    currentRow?.Elements("label")
+                        .Where(e => string.IsNullOrWhiteSpace(e.Value))
+                        .Remove();
+                    currentRow = new XElement("row", new XAttribute("i", index / Constants.SCREEN_WIDTH));
+                    gridRoot.Add(currentRow);
+                }
+
+                if (nextCoords != null)
+                {
                     current = new XElement(
                         BinaryUtil.IsProtected(fieldAttribute) ? "label" : "input",
-                        new XAttribute("row", Row),
-                        new XAttribute("col", col));
+                        new XAttribute("row", nextCoords.Value.Row),
+                        new XAttribute("col", nextCoords.Value.Col));
 
                     if (!BinaryUtil.IsProtected(fieldAttribute))
                     {
                         current.Add(new XAttribute("address", address));
                     }
 
-                    if ((attributes?.TryGetValue(Orders.INSERT_CURSOR, out var cursor) ?? false) &&
-                        cursor == 1)
+                    nextCoords = null;
+                }
+
+                var structuredFieldStart =
+                    attributeSet[index].TryGetValue(Attributes.FIELD, out fieldAttribute);
+
+                if (structuredFieldStart)
+                {
+                    inputRowContinuation = false;
+                    if (current != null)
+                    {
+                        current.Value = str.ToString();
+                        current.Add(new XAttribute("length", str.Length));
+                        currentRow?.Add(current);
+                        current = null;
+                        str.Clear();
+                        address = 0x00;
+                    }
+
+                    if (route66AttributeSet[index].TryGetValue(Route66Attributes.ADDRESS, out var attribute))
+                    {
+                        address = int.Parse(attribute.ToString() ?? "-1");
+                    }
+
+                    nextCoords = new Coords(
+                        index / Constants.SCREEN_WIDTH,
+                        index % Constants.SCREEN_WIDTH).Increment();
+
+                    continue;
+                }
+
+
+                if (EBCDIC.Chars.ContainsKey(d))
+                {
+                    current ??= new XElement(inputRowContinuation ? "input" : "label",
+                            new XAttribute("row", index / Constants.SCREEN_WIDTH),
+                            new XAttribute("col", index % Constants.SCREEN_WIDTH));
+
+                    if (inputRowContinuation)
+                    {
+                        current.Add(new XAttribute("address", address));
+                    }
+
+                    inputRowContinuation = false;
+                    var c = EBCDIC.Chars[d];
+                    if (cursor == index)
                     {
                         current.Add(new XAttribute("cursor", str.Length));
                     }
 
-                    str.Append(' ');
+                    str.Append(c);
                 }
-                else if (current?.Name.LocalName == "input" && !structuredFieldAhead)
+
+                if (d == 0 && current?.Name.LocalName == "input")
                 {
                     str.Append(' ');
+                    if (cursor == index)
+                    {
+                        current.Add(new XAttribute("cursor", str.Length));
+                    }
+
                 }
             }
 
@@ -126,10 +140,14 @@ namespace Services.Translators
             {
                 current.Value = str.ToString();
                 current.Add(new XAttribute("length", str.Length));
-                rowRoot.Add(current);
+                currentRow?.Add(current);
             }
 
-            return rowRoot;
+            currentRow?.Elements("label")
+                .Where(e => string.IsNullOrWhiteSpace(e.Value))
+                .Remove();
+
+            return gridRoot;
         }
     }
 }

@@ -24,52 +24,57 @@ namespace Tests.Translators
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
             };
 
-            var attrs = new Dictionary<int, IDictionary<byte, byte>>()
+            var attrs = new IDictionary<byte, byte>[80];
+            for (var i = 0; i < 80; i++)
             {
-                [7] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000
-                },
-                [20] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000
-                },
-                [60] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000
-                }
+                attrs[i] = new Dictionary<byte, byte>();
+            }
+
+            attrs[6] = new Dictionary<byte, byte>()
+            {
+                [Attributes.FIELD] = 0b11111000
+            };
+            attrs[19] = new Dictionary<byte, byte>()
+            {
+                [Attributes.FIELD] = 0b11111000
+            };
+            attrs[59] = new Dictionary<byte, byte>()
+            {
+                [Attributes.FIELD] = 0b11111000
             };
 
-            var route66Attributes = new Dictionary<int, IDictionary<string, object>>()
+            var route66Attributes = new IDictionary<string, object>[80];
+            for (var i = 0; i < 80; i++)
             {
-                [7] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 7))
-                },
-                [20] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 20))
-                },
-                [60] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 60))
-                }
+                route66Attributes[i] = new Dictionary<string, object>();
+            }
+
+            route66Attributes[7] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 7))
+            };
+            route66Attributes[20] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 20))
+            };
+            route66Attributes[60] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((5, 60))
             };
 
             var expectedStr =
                 """
-                <row>
-                    <label row="5" col="7" length="12">BROWSE      </label>
-                    <label row="5" col="20" length="39"> Display source data using Review      </label>
-                    <label row="5" col="60" length="8">TERMINAL</label>
-                </row>
+                <grid>
+                    <row i="0">
+                        <label row="0" col="7" length="12">BROWSE      </label>
+                        <label row="0" col="20" length="39"> Display source data using Review      </label>
+                        <label row="0" col="60" length="8">TERMINAL</label>
+                    </row>
+                </grid>
                 """;
 
             var expected = XElement.Parse(expectedStr);
-            var actual = new Xml3270Translator()
-            {
-                Row = 5
-            }.Translate(data, attrs, route66Attributes);
+            var actual = new Xml3270Translator().Translate(data, attrs, route66Attributes, -1);
             Assert.That(actual, Is.EqualTo(expected).Using<XElement>(XNode.DeepEquals));
         }
 
@@ -88,43 +93,39 @@ namespace Tests.Translators
                 0x40, 0x40, 0x40
             };
 
-            var attrs = new Dictionary<int, IDictionary<byte, byte>>()
+            var attrs = new IDictionary<byte, byte>[80];
+            for (var i = 0; i < 80; i++)
             {
-                [0] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000,
-                },
-                [11] = new Dictionary<byte, byte>()
+                attrs[i] = new Dictionary<byte, byte>();
+            }
+
+            attrs[11] = new Dictionary<byte, byte>()
                 {
                     [Attributes.FIELD] = 0b11001000,
-                }
-            };
+                };
 
 
-            var route66Attributes = new Dictionary<int, IDictionary<string, object>>()
+            var route66Attributes = new IDictionary<string, object>[80];
+            for (var i = 0; i < 80; i++)
             {
-                [0] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((7, 0))
-                },
-                [11] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((7, 11))
-                }
+                route66Attributes[i] = new Dictionary<string, object>();
+            }
+            route66Attributes[11] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((7, 11))
             };
 
             var expectedStr =
                 """
-                <row>
-                  <label row="7" col="0" length="10">Logon ===&gt;</label>
-                  <input row="7" col="11" address="571" length="68">                                                                    </input>
-                </row>
+                <grid>
+                  <row i="0">
+                    <label row="0" col="0" length="10">Logon ===&gt;</label>
+                    <input row="0" col="12" address="571" length="67">                                                                   </input>
+                  </row>
+                </grid>
                 """;
 
-            var actual = new Xml3270Translator()
-            {
-                Row = 7
-            }.Translate(data, attrs, route66Attributes);
+            var actual = new Xml3270Translator().Translate(data, attrs, route66Attributes, -1);
             Assert.AreEqual(expectedStr, actual.ToString());
         }
 
@@ -144,48 +145,48 @@ namespace Tests.Translators
                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
             };
 
-            var attrs = new Dictionary<int, IDictionary<byte, byte>>()
+            var attrs = new IDictionary<byte, byte>[80];
+            for (var i = 0; i < 80; i++)
             {
-                [60] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000,
-                },
-                [76] = new Dictionary<byte, byte>()
-                {
-                    [Attributes.FIELD] = 0b11111000,
-                }
+                attrs[i] = new Dictionary<byte, byte>();
+            }
+
+            attrs[59] = new Dictionary<byte, byte>()
+            {
+                [Attributes.FIELD] = 0b11111000,
+            };
+
+            attrs[75] = new Dictionary<byte, byte>()
+            {
+                [Attributes.FIELD] = 0b11111000,
             };
 
 
-            var route66Attributes = new Dictionary<int, IDictionary<string, object>>()
+            var route66Attributes = new IDictionary<string, object>[80];
+            for (var i = 0; i < 80; i++)
             {
-                [1] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = 18225
-                },
-                [60] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((23, 60))
-                },
-                [76] = new Dictionary<string, object>()
-                {
-                    [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((23, 76))
-                }
+                route66Attributes[i] = new Dictionary<string, object>();
+            }
+
+            route66Attributes[59] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((23, 60))
+            };
+            route66Attributes[75] = new Dictionary<string, object>()
+            {
+                [Route66Attributes.ADDRESS] = BinaryUtil.CoordinateAddress((23, 76))
             };
 
             var expectedStr =
                 """
-                <row>
-                  <label row="23" col="0" length="59">                                                           </label>
-                  <label row="23" col="60" length="12">RUNNING  TK5</label>
-                  <label row="23" col="76" length="1"> </label>
-                </row>
+                <grid>
+                  <row i="0">
+                    <label row="0" col="60" length="12">RUNNING  TK5</label>
+                  </row>
+                </grid>
                 """;
 
-            var actual = new Xml3270Translator()
-            {
-                Row = 23
-            }.Translate(data, attrs, route66Attributes);
+            var actual = new Xml3270Translator().Translate(data, attrs, route66Attributes, -1);
             Assert.AreEqual(expectedStr, actual.ToString());
         }
     }

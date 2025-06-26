@@ -18,3 +18,10 @@ Api/bin/*
 Api/obj/*
 Route66Angular/server.crt
 Route66Angular/server.key
+route66-react/.idea/*
+route66-react/node_modules/*
+route66-vue/.idea/*
+route66-vue/.vscode/*
+route66-vue/node_modules/*
+docker-tk5-debian/mvs-tk5.zip
+Route66.sln.DotSettings.user

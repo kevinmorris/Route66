@@ -2,6 +2,7 @@
 using Services;
 using Services.Translators;
 using Util;
+using Api.Models.WebSocket;
 
 namespace Api.State
 {
@@ -9,7 +10,7 @@ namespace Api.State
     {
         public bool NewDataAvailable { get; private set; }
 
-        private readonly IEnumerable<FieldData>[] _fieldData;
+        private IEnumerable<FieldData>[] _fieldData;
         private readonly ITN3270Service<IEnumerable<FieldData>> _tn3270Service;
 
         public event EventHandler<FieldsChangedEventArgs>? FieldsChanged;
@@ -20,6 +21,12 @@ namespace Api.State
             {
                 NewDataAvailable = false;
                 return _fieldData;
+            }
+
+            set
+            {
+                NewDataAvailable = true;
+                _fieldData = value;
             }
         }
 
@@ -36,11 +43,7 @@ namespace Api.State
                 FieldsChanged += customHandler;
             }
 
-            for (var i = 0; i < _tn3270Service.Handlers.Length; i++)
-            {
-                _tn3270Service.Handlers[i].RowUpdated += RowUpdatedFunc(i);
-            }
-
+            _tn3270Service.Handler.GridUpdated += GridUpdatedFunc();
             _tn3270Service.Connect(address, port);
         }
 
@@ -53,12 +56,15 @@ namespace Api.State
                 submission.FieldData);
         }
 
-        private EventHandler<RowUpdateEventArgs<IEnumerable<FieldData>>> RowUpdatedFunc(int row)
+        private EventHandler<GridUpdateEventArgs<IEnumerable<FieldData>>> GridUpdatedFunc()
         {
             return (sender, args) =>
             {
-                FieldData[row] = args.Data;
-                FieldsChanged?.Invoke(this, new FieldsChangedEventArgs(row, args.Data));
+                FieldData = args.Data.GroupBy(
+                    field => field.Row,
+                    field => field,
+                    (k, v) => v).ToArray();
+                FieldsChanged?.Invoke(this, new FieldsChangedEventArgs(FieldData));
                 NewDataAvailable = true;
             };
         }
