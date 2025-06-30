@@ -1,13 +1,19 @@
 ﻿using Api.Models.GraphQL;
+using Api.State;
 using Services.Models;
 
 namespace Api.GraphQL
 {
-    public class Query
+    public class Query(TerminalStatePool pool)
     {
-        public Display GetDisplay()
+        public Display GetDisplay(string sessionKey)
         {
-            return new Display(Enumerable.Repeat(Array.Empty<FieldData>(), 24).ToArray());
+            var terminalState = pool[sessionKey];
+            return terminalState != null
+                ? new Display(terminalState.FieldData)
+                : throw new GraphQLException(ErrorBuilder.New()
+                    .SetMessage($"{sessionKey} not found")
+                    .Build());
         }
     }
 }

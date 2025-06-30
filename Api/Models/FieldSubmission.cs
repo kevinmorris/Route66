@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Services.Models;
 
-namespace Api.Models.WebSocket
+namespace Api.Models
 {
     public class FieldSubmission()
     {

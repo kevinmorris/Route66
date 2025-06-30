@@ -1,13 +1,13 @@
 ﻿type Query {
-  display: Display
+  display(sessionKey: String!): Display
 }
 
 type Mutation {
-  connect(connectParams: ConnectParams!): Connection
-  submitFields(submission: Submission!): Display
+  connect(connectRequest: ConnectRequest!): Connection
+  submitFields(submission: Submission!): OkResponse
 }
 
-input ConnectParams {
+input ConnectRequest {
   address: String!
   port: Int!
 }
@@ -20,6 +20,10 @@ type Connection {
 
 type Display {
   fieldData: [[FieldData!]!]!
+}
+
+type OkResponse {
+  code: Int
 }
 
 input Submission {

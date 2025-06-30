@@ -1,18 +1,32 @@
 ﻿using Api.Models.GraphQL;
+using Api.State;
 using Services.Models;
+using System.Net.WebSockets;
 
 namespace Api.GraphQL
 {
-    public class Mutation
+    public class Mutation(TerminalStatePool pool)
     {
-        public async Task<Connection> Connect(ConnectParams connectParams)
+        public Connection Connect(ConnectRequest connectRequest)
         {
-            return await Task.FromResult(new Connection(Guid.NewGuid().ToString(), "127.0.0.1", 3271));
+            var sessionKey = Guid.NewGuid().ToString();
+            pool.Start(sessionKey, connectRequest.Address, connectRequest.Port, null);
+
+            return new Connection(sessionKey, connectRequest.Address, connectRequest.Port);
         }
 
-        public async Task<Display> SubmitFields(Submission submission)
+        public async Task<OkResponse> SubmitFields(Submission submission)
         {
-            return await Task.FromResult(new Display(Enumerable.Repeat(Array.Empty<FieldData>(), 24).ToArray()));
+            var terminalState = pool[submission.SessionKey];
+            if (terminalState == null)
+            {
+                throw new GraphQLException(ErrorBuilder.New()
+                    .SetMessage($"{submission.SessionKey} not found")
+                    .Build());
+            }
+
+            await terminalState.SendFields(submission.FieldSubmission);
+            return new OkResponse(0);
         }
     }
 }
