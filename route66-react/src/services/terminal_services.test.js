@@ -1,29 +1,340 @@
-import {createFieldSubmission, processDisplay} from "./terminal_services";
+import {createFieldSubmission, inputValueChanged, processDisplayMessage} from "./terminal_services";
 
-describe('processRow', () => {
-    test('updates the correct row', () => {
-        const initialFieldData = [
-            { value: 'row0', dirty: false },
-            { value: 'row1', dirty: false },
-            { value: 'row2', dirty: false }
+describe('inputValueChanged', () => {
+    test('mark field as dirty', () => {
+        const prevFields = [
+            [],
+            [
+                {
+                    "row": 1,
+                    "col": 0,
+                    "value": "Logon ===>",
+                    "isProtected": true,
+                    "address": 1760,
+                    "length": 10,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 1,
+                    "col": 11,
+                    "value": "                                                                                                                                ",
+                    "isProtected": false,
+                    "address": 1771,
+                    "length": 128,
+                    "dirty": false,
+                    "cursor": 1771
+                }
+            ],
+            [
+                {
+                    "row": 2,
+                    "col": 60,
+                    "value": "RUNNING  TK5",
+                    "isProtected": true,
+                    "address": 1900,
+                    "length": 12,
+                    "dirty": false,
+                    "cursor": -1
+                }
+            ]
         ];
 
+        const expected = [
+            [],
+            [
+                {
+                    "row": 1,
+                    "col": 0,
+                    "value": "Logon ===>",
+                    "isProtected": true,
+                    "address": 1760,
+                    "length": 10,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 1,
+                    "col": 11,
+                    "value": "alpha1",
+                    "isProtected": false,
+                    "address": 1771,
+                    "length": 128,
+                    "dirty": true,
+                    "cursor": 1771
+                }
+            ],
+            [
+                {
+                    "row": 2,
+                    "col": 60,
+                    "value": "RUNNING  TK5",
+                    "isProtected": true,
+                    "address": 1900,
+                    "length": 12,
+                    "dirty": false,
+                    "cursor": -1
+                }
+            ]
+        ];
+        const mockSetFieldData = jest.fn();
+        const inputValueChangedFn = inputValueChanged(mockSetFieldData);
+        inputValueChangedFn(1, 11, "alpha1")
+
+        const updaterFn = mockSetFieldData.mock.calls[0][0];
+        const actual = updaterFn(prevFields);
+        expect(actual).toEqual(expected);
+    });
+});
+
+describe('processDisplayMessage', () => {
+    test('updates the rows', () => {
+        const initialFieldData = [
+            [
+                {
+                    "row": 0,
+                    "col": 0,
+                    "value": "Terminal",
+                    "isProtected": true,
+                    "address": -1,
+                    "length": 8,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 0,
+                    "col": 11,
+                    "value": "CUU0C0  ",
+                    "isProtected": true,
+                    "address": 11,
+                    "length": 8,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 0,
+                    "col": 66,
+                    "value": "Date",
+                    "isProtected": true,
+                    "address": 49218,
+                    "length": 4,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 0,
+                    "col": 72,
+                    "value": "23.06.25",
+                    "isProtected": true,
+                    "address": 49224,
+                    "length": 8,
+                    "dirty": false,
+                    "cursor": -1
+                }
+            ],
+            [
+                {
+                    "row": 1,
+                    "col": 66,
+                    "value": "Time",
+                    "isProtected": true,
+                    "address": 49298,
+                    "length": 4,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 1,
+                    "col": 72,
+                    "value": "18:38:30",
+                    "isProtected": true,
+                    "address": 49304,
+                    "length": 8,
+                    "dirty": false,
+                    "cursor": -1
+                }
+            ],
+            [
+                {
+                    "row": 3,
+                    "col": 27,
+                    "value": "TTTTTTTTTTTT",
+                    "isProtected": true,
+                    "address": 33035,
+                    "length": 12,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 3,
+                    "col": 42,
+                    "value": "KKKK",
+                    "isProtected": true,
+                    "address": 49434,
+                    "length": 4,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 3,
+                    "col": 48,
+                    "value": "KKKKK",
+                    "isProtected": true,
+                    "address": 33056,
+                    "length": 5,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 3,
+                    "col": 57,
+                    "value": "555555555555",
+                    "isProtected": true,
+                    "address": 49449,
+                    "length": 12,
+                    "dirty": false,
+                    "cursor": -1
+                }
+            ]
+        ];
+
+        const expectedFields = [
+            [
+                {
+                    "row": 0,
+                    "col": 0,
+                    "value": "Terminal",
+                    "isProtected": true,
+                    "address": -1,
+                    "length": 8,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 0,
+                    "col": 11,
+                    "value": "CUU0C0  ",
+                    "isProtected": true,
+                    "address": 11,
+                    "length": 8,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 0,
+                    "col": 66,
+                    "value": "Date",
+                    "isProtected": true,
+                    "address": 49218,
+                    "length": 4,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 0,
+                    "col": 72,
+                    "value": "23.06.25",
+                    "isProtected": true,
+                    "address": 49224,
+                    "length": 8,
+                    "dirty": false,
+                    "cursor": -1
+                }
+            ],
+            [
+                {
+                    "row": 1,
+                    "col": 66,
+                    "value": "Time",
+                    "isProtected": true,
+                    "address": 49298,
+                    "length": 4,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 1,
+                    "col": 72,
+                    "value": "18:38:30",
+                    "isProtected": true,
+                    "address": 49304,
+                    "length": 8,
+                    "dirty": false,
+                    "cursor": -1
+                }
+            ],
+            [],
+            [
+                {
+                    "row": 3,
+                    "col": 27,
+                    "value": "TTTTTTTTTTTT",
+                    "isProtected": true,
+                    "address": 33035,
+                    "length": 12,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 3,
+                    "col": 42,
+                    "value": "KKKK",
+                    "isProtected": true,
+                    "address": 49434,
+                    "length": 4,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 3,
+                    "col": 48,
+                    "value": "KKKKK",
+                    "isProtected": true,
+                    "address": 33056,
+                    "length": 5,
+                    "dirty": false,
+                    "cursor": -1
+                },
+                {
+                    "row": 3,
+                    "col": 57,
+                    "value": "555555555555",
+                    "isProtected": true,
+                    "address": 49449,
+                    "length": 12,
+                    "dirty": false,
+                    "cursor": -1
+                }
+            ],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+    ];
+
         const mockSetFieldData = jest.fn()
-        const rowMessage = {
-            row: 1,
-            fieldData: { value: 'Alpha', dirty: true }
-        };
 
-        const updateRow = processDisplay(mockSetFieldData);
-        updateRow(rowMessage);
+        const displayMessageFn = processDisplayMessage(mockSetFieldData);
+        displayMessageFn(initialFieldData);
 
-        const updaterFn = mockSetFieldData.mock.calls[0][0]
-        const result = updaterFn(initialFieldData)
-        expect(result).toEqual([
-            { value: 'row0', dirty: false },
-            { value: 'Alpha', dirty: true },
-            { value: 'row2', dirty: false }
-        ])
+        const actualFields = mockSetFieldData.mock.calls[0][0];
+        expect(actualFields).toEqual(expectedFields)
     });
 });
 
