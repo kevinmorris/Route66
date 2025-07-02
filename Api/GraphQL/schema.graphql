@@ -8,7 +8,7 @@ type Mutation {
 }
 
 type Subscription {
-  displayUpdated: Display
+  displayUpdated(sessionKey: String!): Display
 }
 
 input ConnectRequest {
