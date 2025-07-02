@@ -29,7 +29,9 @@ builder.Services
     .AddGraphQLServer()
     .AddDocumentFromFile("GraphQL/schema.graphql")
     .BindRuntimeType<Query>("Query")
-    .BindRuntimeType<Mutation>("Mutation");
+    .BindRuntimeType<Mutation>("Mutation")
+    .BindRuntimeType<Subscription>()
+    .AddInMemorySubscriptions();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -49,6 +51,7 @@ app.UseCors(b =>
 var webSocketOptions = new WebSocketOptions();
 
 //TODO: Set allowed websocket origins here
+webSocketOptions.AllowedOrigins.Add("http://localhost:7149");
 webSocketOptions.AllowedOrigins.Add("http://localhost:63343");
 
 app.UseWebSockets(webSocketOptions);

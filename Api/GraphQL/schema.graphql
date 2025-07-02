@@ -7,6 +7,10 @@ type Mutation {
   submitFields(submission: Submission!): OkResponse
 }
 
+type Subscription {
+  displayUpdated: Display
+}
+
 input ConnectRequest {
   address: String!
   port: Int!
