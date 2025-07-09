@@ -4,7 +4,7 @@ import Connect from './components/Connect/Connect.vue'
 import Terminal from './components/Terminal/Terminal.vue'
 
 const routes = [
-    { path: '/', component: Connect },
+    { path: '/', component: Terminal },
     { path: '/connect', component: Connect },
     { path: '/terminal', component: Terminal }
 ]
