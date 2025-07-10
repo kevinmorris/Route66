@@ -5,6 +5,7 @@ export { default } from './InputField.js'
 <template>
   <input :style="positionStyle"
          :data-testid="testId"
+         :value="fieldData.value"
          @input="(event) => $emit('inputChanged', fieldData.row, fieldData.col, event.target.value)"
          @focus="$emit('focusChanged', fieldData.row, fieldData.col)">
 </template>

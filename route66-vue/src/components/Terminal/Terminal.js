@@ -1,6 +1,11 @@
 import Constants from "@/Constants.js";
 import Row from "../Row/Row.vue"
-import { processDisplayMessage } from "@/services/terminal_services.js";
+import {
+    createFieldSubmission,
+    gqlConstants,
+    inputValueChanged,
+    processDisplayMessage
+} from "@/services/terminal_services.js";
 import {gql} from "@apollo/client/core";
 
 export default {
@@ -13,22 +18,19 @@ export default {
         return {
             sessionKey: null,
             rows: [],
+            cursor: [-1, -1]
         }
     },
 
     async mounted() {
+        window.addEventListener('keydown', this.handleKeyDown)
+
         const result = await this.$apollo.mutate({
-            mutation: gql(`mutation Connect($address: String!, $port: Int!) {
-                connect(connectRequest:  {
-                    address: $address
-                    port: $port
-                }) {
-                    sessionKey
-                    address
-                    port
-                }
-            }`),
-            variables: { address: this.$route.query.address, port: parseInt(this.$route.query.port) }
+            mutation: gqlConstants.connect,
+            variables: {
+                address: this.$route.query.address,
+                port: parseInt(this.$route.query.port)
+            }
         });
 
         this.sessionKey = result.data.connect.sessionKey;
@@ -41,96 +43,81 @@ export default {
     },
 
     apollo: {
-            display: {
-                query: gql`query($sessionKey: String!) {
-                    display(sessionKey: $sessionKey) {
-                        fieldData {
-                            row
-                            col
-                            value
-                            isProtected
-                            address
-                            length
-                            dirty
-                            cursor
-                        }
-                    }
-                }`,
-                subscribeToMore: {
-                    document: gql`subscription display($sessionKey: String!) {
-                        display(sessionKey: $sessionKey) {
-                            fieldData {
-                                row
-                                col
-                                value
-                                isProtected
-                                address
-                                length
-                                dirty
-                                cursor
-                            }
-                        }
-                    }`,
-                    variables() {
-                        return {sessionKey: this.sessionKey}
-                    },
-                    skip() {
-                        return !this.sessionKey
-                    },
-                    updateQuery(previousResult, { subscriptionData: { data: { display: { fieldData }}}})  {
-                        this.rows = processDisplayMessage(fieldData)
-                    }
-                },
+        display: {
+            query: gqlConstants.displayQuery,
+            subscribeToMore: {
+                document: gqlConstants.displaySubscription,
                 variables() {
                     return {sessionKey: this.sessionKey}
                 },
                 skip() {
                     return !this.sessionKey
                 },
-                result({data: { display: { fieldData }}}) {
+                updateQuery(previousResult, { subscriptionData: { data: { display: { fieldData }}} })  {
                     this.rows = processDisplayMessage(fieldData)
                 }
             },
+            variables() {
+                return {sessionKey: this.sessionKey}
+            },
+            skip() {
+                return !this.sessionKey
+            },
+            result({data: { display: { fieldData }}}) {
+                this.rows = processDisplayMessage(fieldData)
+            }
+        },
     },
     
     methods: {
-
-        functionKey() {
-            this.$apollo.mutate({
-                mutation: gql`mutation SubmitFields($submission: Submission!) {
-                    submitFields(submission: $submission) {
-                        code
-                    }
-                }`,
-                variables: {
-                    submission: {
-                        sessionKey: this.sessionKey,
-                        fieldSubmission: {
-                            aid: "CLEAR",
-                            cursorRow: 17,
-                            cursorCol: 22,
-                            fieldData: [{
-                                row: 22,
-                                col: 11,
-                                value: "HERC01",
-                                address: 1771
-                            }]
-                        }
-                    }
+        functionKey(aid) {
+            const body = {
+                sessionKey: this.sessionKey,
+                fieldSubmission: {
+                    aid: aid,
                 }
+            }
+
+            this.$apollo.mutate({
+                mutation: gqlConstants.submitFields,
+                variables: { submission: body },
+            });
+        },
+
+        enterKey() {
+
+            const fieldSubmission = createFieldSubmission(this.cursor, this.rows)
+
+            const body = {
+                sessionKey: this.sessionKey,
+                fieldSubmission: {
+                    aid: Constants.AID.ENTER,
+                    ...fieldSubmission
+                }
+            }
+
+            this.$apollo.mutate({
+                mutation: gqlConstants.submitFields,
+                variables: { submission: body }
             });
         },
 
         inputChanged(row, col, value) {
-            console.info(row, col, value);
+            this.rows = inputValueChanged(this.rows, row, col, value)
         },
 
         focusChanged(row, col) {
-            console.info(row, col)
+            this.cursor = [row, col]
         },
 
-        setRows(rows) {
-            this.rows = rows;
+        handleKeyDown(event) {
+            if(event.key === 'Enter') {
+                this.enterKey();
+            }
         }
+    },
+
+    beforeUnmount() {
+        window.removeEventListener('keydown', this.handleKeyDown);
     }
 }

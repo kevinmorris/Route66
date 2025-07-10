@@ -13,6 +13,12 @@ namespace Api.Models
 
         public int CursorCol { get; init; }
 
-        public IEnumerable<FieldData> FieldData { get; init; } = new List<FieldData>();
+        private readonly IEnumerable<FieldData> _fieldData = [];
+
+        public IEnumerable<FieldData> FieldData
+        {
+            get => _fieldData;
+            init => _fieldData = value ?? [];
+        }
     }
 }
