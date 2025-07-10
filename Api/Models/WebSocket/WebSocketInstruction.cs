@@ -6,7 +6,6 @@
         CONNECT,
         STARTING_CONNECTION,
         DISPLAY,
-        ROW,
         SUBMIT_FIELDS,
         ERROR
     }
