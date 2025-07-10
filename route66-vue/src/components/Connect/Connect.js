@@ -1,10 +1,10 @@
-import {ApolloClient, gql, InMemoryCache} from "@apollo/client/core";
+import { ApolloClient, gql, InMemoryCache } from "@apollo/client/core";
 
 export default {
     data() {
         return {
             connection: {},
-            url: '127.0.0.1',
+            address: '127.0.0.1',
             port: '3270'
         }
     },
@@ -13,39 +13,7 @@ export default {
     },
     methods: {
         async login() {
-            const connection = await this.$apollo.mutate({
-                mutation: gql(`mutation Connect {
-                  connect(connectParams:  {
-                     address: "asdfasdf"
-                     port: 34
-                  }) {
-                    sessionKey
-                    address
-                    port
-                  }
-                }`)
-            });
-
-            console.info(connection);
-
-            const display = await this.$apollo.query({
-                query: gql(`{
-                  display {
-                    fieldData {
-                      row
-                      col
-                      value
-                      isProtected
-                      address
-                      length
-                      dirty
-                      cursor
-                    }
-                  }
-                }`)
-            });
-
-            console.info(display)
+            this.$router.push({name: 'terminal', query: { address: this.address, port: this.port }});
         }
     }
 }

@@ -53,6 +53,7 @@ var webSocketOptions = new WebSocketOptions();
 //TODO: Set allowed websocket origins here
 webSocketOptions.AllowedOrigins.Add("http://localhost:7149");
 webSocketOptions.AllowedOrigins.Add("http://localhost:63343");
+webSocketOptions.AllowedOrigins.Add("http://localhost:5173");
 
 app.UseWebSockets(webSocketOptions);
 

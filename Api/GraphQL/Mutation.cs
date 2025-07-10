@@ -14,7 +14,7 @@ namespace Api.GraphQL
             pool.Start(sessionKey, connectRequest.Address, connectRequest.Port, async (sender, args) =>
             {
                 var display = new Display(args.FieldData);
-                await eventSender.SendAsync($"displayUpdated_{sessionKey}", display);
+                await eventSender.SendAsync($"display_{sessionKey}", display);
             });
 
             return new Connection(sessionKey, connectRequest.Address, connectRequest.Port);

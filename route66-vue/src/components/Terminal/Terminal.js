@@ -1,6 +1,7 @@
 import Constants from "@/Constants.js";
 import Row from "../Row/Row.vue"
 import { processDisplayMessage } from "@/services/terminal_services.js";
+import {gql} from "@apollo/client/core";
 
 export default {
     name: 'Terminal',
@@ -10,776 +11,27 @@ export default {
 
     data() {
         return {
-            _rows: [
-                [
-                    {
-                        "row": 0,
-                        "col": 0,
-                        "value": "Terminal",
-                        "isProtected": true,
-                        "address": -1,
-                        "length": 8,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 0,
-                        "col": 11,
-                        "value": "CUU0C0  ",
-                        "isProtected": true,
-                        "address": 11,
-                        "length": 8,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 0,
-                        "col": 66,
-                        "value": "Date",
-                        "isProtected": true,
-                        "address": 49218,
-                        "length": 4,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 0,
-                        "col": 72,
-                        "value": "08.07.25",
-                        "isProtected": true,
-                        "address": 49224,
-                        "length": 8,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 1,
-                        "col": 66,
-                        "value": "Time",
-                        "isProtected": true,
-                        "address": 49298,
-                        "length": 4,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 1,
-                        "col": 72,
-                        "value": "22:11:35",
-                        "isProtected": true,
-                        "address": 49304,
-                        "length": 8,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 3,
-                        "col": 27,
-                        "value": "TTTTTTTTTTTT",
-                        "isProtected": true,
-                        "address": 33035,
-                        "length": 12,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 3,
-                        "col": 42,
-                        "value": "KKKK",
-                        "isProtected": true,
-                        "address": 49434,
-                        "length": 4,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 3,
-                        "col": 48,
-                        "value": "KKKKK",
-                        "isProtected": true,
-                        "address": 33056,
-                        "length": 5,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 3,
-                        "col": 57,
-                        "value": "555555555555",
-                        "isProtected": true,
-                        "address": 49449,
-                        "length": 12,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 4,
-                        "col": 27,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 33115,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 4,
-                        "col": 32,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 33120,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 4,
-                        "col": 37,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 49509,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 4,
-                        "col": 43,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 33131,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 4,
-                        "col": 49,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 49521,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 4,
-                        "col": 57,
-                        "value": "55",
-                        "isProtected": true,
-                        "address": 49529,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 5,
-                        "col": 27,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 33195,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 5,
-                        "col": 32,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 33200,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 5,
-                        "col": 37,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 49589,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 5,
-                        "col": 43,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 33211,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 5,
-                        "col": 48,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 33216,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 5,
-                        "col": 57,
-                        "value": "55",
-                        "isProtected": true,
-                        "address": 49609,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 5,
-                        "col": 66,
-                        "value": "Update 3",
-                        "isProtected": true,
-                        "address": 49618,
-                        "length": 8,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 6,
-                        "col": 32,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 33280,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 6,
-                        "col": 43,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 33291,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 6,
-                        "col": 47,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 33295,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 6,
-                        "col": 57,
-                        "value": "55",
-                        "isProtected": true,
-                        "address": 49689,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 7,
-                        "col": 8,
-                        "value": "!l",
-                        "isProtected": true,
-                        "address": 49720,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 7,
-                        "col": 16,
-                        "value": "_,,,---,,_",
-                        "isProtected": true,
-                        "address": 33344,
-                        "length": 10,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 7,
-                        "col": 32,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 33360,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 7,
-                        "col": 43,
-                        "value": "KK KK",
-                        "isProtected": true,
-                        "address": 33371,
-                        "length": 5,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 7,
-                        "col": 57,
-                        "value": "55",
-                        "isProtected": true,
-                        "address": 49769,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 8,
-                        "col": 1,
-                        "value": "ZZZzz /,'.-'`'    -.  ;-;;,",
-                        "isProtected": true,
-                        "address": 641,
-                        "length": 27,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 8,
-                        "col": 32,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 672,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 8,
-                        "col": 43,
-                        "value": "KKKK",
-                        "isProtected": true,
-                        "address": 683,
-                        "length": 4,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 8,
-                        "col": 57,
-                        "value": "55555555555",
-                        "isProtected": true,
-                        "address": 17081,
-                        "length": 11,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 9,
-                        "col": 6,
-                        "value": "!,4-  ) )-,_. ,( (  ''-'",
-                        "isProtected": true,
-                        "address": 17110,
-                        "length": 24,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 9,
-                        "col": 32,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 752,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 9,
-                        "col": 43,
-                        "value": "KKKKK",
-                        "isProtected": true,
-                        "address": 763,
-                        "length": 5,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 9,
-                        "col": 67,
-                        "value": "55",
-                        "isProtected": true,
-                        "address": 17171,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 10,
-                        "col": 5,
-                        "value": "'---''(_/--'  `-')_)",
-                        "isProtected": true,
-                        "address": 17189,
-                        "length": 20,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 10,
-                        "col": 32,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 832,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 10,
-                        "col": 43,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 843,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 10,
-                        "col": 47,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 847,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 10,
-                        "col": 67,
-                        "value": "55",
-                        "isProtected": true,
-                        "address": 17251,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 11,
-                        "col": 32,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 912,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 11,
-                        "col": 43,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 923,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 11,
-                        "col": 48,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 928,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 11,
-                        "col": 67,
-                        "value": "55",
-                        "isProtected": true,
-                        "address": 17331,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 12,
-                        "col": 7,
-                        "value": "The MVS 3.8j",
-                        "isProtected": true,
-                        "address": 17351,
-                        "length": 12,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 12,
-                        "col": 32,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 992,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 12,
-                        "col": 43,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 1003,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 12,
-                        "col": 49,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 17393,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 12,
-                        "col": 67,
-                        "value": "55",
-                        "isProtected": true,
-                        "address": 17411,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 13,
-                        "col": 5,
-                        "value": "Tur(n)key System",
-                        "isProtected": true,
-                        "address": 17429,
-                        "length": 16,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 13,
-                        "col": 32,
-                        "value": "TT",
-                        "isProtected": true,
-                        "address": 1072,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 13,
-                        "col": 43,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 1083,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 13,
-                        "col": 50,
-                        "value": "KK",
-                        "isProtected": true,
-                        "address": 50242,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 13,
-                        "col": 67,
-                        "value": "55",
-                        "isProtected": true,
-                        "address": 50259,
-                        "length": 2,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 14,
-                        "col": 30,
-                        "value": "TTTTTT",
-                        "isProtected": true,
-                        "address": 33918,
-                        "length": 6,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 14,
-                        "col": 42,
-                        "value": "KKKK",
-                        "isProtected": true,
-                        "address": 50314,
-                        "length": 4,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 14,
-                        "col": 51,
-                        "value": "KKK",
-                        "isProtected": true,
-                        "address": 50323,
-                        "length": 3,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 14,
-                        "col": 57,
-                        "value": "55555555555",
-                        "isProtected": true,
-                        "address": 50329,
-                        "length": 11,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 16,
-                        "col": 6,
-                        "value": "TK3  created by Volker Bandke      volker@bandke.org",
-                        "isProtected": true,
-                        "address": 50438,
-                        "length": 52,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 17,
-                        "col": 6,
-                        "value": "TK4- update by Juergen Winkelmann  juergen.winkelmann@pebble-beach.ch",
-                        "isProtected": true,
-                        "address": 50518,
-                        "length": 69,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 18,
-                        "col": 6,
-                        "value": "TK5  update by Rob Prins           prin0096@gmail.com",
-                        "isProtected": true,
-                        "address": 50598,
-                        "length": 53,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 19,
-                        "col": 11,
-                        "value": "see SYS2.JCLLIB(CREDITS) for complete credits",
-                        "isProtected": true,
-                        "address": 34299,
-                        "length": 45,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 20,
-                        "col": 24,
-                        "value": "MVS 3.8j Level 8505",
-                        "isProtected": true,
-                        "address": 50776,
-                        "length": 19,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ],
-                [
-                    {
-                        "row": 22,
-                        "col": 0,
-                        "value": "Logon ===>",
-                        "isProtected": true,
-                        "address": 1760,
-                        "length": 10,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 22,
-                        "col": 11,
-                        "value": "                                                                     ",
-                        "isProtected": false,
-                        "address": 1771,
-                        "length": 69,
-                        "dirty": false,
-                        "cursor": 1771
-                    }
-                ],
-                [
-                    {
-                        "row": 23,
-                        "col": 0,
-                        "value": "                                                           ",
-                        "isProtected": false,
-                        "address": 1771,
-                        "length": 59,
-                        "dirty": false,
-                        "cursor": -1
-                    },
-                    {
-                        "row": 23,
-                        "col": 60,
-                        "value": "RUNNING  TK5",
-                        "isProtected": true,
-                        "address": 1900,
-                        "length": 12,
-                        "dirty": false,
-                        "cursor": -1
-                    }
-                ]
-            ],
-            rows: []
+            sessionKey: null,
+            rows: [],
         }
     },
 
-    mounted() {
-        processDisplayMessage(this.setRows)(this._rows);
+    async mounted() {
+        const result = await this.$apollo.mutate({
+            mutation: gql(`mutation Connect($address: String!, $port: Int!) {
+                connect(connectRequest:  {
+                    address: $address
+                    port: $port
+                }) {
+                    sessionKey
+                    address
+                    port
+                }
+            }`),
+            variables: { address: this.$route.query.address, port: parseInt(this.$route.query.port) }
+        });
+
+        this.sessionKey = result.data.connect.sessionKey;
     },
 
     computed: {
@@ -787,11 +39,86 @@ export default {
             return Constants
         },
     },
+
+    apollo: {
+            display: {
+                query: gql`query($sessionKey: String!) {
+                    display(sessionKey: $sessionKey) {
+                        fieldData {
+                            row
+                            col
+                            value
+                            isProtected
+                            address
+                            length
+                            dirty
+                            cursor
+                        }
+                    }
+                }`,
+                subscribeToMore: {
+                    document: gql`subscription display($sessionKey: String!) {
+                        display(sessionKey: $sessionKey) {
+                            fieldData {
+                                row
+                                col
+                                value
+                                isProtected
+                                address
+                                length
+                                dirty
+                                cursor
+                            }
+                        }
+                    }`,
+                    variables() {
+                        return {sessionKey: this.sessionKey}
+                    },
+                    skip() {
+                        return !this.sessionKey
+                    },
+                    updateQuery(previousResult, { subscriptionData: { data: { display: { fieldData }}}})  {
+                        this.rows = processDisplayMessage(fieldData)
+                    }
+                },
+                variables() {
+                    return {sessionKey: this.sessionKey}
+                },
+                skip() {
+                    return !this.sessionKey
+                },
+                result({data: { display: { fieldData }}}) {
+                    this.rows = processDisplayMessage(fieldData)
+                }
+            },
+    },
     
     methods: {
 
         functionKey() {
-
+            this.$apollo.mutate({
+                mutation: gql`mutation SubmitFields($submission: Submission!) {
+                    submitFields(submission: $submission) {
+                        code
+                    }
+                }`,
+                variables: {
+                    submission: {
+                        sessionKey: this.sessionKey,
+                        fieldSubmission: {
+                            aid: "CLEAR",
+                            cursorRow: 17,
+                            cursorCol: 22,
+                            fieldData: [{
+                                row: 22,
+                                col: 11,
+                                value: "HERC01",
+                                address: 1771
+                            }]
+                        }
+                    }
+                }
+            });
         },
 
         inputChanged(row, col, value) {

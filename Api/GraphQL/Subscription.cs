@@ -6,8 +6,8 @@ namespace Api.GraphQL
     public class Subscription
     {
         [Subscribe]
-        [Topic($"displayUpdated_{{{nameof(sessionKey)}}}")]
-        public Display DisplayUpdated(string sessionKey, [EventMessage] Display display)
+        [Topic($"display_{{{nameof(sessionKey)}}}")]
+        public Display Display(string sessionKey, [EventMessage] Display display)
         {
             return display;
         }

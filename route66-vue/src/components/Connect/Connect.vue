@@ -7,7 +7,7 @@
   <form>
     <div class="field">
       <span>Address:</span>
-      <input type="text" name="address" v-model="url"/>
+      <input type="text" name="address" v-model="address"/>
     </div>
     <div class="field">
       <span>Port:</span>
