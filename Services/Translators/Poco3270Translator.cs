@@ -68,6 +68,7 @@ namespace Services.Translators
                         current.Value = str.ToString();
                         current.Length = str.Length;
                         gridRoot.Add(current);
+                        current = null;
                         str.Clear();
                     }
 
