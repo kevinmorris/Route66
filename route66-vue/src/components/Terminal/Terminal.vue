@@ -35,6 +35,7 @@
            @focusChanged="focusChanged">
       </Row>
     </div>
+    <div v-if="errorMessage" class="error">{{errorMessage}}</div>
   </div>
 </template>
 

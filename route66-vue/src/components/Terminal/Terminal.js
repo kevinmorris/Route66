@@ -18,22 +18,26 @@ export default {
         return {
             sessionKey: null,
             rows: [],
-            cursor: [-1, -1]
+            cursor: [-1, -1],
+            errorMessage: null
         }
     },
 
-    async mounted() {
+    mounted() {
         window.addEventListener('keydown', this.handleKeyDown)
 
-        const result = await this.$apollo.mutate({
+        this.$apollo.mutate({
             mutation: gqlConstants.connect,
             variables: {
                 address: this.$route.query.address,
                 port: parseInt(this.$route.query.port)
-            }
+            },
+        }).then((value) => {
+            this.errorMessage = null;
+            this.sessionKey = value.data.connect.sessionKey;
+        }).catch((error) => {
+            this.errorMessage = error
         });
-
-        this.sessionKey = result.data.connect.sessionKey;
     },
 
     computed: {
@@ -54,7 +58,11 @@ export default {
                     return !this.sessionKey
                 },
                 updateQuery(previousResult, { subscriptionData: { data: { display: { fieldData }}} })  {
+                    this.errorMessage = null;
                     this.rows = processDisplayMessage(fieldData)
+                },
+                error(error) {
+                    this.errorMessage = error
                 }
             },
             variables() {
@@ -64,7 +72,11 @@ export default {
                 return !this.sessionKey
             },
             result({data: { display: { fieldData }}}) {
+                this.errorMessage = null;
                 this.rows = processDisplayMessage(fieldData)
+            },
+            error(error) {
+                this.errorMessage = error
             }
         },
     },
@@ -98,7 +110,8 @@ export default {
 
             this.$apollo.mutate({
                 mutation: gqlConstants.submitFields,
-                variables: { submission: body }
+                variables: { submission: body },
+
             });
         },
 
