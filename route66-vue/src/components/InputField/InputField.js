@@ -1,5 +1,5 @@
 export default {
-    props: ['fieldData'],
+    props: ['fieldData', 'cursor'],
     emits: ['inputChanged', 'focusChanged'],
 
     computed: {
@@ -14,4 +14,12 @@ export default {
             }
         }
     },
+    mounted() {
+        setTimeout(() => {
+            if(this.fieldData.cursor > -1) {
+                this.$refs.inputElement?.focus();
+                this.$refs.inputElement?.setSelectionRange(0, 0);
+            }
+        }, 200)
+    }
 }

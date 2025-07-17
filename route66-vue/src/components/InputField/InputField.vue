@@ -3,7 +3,8 @@ export { default } from './InputField.js'
 </script>
 
 <template>
-  <input :style="positionStyle"
+  <input ref="inputElement"
+         :style="positionStyle"
          :data-testid="testId"
          :value="fieldData.value"
          @input="(event) => $emit('inputChanged', fieldData.row, fieldData.col, event.target.value)"
