@@ -1,0 +1,26 @@
+{
+    "row": 7,
+    "fieldData": [
+        {
+            "row": 7,
+            "col": 1,
+            "value": "                    ",
+            "isProtected": true,
+            "address": 49713,
+            "length": 20,
+            "dirty": false,
+            "cursor": -1
+        },
+        {
+            "row": 7,
+            "col": 21,
+            "value": "       TTTTTTTTTTTT   KKKK  KKKKK     555555555555",
+            "isProtected": true,
+            "address": 49733,
+            "length": 50,
+            "dirty": false,
+            "cursor": -1
+        }
+    ],
+    "instruction": 4
+}
