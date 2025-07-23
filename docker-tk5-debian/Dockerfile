@@ -10,4 +10,5 @@ WORKDIR /root/mvs-tk5
 RUN chmod -R +x *
 RUN sed -i '$ d' unattended/set_console_mode
 RUN unattended/set_console_mode
+EXPOSE 3270
 ENTRYPOINT [ "./mvs" ]
